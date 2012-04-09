@@ -1,5 +1,17 @@
 
-# Set system-specific stuff, first based on HOSTNAME or on HOST
+# Decide what sort of system we're on
+if ( -f /bin/uname ||  -f /usr/bin/uname ) then
+  setenv GBP_OS `uname`
+  if ( $GBP_OS == 'Darwin') then
+     setenv GBP_OS 'Mac'
+  else if ($GBP_OS == 'Linux') then
+     setenv GBP_OS 'linux'
+  endif
+else
+  setenv GBP_OS 'unknown'
+endif
+
+# Set system-specific stuff, first based on HOSTNAME 
 if ( $?HOSTNAME ) then
   if ( $HOSTNAME == 'green.ssi.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
@@ -14,16 +26,19 @@ if ( $?HOSTNAME ) then
     module load python/2.7.1
     module load hdf5/1.8.7-gcc-4.4.6-fortran-parallel-static
   else if ( $HOSTNAME == 'vayu.nci.org.au' ) then
-    setenv GBP_QUEUE_TYPE='PBS'
+    setenv GBP_QUEUE_TYPE 'PBS'
   else
-    setenv GBP_QUEUE_TYPE='SERIAL'
-  fi
+    setenv GBP_QUEUE_TYPE 'SERIAL'
+  endif
+else if ( $GBP_OS == 'Mac' ) then
+   setenv GBP_QUEUE_TYPE 'SERIAL'
 else
-  echo Environment variable HOSTNAME undefined.
-fi
+   echo There is no default configuration in .system.XXX.gbpHome for this system.  Assigning defaults.
+   setenv GBP_QUEUE_TYPE 'SERIAL'
+endif
 
 # Set-up some stuff on Macs
-if ( $GBPHOST == 'Mac' ) then
+if ( $GBP_OS == 'Mac' ) then
   setenv RUNZ '/Applications/runz/'
-fi
+endif
 

@@ -1,4 +1,16 @@
 
+# Decide what sort of system we're on
+if [ -f /bin/uname ]; then
+  export GBP_OS=`/bin/uname`
+  if [ $GBP_OS == 'Darwin']; then
+     export GBP_OS='Mac'
+  elif [ $GBP_OS == 'Linux' ] then
+     export GBP_OS='linux'
+  fi
+else
+  export GBP_OS='unknown'
+fi
+
 # Set system-specific stuff, first based on HOSTNAME or on HOST
 if [ -n $HOSTNAME ]; then
   if [ $HOSTNAME == 'green.ssi.swin.edu.au' ]; then

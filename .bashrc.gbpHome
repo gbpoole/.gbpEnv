@@ -1,19 +1,4 @@
 
-# Decide what sort of system we're on
-if [ -f /bin/uname ]; then
-  export GBP_OS=`/bin/uname`
-else
-  export GBP_OS='unknown'
-fi
-if [ $HOSTTYPE == 'intel-mac' ]; then
-  export GBPHOST='Mac'
-elif [ $HOSTTYPE == 'x86_64-linux' ] || [ $HOSTTYPE == 'x86_64' ]; then
-  export GBPHOST='linux'
-else
-  export GBPHOST='unknown'
-  echo 'Unknown System Type {'$HOSTTYPE'}.'
-fi
-
 # Set-up some generic UNIX stuff
 umask 22
 ulimit -c 0
