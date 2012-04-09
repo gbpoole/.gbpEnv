@@ -16,7 +16,7 @@ endif
 
 # Set-up some generic UNIX stuff
 umask 22
-limit coredumpsize 0
+ulimit -c 0
 unset autologout
 
 # Make sure the DISPLAY variable is set
@@ -25,10 +25,10 @@ if (!(${?DISPLAY}) && ${?REMOTEHOST}) then
 endif
 
 # Set all system-specific stuff
-source ${HOME}/.system.gbpHome
+source ${HOME}/.system.csh.gbpHome
 
 # Create all my aliases
-source ${HOME}/.alias.gbpHome
+source ${HOME}/.alias.csh.gbpHome
 
 # Add 3rd_Party binary directory to the PATH
 setenv PATH  ${HOME}/3rd_Party/bin/:$PATH

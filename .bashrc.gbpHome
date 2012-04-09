@@ -1,0 +1,43 @@
+
+# Decide what sort of system we're on
+if [ -f /bin/uname ]; then
+  export GBP_OS=`/bin/uname`
+else
+  export GBP_OS='unknown'
+fi
+if [ $HOSTTYPE == 'intel-mac' ]; then
+  export GBPHOST='Mac'
+elif [ $HOSTTYPE == 'x86_64-linux' ] || [ $HOSTTYPE == 'x86_64' ]; then
+  export GBPHOST='linux'
+else
+  export GBPHOST='unknown'
+  echo 'Unknown System Type {'$HOSTTYPE'}.'
+fi
+
+# Set-up some generic UNIX stuff
+umask 22
+ulimit -c 0
+unset autologout
+
+# Make sure the DISPLAY variable is set
+if [ -z $DISPLAY ] && [ -n $REMOTEHOST ]; then
+   export DISPLAY=$REMOTEHOST:0.0
+fi
+
+# Set all system-specific stuff
+source ${HOME}/.system.bash.gbpHome
+
+# Create all my aliases
+source ${HOME}/.alias.bash.gbpHome
+
+# Add 3rd_Party binary directory to the PATH
+export PATH=${HOME}/3rd_Party/bin/:$PATH
+
+# These lines set-up gbpCode
+export GBP_SRC=${HOME}'/gbpCode/'
+source ${GBP_SRC}/.bashrc.gbpCode
+export PATH=${GBP_SRC}/myBin:$PATH
+
+# Set the prompt
+export PS1="\n\033[31m[`hostname -s`: \w] >\033[0m "
+
