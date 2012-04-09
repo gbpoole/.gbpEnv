@@ -1,5 +1,10 @@
 
 # Decide what sort of system we're on
+if ( -f /bin/uname ) then
+  setenv GBP_OS `/bin/uname`
+else
+  setenv GBP_OS 'unknown'
+endif
 if ( $HOSTTYPE == 'intel-mac' ) then
   setenv GBPHOST 'Mac'
 else if ( $HOSTTYPE == 'x86_64-linux' ) then
@@ -9,30 +14,23 @@ else
   echo 'Unknown System Type {'$HOSTTYPE'}.'
 endif
 
-# Decide if we're using PBS
-if ( $?HOSTNAME ) then
-  if ( $HOSTNAME == 'green.ssi.swin.edu.au' ) then
-    setenv GBP_QUEUE_TYPE PBS
-  else if ( $HOSTNAME == 'epic.ivec.org' ) then
-    setenv GBP_QUEUE_TYPE PBS
-  else if ( $HOSTNAME == 'vayu.nci.org.au' ) then
-    setenv GBP_QUEUE_TYPE PBS
-  else
-    setenv GBP_QUEUE_TYPE SERIAL
-  endif
-else
-  setenv GBP_QUEUE_TYPE SERIAL
+# Set-up some generic UNIX stuff
+umask 22
+limit coredumpsize 0
+unset autologout
+
+# Make sure the DISPLAY variable is set
+if (!(${?DISPLAY}) && ${?REMOTEHOST}) then
+   setenv DISPLAY ${REMOTEHOST}:0.0
 endif
 
-# Source all my aliases
-source ~/.alias.gbpHome
+# Set all system-specific stuff
+source ${HOME}/.system.gbpHome
 
-# Set-up some stuff on Macs
-if ( $GBPHOST == 'Mac') then
-  setenv RUNZ /Applications/runz/
-endif
+# Create all my aliases
+source ${HOME}/.alias.gbpHome
 
-# Add 3rd_Party directory to the PATH
+# Add 3rd_Party binary directory to the PATH
 setenv PATH  ${HOME}/3rd_Party/bin/:$PATH
 
 # These lines set-up gbpCode

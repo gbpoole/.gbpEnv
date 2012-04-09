@@ -1,3 +1,4 @@
+#!/bin/tcsh -f
 
 # Source .profile (if it exists)
 if ( -f ${HOME}/.profile ) then

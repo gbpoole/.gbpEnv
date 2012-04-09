@@ -1,3 +1,4 @@
+#!/bin/tcsh -f
 
 # Generic UNIX aliases
 alias setprompt  'set prompt = "\n%{\033[31m%}[`hostname -s`: %c] >%{\033[0m%} "'
