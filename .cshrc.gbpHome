@@ -1,0 +1,45 @@
+
+# Decide what sort of system we're on
+if ( $HOSTTYPE == 'intel-mac' ) then
+  setenv GBPHOST 'Mac'
+else if ( $HOSTTYPE == 'x86_64-linux' ) then
+  setenv GBPHOST 'linux'
+else
+  setenv GBPHOST 'unknown'
+  echo 'Unknown System Type {'$HOSTTYPE'}.'
+endif
+
+# Decide if we're using PBS
+if ( $?HOSTNAME ) then
+  if ( $HOSTNAME == 'green.ssi.swin.edu.au' ) then
+    setenv GBP_QUEUE_TYPE PBS
+  else if ( $HOSTNAME == 'epic.ivec.org' ) then
+    setenv GBP_QUEUE_TYPE PBS
+  else if ( $HOSTNAME == 'vayu.nci.org.au' ) then
+    setenv GBP_QUEUE_TYPE PBS
+  else
+    setenv GBP_QUEUE_TYPE SERIAL
+  endif
+else
+  setenv GBP_QUEUE_TYPE SERIAL
+endif
+
+# Source all my aliases
+source ~/.alias.gbpHome
+
+# Set-up some stuff on Macs
+if ( $GBPHOST == 'Mac') then
+  setenv RUNZ /Applications/runz/
+endif
+
+# Add 3rd_Party directory to the PATH
+setenv PATH  ${HOME}/3rd_Party/bin/:$PATH
+
+# These lines set-up gbpCode
+setenv GBP_SRC  ${HOME}'/gbpCode/'
+source ${GBP_SRC}/.cshrc.gbpCode
+setenv PATH  ${GBP_SRC}/myBin:$PATH
+
+# Set the prompt
+setprompt
+

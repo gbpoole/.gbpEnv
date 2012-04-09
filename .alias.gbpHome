@@ -1,0 +1,35 @@
+
+# Generic UNIX aliases
+alias setprompt  'set prompt = "\n%{\033[31m%}[`hostname -s`: %c] >%{\033[0m%} "'
+alias cd         'chdir \!* && setprompt'
+alias ls         'ls -CG'
+
+# List of machines
+alias go_krill    'ssh -Y -l gbpoole krill.phys.uvic.ca'
+alias go_turbot   'ssh -Y -l gbpoole turbot.phys.uvic.ca'
+alias go_chinook  'ssh -Y -l gbpoole chinook.phys.uvic.ca'
+alias go_green    'ssh -Y -l gpoole  lightgreen.ssi.swin.edu.au'
+alias go_Green    'ssh -Y -l gpoole  green.ssi.swin.edu.au'
+alias go_epic     'ssh -Y -l gpoole  epic.ivec.org'
+alias go_vayu     'ssh -Y -l gpoole  vayu.nci.org.au'
+alias go_gstar    'ssh -Y -l gpoole  g2.hpc.swin.edu.au'
+
+# Mac aliases
+if ( $GBPHOST == 'Mac' ) then
+   alias mount_green  'mkdir  /tmp/green ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/home/ssi/gpoole        /tmp/green'
+   alias mount_evo    'mkdir  /tmp/evo   ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/evo/gpoole /tmp/evo'
+   alias mount_x2     'mkdir  /tmp/x2    ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/cosmicx2/  /tmp/x2'
+   alias umount_green 'umount /tmp/green'
+   alias umount_evo   'umount /tmp/evo'
+   alias umount_x2    'umount /tmp/x2'
+   alias runz            /Applications/runz/runz_wigglez
+   alias rz_completeness /Applications/runz/rz_completeness.pl
+   alias ipython         /opt/local/bin/ipython-2.6
+endif
+
+# Some stuff particular to having PBS
+if ( $GBP_QUEUE_TYPE == 'PBS' ) then
+  alias qstat_me 'qstat -n1 -u '$USER
+  alias qsm      qstat_me
+endif
+
