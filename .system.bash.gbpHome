@@ -1,10 +1,10 @@
 
 # Decide what sort of system we're on
-if [ -f /bin/uname ]; then
-  export GBP_OS=`/bin/uname`
-  if [ $GBP_OS == 'Darwin']; then
+if [ -f /bin/uname ] || [ -f /usr/bin/uname ]; then
+  export GBP_OS=`uname`
+  if [ $GBP_OS == 'Darwin' ]; then
      export GBP_OS='Mac'
-  elif [ $GBP_OS == 'Linux' ] then
+  elif [ $GBP_OS == 'Linux' ]; then
      export GBP_OS='linux'
   fi
 else
