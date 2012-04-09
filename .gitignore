@@ -8,4 +8,5 @@
 !.alias.csh.gbpHome
 !.system.bash.gbpHome
 !.system.csh.gbpHome
-
+!.vim
+!3rd_Party
