@@ -25,8 +25,14 @@ if [ -n $HOSTNAME ]; then
     module load mpi/gcc/openmpi/1.4.3-gcc-4.4.6
     module load python/2.7.1
     module load hdf5/1.8.7-gcc-4.4.6-fortran-parallel-static
+    module load gsl
   elif [ $HOSTNAME == 'vayu.nci.org.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
+    module load gcc/4.4.6
+    module load openmpi
+    module load python/2.7.1
+    module load hdf5
+    module load gsl
   else
     export GBP_QUEUE_TYPE='SERIAL'
   fi
