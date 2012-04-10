@@ -16,7 +16,7 @@ endif
 
 # Set-up some generic UNIX stuff
 umask 22
-ulimit -c 0
+limit coredumpsize 0
 unset autologout
 
 # Make sure the DISPLAY variable is set
