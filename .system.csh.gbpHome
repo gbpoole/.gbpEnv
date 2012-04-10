@@ -24,13 +24,15 @@ if ( $?HOSTNAME ) then
     module load gcc/4.4.6
     module load mpi/gcc/openmpi/1.4.3-gcc-4.4.6
     module load python/2.7.1
+    module load fftw/2.1.5
     module load hdf5/1.8.7-gcc-4.4.6-fortran-parallel-static
     module load gsl
-  else if ( $HOSTNAME == 'vayu.nci.org.au' ) then
+  else if ( $HOSTNAME == 'vayu3' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
-    module load gcc/4.4.6
+    module load gcc/system
     module load openmpi
     module load python/2.7.1
+    module load fftw/2.1.5
     module load hdf5
     module load gsl
   else
