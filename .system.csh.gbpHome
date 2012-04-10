@@ -19,6 +19,7 @@ if ( $?HOSTNAME ) then
     module load python/2.7.1
     module load hdf5/gnu-1.8.6
     module load git/1.7.4
+    module load gsl
   else if ( $HOSTNAME == 'epicuser1' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     module load gcc/4.4.6
