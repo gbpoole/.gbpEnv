@@ -16,7 +16,7 @@ alias go_vayu     'ssh -Y -l gpoole  vayu.nci.org.au'
 alias go_gstar    'ssh -Y -l gpoole  g2.hpc.swin.edu.au'
 
 # Mac aliases
-if ( $GBPHOST == 'Mac' ) then
+if ( $GBP_OS == 'Mac' ) then
    alias mount_green  'mkdir  /tmp/green ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/home/ssi/gpoole        /tmp/green'
    alias mount_evo    'mkdir  /tmp/evo   ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/evo/gpoole /tmp/evo'
    alias mount_x2     'mkdir  /tmp/x2    ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/cosmicx2/  /tmp/x2'
