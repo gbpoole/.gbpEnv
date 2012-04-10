@@ -20,7 +20,11 @@ export PATH=${HOME}/3rd_Party/bin/:$PATH
 
 # These lines set-up gbpCode
 export GBP_SRC=${HOME}'/gbpCode/'
-source ${GBP_SRC}/.bashrc.gbpCode
+if [ -f ${GBP_SRC}/.bashrc.myCode ]; then
+  source ${GBP_SRC}/.bashrc.myCode
+else
+  source ${GBP_SRC}/.bashrc.gbpCode
+fi
 export PATH=${GBP_SRC}/myBin:$PATH
 
 # Set the prompt

@@ -37,7 +37,7 @@ else
 fi
 
 # Set-up some stuff on Macs
-if [ $GBPHOST == 'Mac' ]; then
+if [ $GBP_OS == 'Mac' ]; then
   export RUNZ='/Applications/runz/'
 fi
 
