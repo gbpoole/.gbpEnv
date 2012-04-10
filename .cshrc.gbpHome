@@ -1,19 +1,4 @@
 
-# Decide what sort of system we're on
-if ( -f /bin/uname ) then
-  setenv GBP_OS `/bin/uname`
-else
-  setenv GBP_OS 'unknown'
-endif
-if ( $HOSTTYPE == 'intel-mac' ) then
-  setenv GBPHOST 'Mac'
-else if ( $HOSTTYPE == 'x86_64-linux' ) then
-  setenv GBPHOST 'linux'
-else
-  setenv GBPHOST 'unknown'
-  echo 'Unknown System Type {'$HOSTTYPE'}.'
-endif
-
 # Set-up some generic UNIX stuff
 umask 22
 limit coredumpsize 0
@@ -35,7 +20,11 @@ setenv PATH  ${HOME}/3rd_Party/bin/:$PATH
 
 # These lines set-up gbpCode
 setenv GBP_SRC  ${HOME}'/gbpCode/'
-source ${GBP_SRC}/.cshrc.gbpCode
+if ( -f ${GBP_SRC}/.cshrc.myCode ) then
+  source ${GBP_SRC}/.cshrc.myCode
+else
+  source ${GBP_SRC}/.cshrc.gbpCode
+endif
 setenv PATH  ${GBP_SRC}/myBin:$PATH
 
 # Set the prompt
