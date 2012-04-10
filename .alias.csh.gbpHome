@@ -3,7 +3,7 @@
 # Generic UNIX aliases
 alias setprompt  'set prompt = "\n%{\033[31m%}[`hostname -s`: %c] >%{\033[0m%} "'
 alias cd         'chdir \!* && setprompt'
-alias ls         'ls -CG'
+alias ls         'ls -CG --color=always'
 
 # List of machines
 alias go_krill    'ssh -Y -l gbpoole krill.phys.uvic.ca'
