@@ -22,7 +22,7 @@ setenv PATH  ${HOME}/3rd_Party/bin/:$PATH
 setenv GBP_SRC  ${HOME}'/gbpCode/'
 if ( -f ${GBP_SRC}/.cshrc.myCode ) then
   source ${GBP_SRC}/.cshrc.myCode
-else
+else if ( -f ${GBP_SRC}/.cshrc.gbpCode ) then
   source ${GBP_SRC}/.cshrc.gbpCode
 endif
 setenv PATH  ${GBP_SRC}/myBin:$PATH

@@ -22,7 +22,7 @@ export PATH=${HOME}/3rd_Party/bin/:$PATH
 export GBP_SRC=${HOME}'/gbpCode/'
 if [ -f ${GBP_SRC}/.bashrc.myCode ]; then
   source ${GBP_SRC}/.bashrc.myCode
-else
+else if [ -f ${GBP_SRC}/.bashrc.gbpCode ]; then
   source ${GBP_SRC}/.bashrc.gbpCode
 fi
 export PATH=${GBP_SRC}/myBin:$PATH

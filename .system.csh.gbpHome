@@ -36,6 +36,11 @@ if ( $?HOSTNAME ) then
     module load fftw2/2.1.5
     module load hdf5
     module load gsl
+  else if ( $HOSTNAME == 'g2.hpc.swin.edu.au' ) then
+    setenv GBP_QUEUE_TYPE 'SERIAL'
+    source /usr/local/modules/init/tcsh
+    module load gcc
+    module load openmpi
   else
     setenv GBP_QUEUE_TYPE 'SERIAL'
   endif
