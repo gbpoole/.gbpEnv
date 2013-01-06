@@ -12,15 +12,16 @@ else
 fi
 
 # Set system-specific stuff, first based on HOSTNAME or on HOST
-if [ -n $HOSTNAME ]; then
-  if [ $HOSTNAME == 'green.ssi.swin.edu.au' ]; then
+export GBP_HOSTNAME=`hostname`
+if [ -n $GBP_HOSTNAME ]; then
+  if [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
     source /usr/local/Modules/default/init/modules.bash
     module load python/2.7.1
     module load hdf5/gnu-1.8.6
     module load git/1.7.4
     module load gsl
-  elif [ $HOSTNAME == 'epicuser1' ]; then
+  elif [ $GBP_HOSTNAME == 'epicuser1' ]; then
     export GBP_QUEUE_TYPE='PBS'
     module load gcc/4.4.6
     module load mpi/gcc/openmpi/1.4.3-gcc-4.4.6
@@ -28,7 +29,7 @@ if [ -n $HOSTNAME ]; then
     module load fftw/2.1.5
     module load hdf5/1.8.7-gcc-4.4.6-fortran-parallel-static
     module load gsl
-  elif [ $HOSTNAME == 'vayu3' ]; then
+  elif [ $GBP_HOSTNAME == 'vayu3' ]; then
     export GBP_QUEUE_TYPE='PBS'
     module load gcc/system
     module load openmpi
@@ -37,10 +38,11 @@ if [ -n $HOSTNAME ]; then
     module load hdf5
     module load gsl
   else
+    echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
     export GBP_QUEUE_TYPE='SERIAL'
   fi
 else
-  echo Environment variable HOSTNAME undefined.
+  echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
 fi
 
 # Set-up some stuff on Macs

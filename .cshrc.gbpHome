@@ -16,7 +16,7 @@ source ${HOME}/.system.csh.gbpHome
 source ${HOME}/.alias.csh.gbpHome
 
 # Add 3rd_Party binary directory to the PATH
-setenv PATH  ${HOME}/3rd_Party/bin/:$PATH
+setenv PATH ${HOME}/3rd_Party/bin/:$PATH
 
 # These lines set-up gbpCode
 setenv GBP_SRC  ${HOME}'/gbpCode/'

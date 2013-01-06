@@ -6,21 +6,24 @@ if ( -f /bin/uname ||  -f /usr/bin/uname ) then
      setenv GBP_OS 'Mac'
   else if ($GBP_OS == 'Linux') then
      setenv GBP_OS 'linux'
+  else
+     setenv GBP_OS 'unknown'
   endif
 else
   setenv GBP_OS 'unknown'
 endif
 
 # Set system-specific stuff, first based on HOSTNAME 
-if ( $?HOSTNAME ) then
-  if ( $HOSTNAME == 'green.ssi.swin.edu.au' ) then
+setenv GBP_HOSTNAME `hostname`
+if ( $?GBP_HOSTNAME ) then
+  if ( $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     source /usr/local/Modules/default/init/modules.csh
     module load python/2.7.1
     module load hdf5/gnu-1.8.6
     module load git/1.7.4
     module load gsl
-  else if ( $HOSTNAME == 'epicuser1' ) then
+  else if ( $GBP_HOSTNAME == 'epicuser1' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     module load gcc/4.4.6
     module load mpi/gcc/openmpi/1.4.3-gcc-4.4.6
@@ -28,7 +31,7 @@ if ( $?HOSTNAME ) then
     module load fftw/2.1.5
     module load hdf5/1.8.7-gcc-4.4.6-fortran-parallel-static
     module load gsl
-  else if ( $HOSTNAME == 'vayu3' ) then
+  else if ( $GBP_HOSTNAME == 'vayu3' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     module load gcc/system
     module load openmpi
@@ -36,23 +39,30 @@ if ( $?HOSTNAME ) then
     module load fftw2/2.1.5
     module load hdf5
     module load gsl
-  else if ( $HOSTNAME == 'g2.hpc.swin.edu.au' ) then
-    setenv GBP_QUEUE_TYPE 'SERIAL'
+  else if ( $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ) then
+    setenv GBP_QUEUE_TYPE 'PBS'
     source /usr/local/modules/init/tcsh
+    source ~/PythonENV/bin/activate.csh
     module load gcc
     module load openmpi
+    module load gsl
+    module load fftw
+    module load hdf5
   else
+    echo There is no default configuration in .system.cshrc.gbpHome for this system.  Assigning defaults.
     setenv GBP_QUEUE_TYPE 'SERIAL'
   endif
 else if ( $GBP_OS == 'Mac' ) then
    setenv GBP_QUEUE_TYPE 'SERIAL'
 else
-   echo There is no default configuration in .system.XXX.gbpHome for this system.  Assigning defaults.
+   echo There is no default configuration in .system.cshrc.gbpHome for this system.  Assigning defaults.
    setenv GBP_QUEUE_TYPE 'SERIAL'
 endif
 
 # Set-up some stuff on Macs
 if ( $GBP_OS == 'Mac' ) then
+  echo testZ1
   setenv RUNZ '/Applications/runz/'
+  echo testZ2
 endif
 
