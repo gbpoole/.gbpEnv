@@ -45,6 +45,27 @@ if ( $?GBP_HOSTNAME ) then
     source ~/PythonENV/bin/activate.csh
     module load gcc
     module load openmpi
+    module load python
+    module load gsl
+    module load fftw
+    module load hdf5
+  else if ( $GBP_HOSTNAME == 'sstar001.hpc.swin.edu.au' ) then
+    setenv GBP_QUEUE_TYPE 'SERIAL'
+    source /usr/local/modules/init/tcsh
+    source ~/PythonENV/bin/activate.csh
+    module load gcc
+    module load openmpi
+    module load python
+    module load gsl
+    module load fftw
+    module load hdf5
+  else if ( $GBP_HOSTNAME == 'sstar002.hpc.swin.edu.au' ) then
+    setenv GBP_QUEUE_TYPE 'SERIAL'
+    source /usr/local/modules/init/tcsh
+    source ~/PythonENV/bin/activate.csh
+    module load gcc
+    module load openmpi
+    module load python
     module load gsl
     module load fftw
     module load hdf5
@@ -61,8 +82,6 @@ endif
 
 # Set-up some stuff on Macs
 if ( $GBP_OS == 'Mac' ) then
-  echo testZ1
   setenv RUNZ '/Applications/runz/'
-  echo testZ2
 endif
 
