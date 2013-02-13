@@ -1,6 +1,8 @@
 # Ignore everything in this directory
 *
 # Except these files
+!.ssh
+!.ssh/config
 !.gitignore
 !.cshrc.gbpHome
 !.bashrc.gbpHome

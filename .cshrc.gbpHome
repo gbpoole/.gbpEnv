@@ -38,6 +38,9 @@ setenv GBP_SRC  ${HOME}'/gbpCode/'
 source ${GBP_SRC}/.cshrc.gbpCode
 setenv PATH  ${GBP_SRC}/myBin:$PATH
 
+# Virtual environment set-up
+source ~/PythonENV/bin/activate.csh
+
 # Set the prompt
 setprompt
 
