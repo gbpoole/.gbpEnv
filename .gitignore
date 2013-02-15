@@ -4,6 +4,8 @@
 !.ssh
 !.ssh/config
 !.gitignore
+!3rd_Party
+!3rd_Party/include
 !.cshrc.gbpHome
 !.bashrc.gbpHome
 !.alias.bash.gbpHome
@@ -11,4 +13,4 @@
 !.system.bash.gbpHome
 !.system.csh.gbpHome
 !.vim
-!3rd_Party
+
