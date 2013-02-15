@@ -13,7 +13,11 @@ endif
 source ${HOME}/.system.csh.gbpHome
 
 # Create all my aliases
-source ${HOME}/.alias.csh.gbpHome
+if ( $GBP_OS == 'Mac' ) then
+   source ${HOME}/.alias.csh.gbpHome.osx
+else
+   source ${HOME}/.alias.csh.gbpHome
+endif
 
 # Add 3rd_Party binary directory to the PATH
 setenv PATH ${HOME}/3rd_Party/bin/:$PATH
