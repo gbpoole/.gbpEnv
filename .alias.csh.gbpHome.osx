@@ -13,7 +13,9 @@ alias go_green    'ssh -Y -l gpoole  lightgreen.ssi.swin.edu.au'
 alias go_Green    'ssh -Y -l gpoole  green.ssi.swin.edu.au'
 alias go_epic     'ssh -Y -l gpoole  epic.ivec.org'
 alias go_vayu     'ssh -Y -l gbp593  vayu.nci.org.au'
-alias go_gstar    'ssh -Y -l gpoole  g2.hpc.swin.edu.au'
+alias go_gstar    'ssh -Y -l gpoole  g2'
+alias go_sstar1   'ssh -Y -l gpoole  sstar001'
+alias go_sstar2   'ssh -Y -l gpoole  sstar002'
 
 alias go_gstar_data 'cd /lustre/projects/p004_swin/gpoole'
 
