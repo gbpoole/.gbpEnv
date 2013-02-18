@@ -10,6 +10,7 @@
 !.bashrc.gbpHome
 !.alias.bash.gbpHome
 !.alias.csh.gbpHome
+!.alias.csh.gbpHome.osx
 !.system.bash.gbpHome
 !.system.csh.gbpHome
 !.vim
