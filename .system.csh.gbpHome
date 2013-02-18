@@ -45,7 +45,6 @@ if ( $?GBP_HOSTNAME ) then
     source ~/PythonENV/bin/activate.csh
     module load gcc
     module load openmpi
-    module load python
     module load gsl
     module load fftw
     module load hdf5
@@ -55,7 +54,6 @@ if ( $?GBP_HOSTNAME ) then
     source ~/PythonENV/bin/activate.csh
     module load gcc
     module load openmpi
-    module load python
     module load gsl
     module load fftw
     module load hdf5
@@ -65,7 +63,6 @@ if ( $?GBP_HOSTNAME ) then
     source ~/PythonENV/bin/activate.csh
     module load gcc
     module load openmpi
-    module load python
     module load gsl
     module load fftw
     module load hdf5
