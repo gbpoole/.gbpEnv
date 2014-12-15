@@ -1,6 +1,11 @@
 
 # Set prompt
-alias setprompt='export PS1="\n\033[31m[`hostname -s`: \W] >\033[0m "'
+#pmt_host=$(hostname -s)
+#alias setprompt='export PS1="\[\n\]\[\033[31m\][\[$pmt_host\]: \[\W\]] >\[\033[0m\] "'
+pmt_red=$(tput setaf 1)
+pmt_reset=$(tput sgr0)
+pmt_hst=$(hostname -s)
+alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
 
 # Generic UNIX aliases
 alias ls='ls -CG --color=always'
