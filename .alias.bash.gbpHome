@@ -1,4 +1,7 @@
 
+# Set prompt
+alias setprompt='export PS1="\n\033[31m[`hostname -s`: \W] >\033[0m "'
+
 # Generic UNIX aliases
 alias ls='ls -CG --color=always'
 

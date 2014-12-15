@@ -28,5 +28,5 @@ fi
 export PATH=${GBP_SRC}/myBin:$PATH
 
 # Set the prompt
-export PS1="\n\033[31m[`hostname -s`: \w] >\033[0m "
+setprompt
 
