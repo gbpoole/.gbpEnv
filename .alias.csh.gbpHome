@@ -4,9 +4,9 @@
 alias setprompt  'set prompt = "\n%{\033[31m%}[`hostname -s`: %c] >%{\033[0m%} "'
 alias cd         'chdir \!* && setprompt'
 if ( $GBP_OS == 'Mac' ) then
-   alias ls         'ls -Cg'
+   alias ls         'ls -CG'
 else
-   alias ls         'ls -Cg --color=auto'
+   alias ls         'ls -CG --color=auto'
 endif
 
 # List of machines
