@@ -59,6 +59,7 @@ if ( $?GBP_HOSTNAME ) then
     module   load gcc openmpi/x86_64/gnu/1.6.4 gsl fftw hdf5
   else if ( $GBP_OS == 'Mac' ) then
     setenv GBP_QUEUE_TYPE 'SERIAL'
+    setenv COPYFILE_DISABLE 1
     setenv PATH /opt/local/bin:/opt/local/sbin:$PATH
   else
     echo There is no default configuration in .system.cshrc.gbpHome for this system.  Assigning defaults.
@@ -73,7 +74,11 @@ else
 endif
 
 # Set-up some stuff on Macs
+# RUNZ_PROJECT=2 is LRG mode
 if ( $GBP_OS == 'Mac' ) then
-  setenv RUNZ '/Applications/runz/'
+  setenv RUNZ         '/Applications/runz/'
+  setenv RUNZ_PROJECT 2
+  setenv PGPLOT_DIR   /Users/gpoole/3rd_Party/pgplot/lib
+  setenv PGPLOT_FONT  /Users/gpoole/3rd_Party/pgplot/lib/grfont.dat
 endif
 

@@ -4,9 +4,9 @@
 alias setprompt  'set prompt = "\n%{\033[31m%}[`hostname -s`: %c] >%{\033[0m%} "'
 alias cd         'chdir \!* && setprompt'
 if ( $GBP_OS == 'Mac' ) then
-   alias ls         'ls -C'
+   alias ls         'ls -CG'
 else
-   alias ls         'ls -C --color=auto'
+   alias ls         'ls -CG --color=auto'
 endif
 
 # List of machines
@@ -17,6 +17,8 @@ alias go_green    'ssh -Y -l gpoole  lightgreen.ssi.swin.edu.au'
 alias go_Green    'ssh -Y -l gpoole  green.ssi.swin.edu.au'
 alias go_epic     'ssh -Y -l gpoole  epic.ivec.org'
 alias go_vayu     'ssh -Y -l gbp593  vayu.nci.org.au'
+alias go_avoca    'ssh -Y -l gpoole  avoca.vlsci.unimelb.edu.au'
+alias go_baker    'ssh -Y -l gpoole baker.ph.unimelb.edu.au'
 if ( $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ) then
    alias go_sstar1   'ssh -Y -l gpoole  sstar001'
    alias go_sstar2   'ssh -Y -l gpoole  sstar002'
@@ -38,6 +40,12 @@ alias go_b_r 'cd ~/GiggleZ/GiggleZ_main/clustering/correlation_functions/b_r'
 # Useful commands to remember
 alias compress_ps 'gs -q -dLEVEL3 -dASCII -- ~/bin/encode.ps $1 $2'
 
+alias start_sshuttle '~/3rd_Party/sshuttle/sshuttle -r gpoole@baker.ph.unimelb.edu.au 0.0.0.0/0 -vv'
+
+# Add this to URLs to be able to download pdfs from ADS
+
+alias ADS_URL 'echo .ezp.lib.unimelb.edu.au'
+
 # Mac aliases
 if ( $GBP_OS == 'Mac' ) then
    alias mount_green  'mkdir  /tmp/green ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/home/ssi/gpoole        /tmp/green'
@@ -46,7 +54,7 @@ if ( $GBP_OS == 'Mac' ) then
    alias umount_green 'umount /tmp/green'
    alias umount_evo   'umount /tmp/evo'
    alias umount_x2    'umount /tmp/x2'
-   alias runz            /Applications/runz/runz_wigglez
+   alias runz            /Applications/runz/runz
    alias rz_completeness /Applications/runz/rz_completeness.pl
    alias ipython         /opt/local/bin/ipython-2.6
 endif

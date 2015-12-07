@@ -22,11 +22,11 @@ export PATH=${HOME}/3rd_Party/bin/:$PATH
 export GBP_SRC=${HOME}'/gbpCode/'
 if [ -f ${GBP_SRC}/.bashrc.myCode ]; then
   source ${GBP_SRC}/.bashrc.myCode
-else if [ -f ${GBP_SRC}/.bashrc.gbpCode ]; then
+elif [ -f ${GBP_SRC}/.bashrc.gbpCode ]; then
   source ${GBP_SRC}/.bashrc.gbpCode
 fi
 export PATH=${GBP_SRC}/myBin:$PATH
 
 # Set the prompt
-export PS1="\n\033[31m[`hostname -s`: \w] >\033[0m "
+setprompt
 

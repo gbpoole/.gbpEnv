@@ -37,6 +37,13 @@ if [ -n $GBP_HOSTNAME ]; then
     module load fftw2/2.1.5
     module load hdf5
     module load gsl
+  elif [ $GBP_HOSTNAME == 'avoca' ]; then
+    export GBP_QUEUE_TYPE='PBS'
+    module load mpi-gcc/4.4.6
+    module load python-xl
+    module load fftw-xl/2.1.5
+    module load hdf5-gcc/1.8.10
+    module load gsl-gcc/1.16
   else
     echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
     export GBP_QUEUE_TYPE='SERIAL'
