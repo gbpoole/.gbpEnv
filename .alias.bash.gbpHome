@@ -27,7 +27,7 @@ if [ $GBP_OS == 'Mac' ]; then
    alias umount_green 'umount /tmp/green'
    alias umount_evo   'umount /tmp/evo'
    alias umount_x2    'umount /tmp/x2'
-   alias runz            /Applications/runz/runz_wigglez
+   alias runz            /Applications/runz/runz
    alias rz_completeness /Applications/runz/rz_completeness.pl
    alias ipython         /opt/local/bin/ipython-2.6
 fi
