@@ -1,17 +1,14 @@
-# Ignore everything in this directory
+# First, ignore everything
 *
-# Except these files
-!.ssh
-!.ssh/config
-!.gitignore
-!3rd_Party
-!3rd_Party/include
-!.cshrc.gbpHome
-!.bashrc.gbpHome
-!.alias.bash.gbpHome
-!.alias.csh.gbpHome
-!.alias.csh.gbpHome.osx
-!.system.bash.gbpHome
-!.system.csh.gbpHome
-!.vim
-
+# Then, allow all the things we want to keep
+.alias.bash.gbpHome
+.alias.csh.gbpHome
+.alias.csh.gbpHome.osx
+.bashrc.gbpHome
+.cshrc.gbpHome
+.git
+.gitignore
+.ssh
+.system.bash.gbpHome
+.system.csh.gbpHome
+.vim

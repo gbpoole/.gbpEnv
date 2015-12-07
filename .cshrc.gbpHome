@@ -15,12 +15,6 @@ source ~/PythonENV/bin/activate.csh
 # Set all system-specific stuff
 source ${HOME}/.system.csh.gbpHome
 
-# Create all my aliases
-source ${HOME}/.alias.csh.gbpHome
-
-# Add 3rd_Party binary directory to the PATH
-setenv PATH ${HOME}/3rd_Party/bin/:$PATH
-
 # These lines set-up gbpCode
 setenv GBP_SRC  ${HOME}'/gbpCode/'
 if ( -f ${GBP_SRC}/.cshrc.myCode ) then
@@ -29,6 +23,12 @@ else if ( -f ${GBP_SRC}/.cshrc.gbpCode ) then
   source ${GBP_SRC}/.cshrc.gbpCode
 endif
 setenv PATH  ${GBP_SRC}/myBin:$PATH
+
+# Add 3rd_Party binary directory to the PATH
+setenv PATH ${HOME}/3rd_Party/bin/:$PATH
+
+# Create all my aliases
+source ${HOME}/.alias.csh.gbpHome
 
 # Set the prompt
 setprompt

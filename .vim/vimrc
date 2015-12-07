@@ -2,7 +2,22 @@
 
 set nocompatible
 
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
 syntax on
+
+function! MatchParenToggle()
+    if g:loaded_matchparen==1
+        execute 'NoMatchParen'
+        let g:loaded_matchparen=0
+    else
+        execute 'DoMatchParen'
+        let g:loaded_matchparen=1
+    endif
+endfun
+map <leader>mp :call MatchParenToggle()<CR>
+
+set expandtab tabstop=4 shiftwidth=4 " 4 spaces for tabs
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
