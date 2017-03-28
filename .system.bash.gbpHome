@@ -14,7 +14,10 @@ fi
 # Set system-specific stuff, first based on HOSTNAME or on HOST
 export GBP_HOSTNAME=`hostname`
 if [ -n $GBP_HOSTNAME ]; then
-  if [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
+  if [ $GBP_HOSTNAME == 'Terminal-2.local' ]; then
+    export GBP_QUEUE_TYPE='NONE'
+    export PATH=/anaconda/bin/:$PATH
+  elif [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
     source /usr/local/Modules/default/init/modules.bash
     module load python/2.7.1

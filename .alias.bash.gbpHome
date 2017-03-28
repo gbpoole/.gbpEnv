@@ -29,15 +29,8 @@ alias compress_ps='gs -q -dLEVEL3 -dASCII -- ~/bin/encode.ps $1 $2'
 
 # Mac aliases
 if [ $GBP_OS == 'Mac' ]; then
-   alias mount_green  'mkdir  /tmp/green ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/home/ssi/gpoole        /tmp/green'
-   alias mount_evo    'mkdir  /tmp/evo   ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/evo/gpoole /tmp/evo'
-   alias mount_x2     'mkdir  /tmp/x2    ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/cosmicx2/  /tmp/x2'
-   alias umount_green 'umount /tmp/green'
-   alias umount_evo   'umount /tmp/evo'
-   alias umount_x2    'umount /tmp/x2'
-   alias runz            /Applications/runz/runz
-   alias rz_completeness /Applications/runz/rz_completeness.pl
-   alias ipython         /opt/local/bin/ipython-2.6
+   alias runz='/Applications/runz/runz'
+   alias rz_completeness='/Applications/runz/rz_completeness.pl'
 fi
 
 # Some stuff particular to having PBS

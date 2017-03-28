@@ -4,8 +4,13 @@ umask 22
 ulimit -c 0
 unset autologout
 
+# Make sure the REMOTEHOST variable is set
+if [ -z $REMOTEHOST ]; then
+   export REMOTEHOST=$HOST
+fi
+
 # Make sure the DISPLAY variable is set
-if [ -z $DISPLAY ] && [ -n $REMOTEHOST ]; then
+if [ -z $DISPLAY ]  && [ -n $REMOTEHOST ]; then
    export DISPLAY=$REMOTEHOST:0.0
 fi
 

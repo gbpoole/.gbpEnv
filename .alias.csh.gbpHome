@@ -13,19 +13,18 @@ endif
 alias go_krill    'ssh -Y -l gbpoole krill.phys.uvic.ca'
 alias go_turbot   'ssh -Y -l gbpoole turbot.phys.uvic.ca'
 alias go_chinook  'ssh -Y -l gbpoole chinook.phys.uvic.ca'
-alias go_green    'ssh -Y -l gpoole  lightgreen.ssi.swin.edu.au'
-alias go_Green    'ssh -Y -l gpoole  green.ssi.swin.edu.au'
-alias go_epic     'ssh -Y -l gpoole  epic.ivec.org'
 alias go_vayu     'ssh -Y -l gbp593  vayu.nci.org.au'
 alias go_avoca    'ssh -Y -l gpoole  avoca.vlsci.unimelb.edu.au'
-alias go_baker    'ssh -Y -l gpoole baker.ph.unimelb.edu.au'
+alias go_baker    'ssh -Y -l gpoole  baker.ph.unimelb.edu.au'
 if ( $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ) then
    alias go_sstar1   'ssh -Y -l gpoole  sstar001'
    alias go_sstar2   'ssh -Y -l gpoole  sstar002'
+   alias go_sstar3   'ssh -Y -l gpoole  sstar003'
 else
    alias go_gstar    'ssh -Y -l gpoole  gstar_pf'
    alias go_sstar1   'ssh -Y -l gpoole  sstar001_pf'
    alias go_sstar2   'ssh -Y -l gpoole  sstar002_pf'
+   alias go_sstar3   'ssh -Y -l gpoole  sstar003_pf'
 endif
 
 setenv src_sims $GBP_SRC/gbpPkgs/gbpAstro/gbpSims
@@ -48,15 +47,8 @@ alias ADS_URL 'echo .ezp.lib.unimelb.edu.au'
 
 # Mac aliases
 if ( $GBP_OS == 'Mac' ) then
-   alias mount_green  'mkdir  /tmp/green ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/home/ssi/gpoole        /tmp/green'
-   alias mount_evo    'mkdir  /tmp/evo   ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/evo/gpoole /tmp/evo'
-   alias mount_x2     'mkdir  /tmp/x2    ; /Applications/sshfs/bin/mount_sshfs gpoole@green.ssi.swin.edu.au:/nfs/cluster/cosmicx2/  /tmp/x2'
-   alias umount_green 'umount /tmp/green'
-   alias umount_evo   'umount /tmp/evo'
-   alias umount_x2    'umount /tmp/x2'
    alias runz            /Applications/runz/runz
    alias rz_completeness /Applications/runz/rz_completeness.pl
-   alias ipython         /opt/local/bin/ipython-2.6
 endif
 
 # Some stuff particular to having PBS
