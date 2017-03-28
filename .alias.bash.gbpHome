@@ -8,7 +8,7 @@ pmt_hst=$(hostname -s)
 alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
 
 # Generic UNIX aliases
-alias ls='ls -CG --color=always'
+alias ls='ls -CG'
 
 # List of machines
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'
