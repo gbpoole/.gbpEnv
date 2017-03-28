@@ -4,6 +4,9 @@ umask 22
 ulimit -c 0
 unset autologout
 
+# Turn 'vi-mode' by default
+set -o vi
+
 # Make sure the REMOTEHOST variable is set
 if [ -z $REMOTEHOST ]; then
    export REMOTEHOST=$HOST

@@ -46,20 +46,20 @@ if ( $?GBP_HOSTNAME ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     source /usr/local/modules/init/tcsh
     source ~/PythonENV/bin/activate.csh
-    module unload gcc openmpi/x86_64/gnu/1.6.4 gsl fftw hdf5
-    module   load gcc openmpi/x86_64/gnu/1.6.4 gsl fftw hdf5
+    module unload gcc openmpi gsl fftw hdf5
+    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
   else if ( $GBP_HOSTNAME == 'sstar001.hpc.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'NONE'
     source /usr/local/modules/init/tcsh
     source ~/PythonENV/bin/activate.csh
-    module unload gcc openmpi/x86_64/gnu/1.6.4 gsl fftw hdf5
-    module   load gcc openmpi/x86_64/gnu/1.6.4 gsl fftw hdf5
+    module unload gcc openmpi gsl fftw hdf5
+    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
   else if ( $GBP_HOSTNAME == 'sstar002.hpc.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'NONE'
     source /usr/local/modules/init/tcsh
     source ~/PythonENV/bin/activate.csh
-    module unload gcc openmpi/x86_64/gnu/1.6.4 gsl fftw hdf5
-    module   load gcc openmpi/x86_64/gnu/1.6.4 gsl fftw hdf5
+    module unload gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
+    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
   else if ( $GBP_OS == 'Mac' ) then
     setenv GBP_QUEUE_TYPE 'SERIAL'
     setenv COPYFILE_DISABLE 1
