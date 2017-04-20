@@ -16,7 +16,10 @@ endif
 # Set system-specific stuff, first based on HOSTNAME 
 setenv GBP_HOSTNAME `hostname`
 if ( $?GBP_HOSTNAME ) then
-  if ( $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ) then
+  if ( $GBP_HOSTNAME == 'Terminal-2.local' ) then
+    setenv GBP_QUEUE_TYPE 'NONE'
+    setenv PATH /anaconda/bin:$PATH
+  else if ( $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     source /usr/local/Modules/default/init/modules.csh
     module load anaconda
