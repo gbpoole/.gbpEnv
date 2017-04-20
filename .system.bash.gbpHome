@@ -28,13 +28,18 @@ if [ -n $GBP_HOSTNAME ]; then
     module load hdf5/gnu-1.8.6
     module load git/1.7.4
     module load gsl
-  elif [ $GBP_HOSTNAME == 'sstar001.hpc.swin.edu.au' || $GBP_HOSTNAME == 'sstar002.hpc.swin.edu.au' ]; then
+  elif [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ]; then
+    export GBP_QUEUE_TYPE='PBS'
+    source /usr/local/modules/init/bash
+    module unload gcc openmpi gsl fftw hdf5
+    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5 anaconda
+    source activate PythonENV >> /dev/null 2>&1
+  elif [ $GBP_HOSTNAME == 'sstar001.hpc.swin.edu.au' ] || [ $GBP_HOSTNAME == 'sstar002.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='NONE'
-    source /usr/local/Modules/default/init/modules.bash
-    module load anaconda
-    module load hdf5/gnu-1.8.6
-    module load git/1.7.4
-    module load gsl
+    source /usr/local/modules/init/bash
+    module unload gcc openmpi gsl fftw hdf5
+    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5 anaconda
+    source activate PythonENV >> /dev/null 2>&1
   elif [ $GBP_HOSTNAME == 'epicuser1' ]; then
     export GBP_QUEUE_TYPE='PBS'
     module load gcc/4.4.6
