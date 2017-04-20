@@ -19,7 +19,7 @@ if ( $?GBP_HOSTNAME ) then
   if ( $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     source /usr/local/Modules/default/init/modules.csh
-    module load python/2.7.1
+    module load anaconda
     module load hdf5/gnu-1.8.6
     module load git/1.7.4
     module load gsl
@@ -27,7 +27,7 @@ if ( $?GBP_HOSTNAME ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     module load gcc/4.4.6
     module load mpi/gcc/openmpi/1.4.3-gcc-4.4.6
-    module load python/2.7.1
+    module load python
     module load fftw/2.1.5
     module load hdf5/1.8.7-gcc-4.4.6-fortran-parallel-static
     module load gsl
@@ -35,26 +35,23 @@ if ( $?GBP_HOSTNAME ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     module load gcc/system
     module load openmpi
-    module load python/2.7.1
+    module load python
     module load fftw2/2.1.5
     module load hdf5
     module load gsl
   else if ( $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'PBS'
     source /usr/local/modules/init/tcsh
-    source ~/PythonENV/bin/activate.csh
     module unload gcc openmpi gsl fftw hdf5
-    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
+    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5 anaconda
   else if ( $GBP_HOSTNAME == 'sstar001.hpc.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'NONE'
     source /usr/local/modules/init/tcsh
-    source ~/PythonENV/bin/activate.csh
     module unload gcc openmpi gsl fftw hdf5
-    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
+    module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5 anaconda
   else if ( $GBP_HOSTNAME == 'sstar002.hpc.swin.edu.au' ) then
     setenv GBP_QUEUE_TYPE 'NONE'
     source /usr/local/modules/init/tcsh
-    source ~/PythonENV/bin/activate.csh
     module unload gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
     module   load gcc openmpi/x86_64/gnu/1.8.3 gsl fftw hdf5
   else if ( $GBP_OS == 'Mac' ) then

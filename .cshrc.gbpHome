@@ -9,9 +9,6 @@ if (!(${?DISPLAY}) && ${?REMOTEHOST}) then
    setenv DISPLAY ${REMOTEHOST}:0.0
 endif
 
-# Virtual environment set-up
-source ~/PythonENV/bin/activate.csh
-
 # Set all system-specific stuff
 source ${HOME}/.system.csh.gbpHome
 

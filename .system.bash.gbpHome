@@ -17,7 +17,14 @@ if [ -n $GBP_HOSTNAME ]; then
   if [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
     source /usr/local/Modules/default/init/modules.bash
-    module load python/2.7.1
+    module load anaconda
+    module load hdf5/gnu-1.8.6
+    module load git/1.7.4
+    module load gsl
+  elif [ $GBP_HOSTNAME == 'sstar001.hpc.swin.edu.au' || $GBP_HOSTNAME == 'sstar002.hpc.swin.edu.au' ]; then
+    export GBP_QUEUE_TYPE='NONE'
+    source /usr/local/Modules/default/init/modules.bash
+    module load anaconda
     module load hdf5/gnu-1.8.6
     module load git/1.7.4
     module load gsl
