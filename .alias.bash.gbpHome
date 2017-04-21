@@ -6,7 +6,6 @@ pmt_hst=$(hostname -s)
 alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
 
 # Generic UNIX aliases
-alias cd='chdir \!* && setprompt'
 if [ $GBP_OS == 'Mac' ]; then
    alias ls='ls -CG'
 else
