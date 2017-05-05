@@ -18,6 +18,8 @@ if [ -n $GBP_HOSTNAME ]; then
   if [ $GBP_OS == 'Mac' ]; then
     export GBP_QUEUE_TYPE='NONE'
     export PATH=/anaconda/bin/:$PATH
+    # Make sure ._* files don't get added to tar files, etc.
+    export COPYFILE_DISABLE=1
     if [ -f "/usr/local/modules-tcl/init/sh" ]; then
       source /usr/local/modules-tcl/init/sh
     fi
