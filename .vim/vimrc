@@ -10,6 +10,9 @@ set nocompatible " Required for Vundle
 filetype off " required
 
 " --- Start Vundle Stuff ---
+" Everything that references Vundle plugins must lie in this section, for
+" clean operation in the case where Vundle is not present.
+"
 " Brief help:
 "    :PluginList       - lists configured plugins
 "    :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
@@ -20,27 +23,31 @@ filetype off " required
 " First, set the runtime path to include Vundle and initialize.
 set rtp+=~/.vim/bundle/Vundle.vim
 
-" List Plugins between vundle#begin/end.
-call vundle#begin('~/.vim/bundle')
-Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
-Plugin 'davidhalter/jedi-vim' 
-Plugin 'airblade/vim-gitgutter' 
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'rizzatti/dash.vim'
-Plugin 'tomasr/molokai'  " Add Molokai colorscheme.  Needs to be chosen later.
-call vundle#end() " required
-
+" Check if Vundle is installed and print a message if not.
+if empty(glob("~/.vim/bundle/Vundle.vim"))
+    echo "\nVundle has not been installed.  Download via:\n    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim\nand install packages by running :PlugingsInstall from within vim.\n"
+else
+    " List Plugins between vundle#begin/end.
+    call vundle#begin('~/.vim/bundle')
+        Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
+        Plugin 'davidhalter/jedi-vim' 
+        Plugin 'airblade/vim-gitgutter' 
+        Plugin 'vim-airline/vim-airline'
+        Plugin 'vim-airline/vim-airline-themes'
+        Plugin 'rizzatti/dash.vim'
+        Plugin 'tomasr/molokai'  " Add Molokai colorscheme.  Needs to be chosen later.
+    call vundle#end() " required
+    
+    " Set color scheme(s)
+    colorscheme molokai
+    let g:airline_theme='molokai'
+endif
 " --- End Vundle Stuff ---
 
 filetype plugin indent on    " required
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-
-" Set color schemes
-colorscheme molokai
-let g:airline_theme='molokai'
 
 " Set a hotkey for toggling paste mode
 nnoremap <C-p> :set invpaste paste?<CR>
