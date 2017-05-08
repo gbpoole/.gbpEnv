@@ -4,7 +4,7 @@ umask 22
 ulimit -c 0
 unset autologout
 
-# Turn 'vi-mode' by default
+# Turn 'vi-mode' on by default
 set -o vi
 
 # Make sure the REMOTEHOST variable is set
@@ -16,6 +16,9 @@ fi
 if [ -z $DISPLAY ]  && [ -n $REMOTEHOST ]; then
    export DISPLAY=$REMOTEHOST:0.0
 fi
+
+# Make sure /usr/local/bin is in the PATH
+export PATH=$PATH:/usr/local/bin
 
 # Set all system-specific stuff
 source ${HOME}/.system.bash.gbpHome
