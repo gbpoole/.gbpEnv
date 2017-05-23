@@ -3,6 +3,9 @@
 " Tell Vim to use 256 colours
 set t_Co=256
 
+" Activate mouse control
+set mouse=a
+
 set nocompatible " Required for Vundle
 
 "autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
