@@ -4,7 +4,7 @@
 set t_Co=256
 
 " Activate mouse control
-set mouse=a
+" set mouse=a
 
 set nocompatible " Required for Vundle
 
