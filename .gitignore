@@ -6,7 +6,9 @@
 !.alias.csh.gbpHome.osx
 !.bashrc.gbpHome
 !.cshrc.gbpHome
+!.gdbinit
 !.gitignore
+!.gitconfig
 !.ssh
 !.system.bash.gbpHome
 !.system.csh.gbpHome

@@ -66,11 +66,11 @@ if [ -n $GBP_HOSTNAME ]; then
     module load hdf5-gcc/1.8.10
     module load gsl-gcc/1.16
   else
-    echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
+#    echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
     export GBP_QUEUE_TYPE='SERIAL'
   fi
-else
-  echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
+#else
+#  echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
 fi
 
 # Set-up some stuff on Macs

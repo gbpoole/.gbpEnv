@@ -1,0 +1,13 @@
+[user]
+	name = Gregory Poole
+    email = gbpoole@gmail.com
+[color "status"]
+    added     = green
+    changed   = red bold
+    untracked = magenta bold
+[alias]
+    lg    = log  --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    df    = diff --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' 
+    Find  = !sh -c 'git log --pretty=\"format:%Cgreen%H %Cblue%s%Creset\" --name-status --grep=$1' -
+[color]
+	ui = auto
