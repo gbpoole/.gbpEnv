@@ -1,14 +1,20 @@
 
 # Set prompt
-#pmt_host=$(hostname -s)
-#alias setprompt='export PS1="\[\n\]\[\033[31m\][\[$pmt_host\]: \[\W\]] >\[\033[0m\] "'
 pmt_red=$(tput setaf 1)
 pmt_reset=$(tput sgr0)
 pmt_hst=$(hostname -s)
 alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
 
 # Generic UNIX aliases
-alias ls='ls -CG'
+if [ $GBP_OS == 'Mac' ]; then
+   alias ls='ls -CG'
+   alias lsl='ls -CGlhrt'
+else
+   alias ls='ls -CG --color=auto'
+   alias lsl='ls -CGlhrt --color=auto'
+fi
+
+alias top='htop'
 
 # List of machines
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'

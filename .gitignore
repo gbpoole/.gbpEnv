@@ -1,14 +1,14 @@
 # First, ignore everything
 *
-# Then, allow all the things we want to keep
-.alias.bash.gbpHome
-.alias.csh.gbpHome
-.alias.csh.gbpHome.osx
-.bashrc.gbpHome
-.cshrc.gbpHome
-.git
-.gitignore
-.ssh
-.system.bash.gbpHome
-.system.csh.gbpHome
-.vim
+# Then, select the things we want to keep
+!.alias.bash.gbpHome
+!.alias.csh.gbpHome
+!.alias.csh.gbpHome.osx
+!.bashrc.gbpHome
+!.cshrc.gbpHome
+!.gitignore
+!.ssh
+!.system.bash.gbpHome
+!.system.csh.gbpHome
+!.vim/
+!.vim/*

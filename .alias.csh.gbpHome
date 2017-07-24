@@ -5,9 +5,13 @@ alias setprompt  'set prompt = "\n%{\033[31m%}[`hostname -s`: %c] >%{\033[0m%} "
 alias cd         'chdir \!* && setprompt'
 if ( $GBP_OS == 'Mac' ) then
    alias ls         'ls -CG'
+   alias lsl        'ls -CGlhrt'
 else
    alias ls         'ls -CG --color=auto'
+   alias lsl        'ls -CGlhrt --color=auto'
 endif
+
+alias top 'htop'
 
 # List of machines
 alias go_krill    'ssh -Y -l gbpoole krill.phys.uvic.ca'
@@ -27,14 +31,6 @@ else
    alias go_sstar3   'ssh -Y -l gpoole  sstar003_pf'
 endif
 
-setenv src_sims $GBP_SRC/gbpPkgs/gbpAstro/gbpSims
-alias go_sims 'cd $src_sims'
-
-alias go_GiggleZ 'cd ~/SSimPL/simulations/GiggleZ'
-
-alias go_gstar_data 'cd /lustre/projects/p004_swin/gpoole'
-
-alias go_b_r 'cd ~/GiggleZ/GiggleZ_main/clustering/correlation_functions/b_r'
 
 # Useful commands to remember
 alias compress_ps 'gs -q -dLEVEL3 -dASCII -- ~/bin/encode.ps $1 $2'
