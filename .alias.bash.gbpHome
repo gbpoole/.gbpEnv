@@ -1,9 +1,15 @@
-
 # Set prompt
-pmt_red=$(tput setaf 1)
-pmt_reset=$(tput sgr0)
-pmt_hst=$(hostname -s)
-alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
+if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
+    alias setprompt=''
+else
+    pmt_red=$(tput setaf 1)
+    pmt_reset=$(tput sgr0)
+    pmt_hst=$(hostname -s)
+    alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
+fi
+
+# Load modules
+alias load_modules='source ~/.modules.bash.gbpHome;module list'
 
 # Generic UNIX aliases
 if [ $GBP_OS == 'Mac' ]; then
@@ -20,11 +26,12 @@ alias top='htop'
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'
 alias go_turbot='ssh -Y -l gbpoole turbot.phys.uvic.ca'
 alias go_chinook='ssh -Y -l gbpoole chinook.phys.uvic.ca'
-alias go_green='ssh -Y -l gpoole  lightgreen.ssi.swin.edu.au'
-alias go_Green='ssh -Y -l gpoole  green.ssi.swin.edu.au'
-alias go_epic='ssh -Y -l gpoole  epic.ivec.org'
-alias go_vayu='ssh -Y -l gbp593  vayu.nci.org.au'
-alias go_gstar='ssh -Y -l gpoole  g2'
+alias go_green='ssh -Y -l gpoole lightgreen.ssi.swin.edu.au'
+alias go_Green='ssh -Y -l gpoole green.ssi.swin.edu.au'
+alias go_epic='ssh -Y -l gpoole epic.ivec.org'
+alias go_vayu='ssh -Y -l gbp593 vayu.nci.org.au'
+alias go_asv1='ssh -Y -l gpoole asv1.cc.swin.edu.au'
+alias go_gstar='ssh -Y -l gpoole g2'
 if [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ]; then
    alias go_sstar1='ssh -Y -l gpoole  sstar001'
    alias go_sstar2='ssh -Y -l gpoole  sstar002'
