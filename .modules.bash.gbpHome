@@ -1,0 +1,24 @@
+# Module to load
+export GBP_HOSTNAME=`hostname`
+if [ -n $GBP_HOSTNAME ]; then
+  if [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == sstar* ]] ; then
+    echo "Loading modules for: "$GBP_HOSTNAME
+    source /usr/local/modules/init/bash
+    module purge
+    module load gcc/5.1.0 openmpi/x86_64/gnu/1.10.2-psm hdf5/x86_64/gnu/1.10.0-openmpi-1.10.2-psm fftw/x86_64/gnu/3.3.5-openmpi-1.10.2-psm gsl/x86_64/gnu/1.9 anaconda cuda/7.5
+    source activate PythonENV >> /dev/null 2>&1
+  elif [ $GBP_HOSTNAME == 'avoca' ]; then
+    echo "Loading modules for: "$GBP_HOSTNAME
+    module load mpi-gcc/4.4.6
+    module load python-xl
+    module load fftw-xl/2.1.5
+    module load hdf5-gcc/1.8.10
+    module load gsl-gcc/1.16
+  else
+    echo "Unknown hostname:" $GBP_HOSTNAME
+  fi
+fi
+if [ -x "$(command -v setprompt)" ]; then
+  setprompt
+fi
+
