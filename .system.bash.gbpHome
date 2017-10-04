@@ -23,6 +23,8 @@ if [ -n $GBP_HOSTNAME ]; then
     if [ -f "/usr/local/modules-tcl/init/sh" ]; then
       source /usr/local/modules-tcl/init/sh
     fi
+    # Add LLVM/Clang to the path
+    export PATH=/usr/local/opt/llvm/bin/:$PATH
   elif [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
     source /usr/local/Modules/default/init/modules.bash
