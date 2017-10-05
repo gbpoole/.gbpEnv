@@ -23,7 +23,6 @@ fi
 export HISTTIMEFORMAT="$pmt_green%d/%m/%y $pmt_blue%T$pmt_reset "
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='0;33'
->>>>>>> db3a65d225a8365a3088d699fb4c5c428908f065
 
 # Generic UNIX aliases
 if [ $GBP_OS == 'Mac' ]; then
