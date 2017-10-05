@@ -11,6 +11,19 @@ else
     return 2
 fi
 
+# Decide what sort of system we're on
+if [ -f /bin/uname ] || [ -f /usr/bin/uname ]; then
+  export GBP_OS=`uname`
+  if [ $GBP_OS == 'Darwin' ]; then
+     export GBP_OS='Mac'
+  elif [ $GBP_OS == 'Linux' ]; then
+     export GBP_OS='linux'
+  fi
+else
+  echo Unknown OS type: ${GBP_OS}.
+  export GBP_OS='unknown'
+fi
+
 export GBP_HOSTNAME=`hostname`
 if [ -n $GBP_HOSTNAME ]; then
 
@@ -24,6 +37,12 @@ if [ -n $GBP_HOSTNAME ]; then
     source activate $MY_ENV >> /dev/null 2>&1
     setprompt
 
+  # Unknown host.  Let the user know.
+  elif [ $GBP_OS == 'Mac' ]; then
+    echo "Intializing python environment to "$MY_ENV
+    source activate $MY_ENV >> /dev/null 2>&1
+    setprompt
+  
   # Unknown host.  Let the user know.
   else
     echo "Unknown hostname:" $GBP_HOSTNAME
