@@ -26,6 +26,10 @@ filetype off " required
 " First, set the runtime path to include Vundle and initialize.
 set rtp+=~/.vim/bundle/Vundle.vim
 
+" Enable the use of Fira Code ligatures
+"set macligatures
+"set guifont=Fira\ Code:h12
+
 " Check if Vundle is installed and print a message if not.
 if empty(glob("~/.vim/bundle/Vundle.vim"))
     echo "\nVundle has not been installed.  Download via:\n    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim\nand install packages by running :PlugingsInstall from within vim.\n"

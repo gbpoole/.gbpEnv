@@ -1,6 +1,6 @@
 # Set prompt
 if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
-    alias setprompt=''
+    alias setprompt=':'
 else
     pmt_red=$(tput setaf 1)
     pmt_reset=$(tput sgr0)
