@@ -1,15 +1,29 @@
-# Set prompt
+# Set prompt, unless terminal is 'dumb'
 if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
     alias setprompt=':'
 else
-    pmt_red=$(tput setaf 1)
+    # Set control sequences for prompt
+    pmt_black=$(tput setaf   0)
+    pmt_red=$(tput setaf     1)
+    pmt_green=$(tput setaf   2)
+    pmt_yellow=$(tput setaf  3)
+    pmt_blue=$(tput setaf    4)
+    pmt_magenta=$(tput setaf 5)
+    pmt_cyan=$(tput setaf    6)
+    pmt_white=$(tput setaf   7)
     pmt_reset=$(tput sgr0)
     pmt_hst=$(hostname -s)
-    alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
+    
+    # Define the CLI prompt
+    alias  setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
+
 fi
 
-# Load modules
-alias load_modules='source ~/.modules.bash.gbpHome;module list'
+# Add color to some things
+export HISTTIMEFORMAT="$pmt_green%d/%m/%y $pmt_blue%T$pmt_reset "
+export GREP_OPTIONS='--color=auto'
+export GREP_COLOR='0;33'
+>>>>>>> db3a65d225a8365a3088d699fb4c5c428908f065
 
 # Generic UNIX aliases
 if [ $GBP_OS == 'Mac' ]; then
