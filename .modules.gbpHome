@@ -1,15 +1,16 @@
-# Module to load
+#!/bin/bash
+
 export GBP_HOSTNAME=`hostname`
 if [ -n $GBP_HOSTNAME ]; then
+
+  # Set-up for nodes on the Swinburne 'g2' cluster
   if [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == sstar* ]] ; then
     echo "Loading modules for: "$GBP_HOSTNAME
 
+    # Initialize environment modules
     source /usr/local/modules/init/bash
-    export TCL_LIBRARY="/usr/local/x86_64/anaconda-2.2.0/pkgs/tk-8.5.18-0/lib/tcl8.5/"
-    #module purge
-    module load anaconda
-    source activate PythonENV >> /dev/null 2>&1
 
+    # Load modules
     module load gcc/5.1.0
     module load openmpi/x86_64/gnu/1.10.2-psm
     module load hdf5/x86_64/gnu/1.8.17-openmpi-1.10.2-psm
@@ -17,12 +18,14 @@ if [ -n $GBP_HOSTNAME ]; then
     module load cuda/7.5
     module load cmake/x86_64/gnu/3.5.1
 
+    # Adjust some paths
     export C_INCLUDE_PATH=${C_INCLUDE_PATH}:/home/gpoole/projects/ADACS/smutch/meraxes/include:/home/gpoole/projects/ADACS/smutch/meraxes/src/mlog:/home/smutch/3rd_party/fftw-3.3.3/include/
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/home/gpoole/projects/ADACS/smutch/meraxes/lib/:/home/gpoole/projects/ADACS/smutch/meraxes/src/mlog/:/home/smutch/3rd_party/fftw-3.3.3/lib/
     export LIBRARY_PATH=${LIBRARY_PATH}:/home/gpoole/projects/ADACS/smutch/meraxes/lib/:/home/gpoole/projects/ADACS/smutch/meraxes/src/mlog/:/home/smutch/3rd_party/fftw-3.3.3/lib/
-
     export CPLUS_INCLUDE_PATH=${C_INCLUDE_PATH}
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/usr/local/lib/
+
+  # Set-up for the VLSCI Bluegene/Q system
   elif [ $GBP_HOSTNAME == 'avoca' ]; then
     echo "Loading modules for: "$GBP_HOSTNAME
     module load mpi-gcc/4.4.6
@@ -30,9 +33,17 @@ if [ -n $GBP_HOSTNAME ]; then
     module load fftw-xl/2.1.5
     module load hdf5-gcc/1.8.10
     module load gsl-gcc/1.16
+
+  # Unknown host.  Let the user know.
   else
-    echo "Unknown hostname:" $GBP_HOSTNAME
+    echo "No modules configured for:" $GBP_HOSTNAME
+    return 1
   fi
+
 fi
-setprompt
+
+# List the modules loaded
+module list
+
+return 0
 

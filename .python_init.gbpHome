@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Accept an environment as a parameter or set to default
+export MY_ENV_DEFAULT="python3.6"
+if [ $# -eq 0 ]; then
+    export MY_ENV=$MY_ENV_DEFAULT
+elif [ $# -eq 1 ]; then
+    export MY_ENV=$1
+else
+    echo 'Syntax: '$0 ' <optional: conda_environment>'
+    return 2
+fi
+
+export GBP_HOSTNAME=`hostname`
+if [ -n $GBP_HOSTNAME ]; then
+
+  # Set-up for nodes on the Swinburne 'g2' cluster
+  if [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == sstar* ]] ; then
+    echo "Intializing python environment to "$MY_ENV
+
+    # Set-up python
+    export TCL_LIBRARY="/usr/local/x86_64/anaconda-2.2.0/pkgs/tk-8.5.18-0/lib/tcl8.5/"
+    module load anaconda
+    source activate $MY_ENV >> /dev/null 2>&1
+    setprompt
+
+  # Unknown host.  Let the user know.
+  else
+    echo "Unknown hostname:" $GBP_HOSTNAME
+    return 1
+  fi
+fi
+
+return 0
+

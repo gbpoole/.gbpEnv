@@ -33,7 +33,14 @@ else
    alias lsl='ls -CGlhrt --color=auto'
 fi
 
+# Use htop ... way better
 alias top='htop'
+
+# Load modules
+alias load_modules='source ~/.modules.gbpHome'
+
+# Initialize python
+alias python_init='source ~/.python_init.gbpHome'
 
 # List of machines
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'

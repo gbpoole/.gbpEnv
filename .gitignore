@@ -1,7 +1,8 @@
 # First, ignore everything
 *
 # Then, select the things we want to keep
-!.modules.bash.gbpHome
+!.modules.gbpHome
+!.python_init.gbpHome
 !.alias.bash.gbpHome
 !.alias.csh.gbpHome
 !.alias.csh.gbpHome.osx
