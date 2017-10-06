@@ -40,7 +40,7 @@ alias top='htop'
 alias load_modules='source ~/.modules.gbpHome'
 
 # Initialize python
-alias python_init='source ~/.python_init.gbpHome'
+alias load_python='source ~/.load_python.gbpHome'
 
 # List of machines
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'
