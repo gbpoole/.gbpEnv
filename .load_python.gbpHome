@@ -29,7 +29,7 @@ if [ -n $GBP_HOSTNAME ]; then
 
   # Set-up for nodes on the Swinburne 'g2' cluster
   if [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == sstar* ]] ; then
-    echo "Intializing python environment to "$MY_ENV
+    echo "Setting python environment to "$MY_ENV"."
 
     # Set-up python
     export TCL_LIBRARY="/usr/local/x86_64/anaconda-2.2.0/pkgs/tk-8.5.18-0/lib/tcl8.5/"
