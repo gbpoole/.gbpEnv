@@ -5,7 +5,7 @@ export MY_ENV_DEFAULT="python3.6"
 if [ $# -eq 0 ]; then
     export MY_ENV=$MY_ENV_DEFAULT
 elif [ $# -eq 1 ]; then
-    export MY_ENV=$1
+    export MY_ENV="python"$1
 else
     echo 'Syntax: '$0 ' <optional: conda_environment>'
     return 2
