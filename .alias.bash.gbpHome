@@ -25,7 +25,7 @@ export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='0;33'
 
 # Generic UNIX aliases
-if [ $GBP_OS == 'Mac' ]; then
+if [ "$GBP_OS" == 'Mac' ]; then
    alias ls='ls -CG'
    alias lsl='ls -CGlhrt'
 else
@@ -52,7 +52,7 @@ alias go_epic='ssh -Y -l gpoole epic.ivec.org'
 alias go_vayu='ssh -Y -l gbp593 vayu.nci.org.au'
 alias go_asv1='ssh -Y -l gpoole asv1.cc.swin.edu.au'
 alias go_gstar='ssh -Y -l gpoole g2'
-if [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ]; then
+if [ "$GBP_HOSTNAME" == 'g2.hpc.swin.edu.au' ]; then
    alias go_sstar1='ssh -Y -l gpoole  sstar001'
    alias go_sstar2='ssh -Y -l gpoole  sstar002'
    alias go_sstar3='ssh -Y -l gpoole  sstar003'
@@ -69,7 +69,7 @@ alias go_gstar_data='cd /lustre/projects/p004_swin/gpoole'
 alias compress_ps='gs -q -dLEVEL3 -dASCII -- ~/bin/encode.ps $1 $2'
 
 # Mac aliases
-if [ $GBP_OS == 'Mac' ]; then
+if [ "$GBP_OS" == 'Mac' ]; then
    alias runz='/Applications/runz/runz'
    alias rz_completeness='/Applications/runz/rz_completeness.pl'
    # Aliases for starting/stopping the Homebrew install of PostgreSQL
@@ -78,7 +78,7 @@ if [ $GBP_OS == 'Mac' ]; then
 fi
 
 # Some stuff particular to having PBS
-if [ $GBP_QUEUE_TYPE == 'PBS' ]; then
+if [ "$GBP_QUEUE_TYPE" == 'PBS' ]; then
   alias qstat_me='qstat -n1 -u '$USER
   alias qsm='qstat_me'
 fi
