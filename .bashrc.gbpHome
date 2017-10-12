@@ -27,7 +27,7 @@ source ${HOME}/.system.bash.gbpHome
 source ${HOME}/.alias.bash.gbpHome
 
 # Add 3rd_Party binary directory to the PATH
-export PATH=${HOME}/3rd_Party/bin/:$PATH
+export PATH=${HOME}/3rd_Party/bin:$PATH
 
 # These lines set-up gbpCode
 export GBP_SRC=${HOME}'/gbpCode/'

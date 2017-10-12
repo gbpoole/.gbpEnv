@@ -72,6 +72,9 @@ alias compress_ps='gs -q -dLEVEL3 -dASCII -- ~/bin/encode.ps $1 $2'
 if [ $GBP_OS == 'Mac' ]; then
    alias runz='/Applications/runz/runz'
    alias rz_completeness='/Applications/runz/rz_completeness.pl'
+   # Aliases for starting/stopping the Homebrew install of PostgreSQL
+   alias pg-start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+   alias pg-stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 fi
 
 # Some stuff particular to having PBS
