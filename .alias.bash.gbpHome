@@ -13,9 +13,16 @@ else
     pmt_white=$(tput setaf   7)
     pmt_reset=$(tput sgr0)
     pmt_hst=$(hostname -s)
+
+    # Set terminal prompt color
+    if [ "$GBPDOCKER_ENV" == 'ON' ]; then
+        pmt_colour=$pmt_blue
+    else
+        pmt_colour=$pmt_red
+    fi
     
     # Define the CLI prompt
-    alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
+    alias setprompt='export PS1="\[$pmt_colour\][$pmt_hst: \W] >\[$pmt_reset\] "'
 
 fi
 
