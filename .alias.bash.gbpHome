@@ -15,7 +15,7 @@ else
     pmt_hst=$(hostname -s)
     
     # Define the CLI prompt
-    alias  setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
+    alias setprompt='export PS1="\[$pmt_red\][$pmt_hst: \W] >\[$pmt_reset\] "'
 
 fi
 
@@ -82,4 +82,7 @@ if [ "$GBP_QUEUE_TYPE" == 'PBS' ]; then
   alias qstat_me='qstat -n1 -u '$USER
   alias qsm='qstat_me'
 fi
+
+# Make sure that the aliases created here are available immediately to any scripts that source this file
+shopt -s expand_aliases
 
