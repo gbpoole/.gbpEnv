@@ -30,7 +30,6 @@ if [ -n $GBP_HOSTNAME ]; then
     # Add Anaconda to the path
     export PATH=/anaconda/bin:$PATH
 
-
     # Set paths for Homebrew.  Add the Homebrew direcory and 
     # place the Homebrew bin directory before system directory.
     export PATH="/usr/local/bin:$PATH"

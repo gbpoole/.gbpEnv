@@ -6,6 +6,7 @@
 !.alias.bash.gbpHome
 !.alias.csh.gbpHome
 !.alias.csh.gbpHome.osx
+!.profile
 !.bashrc.gbpHome
 !.cshrc.gbpHome
 !.gdbinit
