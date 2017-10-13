@@ -28,8 +28,8 @@ fi
 
 # Add color to some things
 export HISTTIMEFORMAT="$pmt_green%d/%m/%y $pmt_blue%T$pmt_reset "
-export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='0;33'
+alias grep='grep --color=auto'
 
 # Generic UNIX aliases
 if [ "$GBP_OS" == 'Mac' ]; then
