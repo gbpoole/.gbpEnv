@@ -20,6 +20,15 @@ fi
 # Make sure /usr/local/bin is in the PATH
 export PATH=$PATH:/usr/local/bin
 
+# Source the gbpDocker environment
+# variable file (if present)
+echo test1
+if [ -e ".env.gbpDocker" ]; then
+    echo test2
+    for l in ".env.gbpDocker"; do eval $(awk '{print "export "$1}' $l) ;  done
+fi
+echo test3
+
 # Set all system-specific stuff
 source ${HOME}/.system.bash.gbpHome
 
