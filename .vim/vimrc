@@ -6,11 +6,13 @@ set t_Co=256
 " Activate mouse control
 " set mouse=a
 
-set nocompatible " Required for Vundle
+" The following is required for Vundle
+set nocompatible 
 
 "autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-filetype off " required
+" The following is also required
+filetype off 
 
 " --- Start Vundle Stuff ---
 " Everything that references Vundle plugins must lie in this section, for
@@ -26,23 +28,21 @@ filetype off " required
 " First, set the runtime path to include Vundle and initialize.
 set rtp+=~/.vim/bundle/Vundle.vim
 
-" Enable the use of Fira Code ligatures
-"set macligatures
-"set guifont=Fira\ Code:h12
-
 " Check if Vundle is installed and print a message if not.
 if empty(glob("~/.vim/bundle/Vundle.vim"))
     echo "\nVundle has not been installed.  Download via:\n    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim\nand install packages by running :PlugingsInstall from within vim.\n"
 else
     " List Plugins between vundle#begin/end.
     call vundle#begin('~/.vim/bundle')
-        Plugin 'VundleVim/Vundle.vim' " let Vundle manage Vundle, required
+        " Let Vundle manage Vundle, required
+        Plugin 'VundleVim/Vundle.vim'
         Plugin 'davidhalter/jedi-vim' 
         Plugin 'airblade/vim-gitgutter' 
         Plugin 'vim-airline/vim-airline'
         Plugin 'vim-airline/vim-airline-themes'
         Plugin 'rizzatti/dash.vim'
-        Plugin 'tomasr/molokai'  " Add Molokai colorscheme.  Needs to be chosen later.
+        " Add Molokai colorscheme.  Needs to be chosen later.
+        Plugin 'tomasr/molokai' 
     call vundle#end() " required
     
     " Set color scheme(s)
@@ -51,7 +51,8 @@ else
 endif
 " --- End Vundle Stuff ---
 
-filetype plugin indent on    " required
+" required
+filetype plugin indent on
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -66,12 +67,18 @@ set showmode
 "   Following tabs: cycle through matches
 set wildmenu wildmode=longest:full,full
 
-set vb t_vb=                            " Turn off visual beep
-set laststatus=2                        " Always display a status line
-set cmdheight=1                         " Command line height
-set listchars=tab:▸\ ,eol:↵,trail:·     " Set hidden characters
-set listchars=tab:▸\ ,trail:·           " Set hidden characters
-set number                              " Show line numbers
+" Turn off visual beep
+set vb t_vb=
+" Always display a status line
+set laststatus=2
+" Command line height
+set cmdheight=1
+" Set hidden characters
+set listchars=tab:▸\ ,eol:↵,trail:·
+" Set hidden characters
+set listchars=tab:▸\ ,trail:·
+" Show line numbers
+set number
 
 syntax on
 
@@ -117,6 +124,7 @@ if has("autocmd")
   augroup END
 
 else
-  set autoindent " always set autoindenting on
-endif " has("autocmd")
+  " always set autoindenting on
+  set autoindent
+endif 
 

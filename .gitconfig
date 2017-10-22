@@ -11,3 +11,5 @@
     Find  = !sh -c 'git log --pretty=\"format:%Cgreen%H %Cblue%s%Creset\" --name-status --grep=$1' -
 [color]
 	ui = auto
+[core]
+	editor = /usr/bin/vim

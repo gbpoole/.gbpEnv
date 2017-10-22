@@ -40,6 +40,9 @@ else
    alias lsl='ls -CGlhrt --color=auto'
 fi
 
+# Alias vim -> vi
+alias vi='vim'
+
 # Display a file with Lynx
 more_lynx () {
     pandoc $1 | lynx -stdin
