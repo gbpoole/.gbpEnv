@@ -1,6 +1,10 @@
 # Configure TravisCI (https://travis-ci.org) tests
 language: bash
 
+# Make sure the home directory is set to be the TravisCI
+# project directory
+before_script: export HOME=${TRAVIS_BUILD_DIR}
+
 # All the tests will be run by this Makefile
 #    using assert.sh
 script: make -f .test/Makefile test
