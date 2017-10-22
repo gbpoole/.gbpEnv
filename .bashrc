@@ -1,5 +1,4 @@
-echo "test:" $HOME
-ls -a ${HOME}
+echo "test1"
 source ${HOME}/.bashrc.gbpHome
 
 # added by travis gem

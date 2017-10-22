@@ -1,3 +1,4 @@
+echo "test2"
 
 # Set-up some generic UNIX stuff
 umask 22
@@ -12,6 +13,7 @@ if [ -z $REMOTEHOST ]; then
    export REMOTEHOST=$HOST
 fi
 
+echo "test3"
 # Make sure the DISPLAY variable is set
 if [ -z $DISPLAY ]  && [ -n $REMOTEHOST ]; then
    export DISPLAY=$REMOTEHOST:0.0
@@ -25,6 +27,7 @@ export PATH=$PATH:/usr/local/bin
 if [ -e ".env.gbpDocker" ]; then
     for l in ".env.gbpDocker"; do eval $(awk '{print "export "$1}' $l) ;  done
 fi
+echo "test4"
 
 # Set all system-specific stuff
 source ${HOME}/.system.bash.gbpHome
@@ -46,4 +49,5 @@ export PATH=${GBP_SRC}/myBin:$PATH
 
 # Set the prompt
 setprompt
+echo "test5"
 
