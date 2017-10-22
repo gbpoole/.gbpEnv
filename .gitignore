@@ -17,5 +17,6 @@
 !.system.csh.gbpHome
 !.vim/
 !.vim/*
+!.travis.yml
 !.test/
 !.test/*

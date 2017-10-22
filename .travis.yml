@@ -1,0 +1,6 @@
+# Configure TravisCI (https://travis-ci.org) tests
+language: bash
+
+# All the tests will be run by this Makefile
+#    using assert.sh
+script: make -f ./test/Makefile test
