@@ -1,3 +1,4 @@
+echo $HOME
 source ${HOME}/.bashrc.gbpHome
 
 # added by travis gem
