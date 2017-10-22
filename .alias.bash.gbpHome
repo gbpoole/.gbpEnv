@@ -40,6 +40,11 @@ else
    alias lsl='ls -CGlhrt --color=auto'
 fi
 
+# Display a file with Lynx
+more_lynx () {
+    pandoc $1 | lynx -stdin
+}
+
 # Use htop ... way better
 alias top='htop'
 

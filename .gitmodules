@@ -1,0 +1,4 @@
+[submodule ".test/assert"]
+	path = .test/assert
+	url = git@github.com:lehmannro/assert.sh.git
+	branch = master

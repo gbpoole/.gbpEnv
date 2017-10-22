@@ -30,6 +30,10 @@ if [ -n $GBP_HOSTNAME ]; then
     # Add Anaconda to the path
     export PATH=/anaconda/bin:$PATH
 
+    # Add mySQL to the path
+	export MYSQL_PATH=/usr/local/Cellar/mysql/5.7.19  
+	export PATH=$PATH:$MYSQL_PATH/bin
+
     # Set paths for Homebrew.  Add the Homebrew direcory and 
     # place the Homebrew bin directory before system directory.
     export PATH="/usr/local/bin:$PATH"

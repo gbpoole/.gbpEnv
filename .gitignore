@@ -17,3 +17,5 @@
 !.system.csh.gbpHome
 !.vim/
 !.vim/*
+!.test/
+!.test/*
