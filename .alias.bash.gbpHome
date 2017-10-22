@@ -52,10 +52,10 @@ more_lynx () {
 alias top='htop'
 
 # Load modules
-alias load_modules='source ~/.modules.gbpHome'
+alias load_modules='source ${HOME}/.modules.gbpHome'
 
 # Initialize python
-alias load_python='source ~/.load_python.gbpHome'
+alias load_python='source ${HOME}/.load_python.gbpHome'
 
 # List of machines
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'
@@ -81,15 +81,15 @@ fi
 alias go_gstar_data='cd /lustre/projects/p004_swin/gpoole'
 
 # Useful commands to remember
-alias compress_ps='gs -q -dLEVEL3 -dASCII -- ~/bin/encode.ps $1 $2'
+alias compress_ps='gs -q -dLEVEL3 -dASCII -- ${HOME}/bin/encode.ps $1 $2'
 
 # Mac aliases
 if [ "$GBP_OS" == 'Mac' ]; then
    alias runz='/Applications/runz/runz'
    alias rz_completeness='/Applications/runz/rz_completeness.pl'
    # Aliases for starting/stopping the Homebrew install of PostgreSQL
-   alias pg-start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-   alias pg-stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+   alias pg-start="launchctl load ${HOME}/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
+   alias pg-stop="launchctl unload ${HOME}/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 fi
 
 # Some stuff particular to having PBS
