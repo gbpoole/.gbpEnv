@@ -1,4 +1,4 @@
 .PHONY: all test clean
 
 test:
-	.test/bash_config.sh
+	.test/assert_bash_config.sh
