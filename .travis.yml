@@ -1,6 +1,11 @@
 # Configure TravisCI (https://travis-ci.org) tests
 language: bash
 
+# Test on both Linux and OSX
+os:
+  - linux
+  - osx
+
 # Make sure the home directory is set to be the TravisCI
 # project directory
 env:
