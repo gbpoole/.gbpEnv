@@ -19,10 +19,10 @@ addons:
 # Make sure the home directory is set to 
 # be the TravisCI project directory
 env:
-    HOME=${TRAVIS_BUILD_DIR}
-	# Add Codecov token
-	global:
-		- CODECOV_TOKEN=:093d2255-106c-40f4-b3f9-5056c7935cd1
+  HOME=${TRAVIS_BUILD_DIR}
+    # Add Codecov token
+    global:
+      - CODECOV_TOKEN=:093d2255-106c-40f4-b3f9-5056c7935cd1
 
 # All the tests will be run by this Makefile
 #    using assert.sh
