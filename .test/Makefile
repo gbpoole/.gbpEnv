@@ -1,3 +1,6 @@
+# This makefile deals with all CI processing 
+# of the gbpHome repository
+
 .PHONY: test clean
 
 # Set the KCov token
@@ -29,10 +32,10 @@ export _MAC_BUILD
 export _TRAVIS_BUILD
 
 # Generate tests for the CI service
-test:
+tests:
 	.test/assert_bash_config.sh
 
-# Generate coverage information
+# Generate coverage information for bash configuration
 BASH_CONFIG_LIST = .bashrc .bashrc.gbpHome .system.bash.gbpHome
 .test/kcov.tgz:
 	@$(ECHO) -n "Downloading kcov code..."
@@ -53,7 +56,10 @@ $(BASH_CONFIG_LIST): $(KCOV_EXE)
 	@$(KCOV_EXE) .test/coverage .test/$@.kcov.sh
 	@$(ECHO) "Done."
 kcov_bash: $(BASH_CONFIG_LIST)
-	@$(ECHO) -n "Integrating Codecov..."
+
+# Generate and upload all coverage information
+kcov: kcov_bash
+	@$(ECHO) -n "Finalizing Codecov integration..."
 	@bash -c "bash <(curl -s https://codecov.io/bash) -t $(KCOV_TOKEN)"
 	@$(ECHO) "Done."
 

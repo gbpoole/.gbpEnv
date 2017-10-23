@@ -1,5 +1,5 @@
 # Configure TravisCI (https://travis-ci.org) tests
-language: bash
+language: generic
 
 # Test on both Linux and OSX
 os:
@@ -24,9 +24,9 @@ env:
 # All the tests will be run by this Makefile
 #    using assert.sh
 script: |
-    make -f .test/Makefile test
+    make -f .test/Makefile tests
 
 # Add the following lines to generate Codecov report
 after_success: |
-    make -f .test/Makefile kcov_bash
+    make -f .test/Makefile kcov
 
