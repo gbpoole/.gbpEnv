@@ -54,11 +54,7 @@ $(BASH_CONFIG_LIST): $(KCOV_EXE)
 	@$(ECHO) "Done."
 kcov_bash: $(BASH_CONFIG_LIST)
 	@$(ECHO) -n "Integrating Codecov..."
-ifeq ($(_TRAVIS_BUILD),1)
-	@bash -c "bash <(curl -s https://codecov.io/bash)"
-else
 	@bash -c "bash <(curl -s https://codecov.io/bash) -t $(KCOV_TOKEN)"
-endif
 	@$(ECHO) "Done."
 
 # Clean-up
