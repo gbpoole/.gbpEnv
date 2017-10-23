@@ -9,7 +9,7 @@ ECHO = /bin/echo
 # Determine what sort of environment we're in (eg. OSX or Linux)
 # Set linux defaults
 KCOV_DIR='.test/kcov-master'
-KCOV_EXE=$(KCOV_DIR)'/src/kcov'
+KCOV_EXE=$(KCOV_DIR)'/build/src/kcov'
 _MAC_BUILD=0
 _TRAVIS_BUILD=0
 ifdef TRAVIS_OS_NAME
