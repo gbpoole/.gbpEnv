@@ -9,7 +9,7 @@ ECHO = /bin/echo
 # Determine what sort of environment we're in (eg. OSX or Linux)
 # Set linux defaults
 KCOV_DIR='.test/kcov-master'
-KCOV_EXE='/usr/local/bin/kcov'
+KCOV_EXE=$(KCOV_DIR)'/src/kcov'
 _MAC_BUILD=0
 _TRAVIS_BUILD=0
 ifdef TRAVIS_OS_NAME
@@ -43,7 +43,7 @@ $(KCOV_EXE): .test/kcov.tgz
 ifeq ($(_MAC_BUILD),1)
 	@cd $(KCOV_DIR);mkdir build;cd build;cmake -G Xcode .. ;xcodebuild -configuration Release
 else
-	@cd $(KCOV_DIR);mkdir build;cd build;cmake .. ;make install
+	@cd $(KCOV_DIR);mkdir build;cd build;cmake .. ;make
 endif
 $(BASH_CONFIG_LIST): $(KCOV_EXE)
 	@$(ECHO) -n "Generating coverage report for: "$@"..."
