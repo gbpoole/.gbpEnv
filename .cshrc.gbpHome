@@ -4,16 +4,21 @@ umask 22
 limit coredumpsize 0
 unset autologout
 
+# It is possible to install this repo somewhere
+# other than the home directory.  Set the path
+# to the repo directory here.
+setenv GBP_HOME ${PWD}
+
 # Make sure the DISPLAY variable is set
 if (!(${?DISPLAY}) && ${?REMOTEHOST}) then
    setenv DISPLAY ${REMOTEHOST}:0.0
 endif
 
 # Set all system-specific stuff
-source ${HOME}/.system.csh.gbpHome
+source ${GBP_HOME}/.system.csh.gbpHome
 
 # These lines set-up gbpCode
-setenv GBP_SRC  ${HOME}'/gbpCode/'
+setenv GBP_SRC  ${GBP_HOME}'/gbpCode/'
 if ( -f ${GBP_SRC}/.cshrc.myCode ) then
   source ${GBP_SRC}/.cshrc.myCode
 else if ( -f ${GBP_SRC}/.cshrc.gbpCode ) then
@@ -22,10 +27,10 @@ endif
 setenv PATH  ${GBP_SRC}/myBin:$PATH
 
 # Add 3rd_Party binary directory to the PATH
-setenv PATH ${HOME}/3rd_Party/bin/:$PATH
+setenv PATH ${GBP_HOME}/3rd_Party/bin/:$PATH
 
 # Create all my aliases
-source ${HOME}/.alias.csh.gbpHome
+source ${GBP_HOME}/.alias.csh.gbpHome
 
 # Set the prompt
 setprompt
