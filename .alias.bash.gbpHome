@@ -71,13 +71,13 @@ if [ "$GBP_HOSTNAME" == 'g2.hpc.swin.edu.au' ]; then
    alias go_sstar1='ssh -Y -l gpoole  sstar001'
    alias go_sstar2='ssh -Y -l gpoole  sstar002'
    alias go_sstar3='ssh -Y -l gpoole  sstar003'
-   alias go_tao02='ssh -Y -l TAODBAdmin tao'
+   alias go_tao02='ssh -t -Y -l TAODBAdmin tao "cd /lustre/projects/p014_swin/gpoole; bash --rcfile .bashrc"'
 else
    alias go_gstar='ssh -Y -l gpoole  gstar_pf'
    alias go_sstar1='ssh -Y -l gpoole  sstar001_pf'
    alias go_sstar2='ssh -Y -l gpoole  sstar002_pf'
    alias go_sstar3='ssh -Y -l gpoole  sstar003_pf'
-   alias go_tao02='ssh -t -Y -l TAODBAdmin tao_pf "cd /lustre/projects/p014_swin/gpoole; bash"'
+   alias go_tao02='ssh -t -Y -l TAODBAdmin tao_pf "cd /lustre/projects/p014_swin/gpoole; bash --rcfile .bashrc"'
 fi
 
 alias go_gstar_data='cd /lustre/projects/p004_swin/gpoole'
