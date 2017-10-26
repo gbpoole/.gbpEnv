@@ -13,15 +13,15 @@ else
     pmt_white=$(tput setaf   7)
     pmt_reset=$(tput sgr0)
     pmt_hst=$(hostname -s)
-    pmt_usr=$(who | awk '{print $1}')
+    pmt_usr=$(who am i | awk '{print $1}')
 
     # Set terminal prompt color
     if [ "$GBPDOCKER_ENV" == 'ON' ]; then
-        pmt_colour=$pmt_blue
-        usr_colour=$pmt_green
+        pmt_colour=$pmt_cyan
+        usr_colour=$pmt_blue
     else
         pmt_colour=$pmt_red
-        usr_colour=$pmt_blue
+        usr_colour=$pmt_magenta
     fi
 
     # Define the CLI prompt
