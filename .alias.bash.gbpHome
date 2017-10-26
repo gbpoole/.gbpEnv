@@ -13,16 +13,23 @@ else
     pmt_white=$(tput setaf   7)
     pmt_reset=$(tput sgr0)
     pmt_hst=$(hostname -s)
+    pmt_usr=$(who | awk '{print $1}')
 
     # Set terminal prompt color
     if [ "$GBPDOCKER_ENV" == 'ON' ]; then
         pmt_colour=$pmt_blue
+        usr_colour=$pmt_green
     else
         pmt_colour=$pmt_red
+        usr_colour=$pmt_blue
     fi
-    
+
     # Define the CLI prompt
-    alias setprompt='export PS1="\[$pmt_colour\][$pmt_hst: \W] >\[$pmt_reset\] "'
+    if [ "$pmt_usr" == "gpoole" ] || [ "$pmt_usr" == "gbpoole" ]; then
+        alias setprompt='export PS1="\[$pmt_colour\][$pmt_hst: \W] >\[$pmt_reset\] "'
+    else
+        alias setprompt='export PS1="\[$pmt_colour\][\[$usr_colour\]$pmt_usr@\[$pmt_colour\]$pmt_hst: \W] >\[$pmt_reset\] "'
+    fi
 
 fi
 
