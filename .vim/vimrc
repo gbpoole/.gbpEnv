@@ -36,11 +36,12 @@ else
     call vundle#begin('~/.vim/bundle')
         " Let Vundle manage Vundle, required
         Plugin 'VundleVim/Vundle.vim'
-        Plugin 'davidhalter/jedi-vim' 
+        " For YCM installation instructions, go here:
+        " https://github.com/Valloric/YouCompleteMe#installation
+        Plugin 'Valloric/YouCompleteMe' 
         Plugin 'airblade/vim-gitgutter' 
         Plugin 'vim-airline/vim-airline'
         Plugin 'vim-airline/vim-airline-themes'
-        Plugin 'rizzatti/dash.vim'
         " Add Molokai colorscheme.  Needs to be chosen later.
         Plugin 'tomasr/molokai' 
     call vundle#end() " required
@@ -57,9 +58,14 @@ filetype plugin indent on
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 
+" YCM settings
+"let g:ycm_min_num_of_chars_for_completion = 99
+nnoremap <leader>y :let g:ycm_auto_trigger=0<CR> "turn YCM off
+nnoremap <leader>Y :let g:ycm_auto_trigger=1<CR> "turn YCM on
+
 " Set a hotkey for toggling paste mode
-nnoremap <C-p> :set invpaste paste?<CR>
-set pastetoggle=<C-p>
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
 set showmode
 
 "Turn on wildmenu:
