@@ -30,14 +30,22 @@ if [ -n $GBP_HOSTNAME ]; then
     # Add Anaconda to the path
     export PATH=/anaconda/bin:$PATH
 
+    # Add MacTex to the path
+    export PATH=/usr/local/texlive/latest/bin/x86_64-darwin:$PATH
+
     # Add mySQL to the path
 	export MYSQL_PATH=/usr/local/Cellar/mysql/5.7.19  
 	export PATH=$PATH:$MYSQL_PATH/bin
 
     # Set paths for Homebrew.  Add the Homebrew direcory and 
     # place the Homebrew bin directory before system directory.
+    # This ensures that the Homebrew installs override all others.
     export PATH="/usr/local/bin:$PATH"
     export PATH="/usr/local/sbin:$PATH"
+
+    # Add 3rd_party directory to paths
+    export PATH="${GBP_HOME}/3rd_party/bin:$PATH"
+    export LD_LIBRARY_PATH="${GBP_HOME}/3rd_party/lib:${LD_LIBRARY_PATH}"
 
   elif [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
