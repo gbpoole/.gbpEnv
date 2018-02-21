@@ -5,7 +5,12 @@ export MY_ENV_DEFAULT="python3.6"
 if [ $# -eq 0 ]; then
     export MY_ENV=$MY_ENV_DEFAULT
 elif [ $# -eq 1 ]; then
-    export MY_ENV="python"$1
+    re='^[0-9]+([.][0-9]+)?$'
+    if ! [[ $1 =~ $re ]] ; then
+        export MY_ENV=$1
+    else
+        export MY_ENV="python"$1
+    fi
 else
     echo 'Syntax: '$0 ' <optional: conda_environment>'
     return 2
@@ -37,7 +42,7 @@ if [ -n $GBP_HOSTNAME ]; then
     source activate $MY_ENV >> /dev/null 2>&1
     setprompt
 
-  # Unknown host.  Let the user know.
+  # Set-up for OSX
   elif [ $GBP_OS == 'Mac' ]; then
     echo "Intializing python environment to "$MY_ENV
     source activate $MY_ENV >> /dev/null 2>&1
