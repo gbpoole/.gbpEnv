@@ -3,6 +3,10 @@
 " Tell Vim to use 256 colours
 set t_Co=256
 
+" Use UTF-8 encoding, both in the terminal and when writing files
+set encoding=utf-8
+set fileencoding=utf-8
+
 " Activate mouse control
 " set mouse=a
 
@@ -60,7 +64,6 @@ else
     " Set color scheme(s)
     colorscheme molokai
     let g:airline_theme='molokai'
-
 
 endif
 " --- End Vundle Stuff ---
