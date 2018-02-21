@@ -44,6 +44,9 @@ else
         Plugin 'vim-airline/vim-airline-themes'
         " Add Molokai colorscheme.  Needs to be chosen later.
         Plugin 'tomasr/molokai' 
+        " Add support for editorconfig files (see http://editorconfig.org/ &
+        " https://github.com/editorconfig/editorconfig-vim)
+        Plugin 'editorconfig/editorconfig-vim'
     call vundle#end() " required
     
     " Set color scheme(s)
@@ -85,6 +88,9 @@ set listchars=tab:▸\ ,eol:↵,trail:·
 set listchars=tab:▸\ ,trail:·
 " Show line numbers
 set number
+
+" Highlight searches
+set hlsearch
 
 syntax on
 
