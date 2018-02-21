@@ -4,7 +4,10 @@ export GBP_HOSTNAME=`hostname`
 if [ -n $GBP_HOSTNAME ]; then
 
   # Set-up for nodes on the Swinburne 'g2' cluster
-  if [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == sstar* ]] ; then
+  if [ $GBP_HOSTNAME == 'ozstar.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == farnarkle* ]] ; then
+    module restore
+
+  elif [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == sstar* ]] ; then
     echo "Loading modules for: "$GBP_HOSTNAME
 
     # Initialize environment modules

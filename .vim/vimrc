@@ -30,9 +30,11 @@ set rtp+=~/.vim/bundle/Vundle.vim
 
 " Check if Vundle is installed and print a message if not.
 if empty(glob("~/.vim/bundle/Vundle.vim"))
-    echo "\nVundle has not been installed.  Download via:\n    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim\nand install packages by running :PlugingsInstall from within vim.\n"
+    echo "\nVundle has not been installed.  Download via:\n    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim\nand install packages by running :PluginInstall from within vim.\n"
 else
-    " List Plugins between vundle#begin/end.
+    " --------------------------------------------
+    " List Plugins here, between vundle#begin/end.
+    " --------------------------------------------
     call vundle#begin('~/.vim/bundle')
         " Let Vundle manage Vundle, required
         Plugin 'VundleVim/Vundle.vim'
@@ -45,10 +47,21 @@ else
         " Add Molokai colorscheme.  Needs to be chosen later.
         Plugin 'tomasr/molokai' 
     call vundle#end() " required
-    
+
+    " --------------------------------------------------------------
+    " Perform all plugin settings changes here, in this 'else' block
+    " --------------------------------------------------------------
+
+    " YCM settings
+    "let g:ycm_min_num_of_chars_for_completion = 99
+    nnoremap <leader>y :let g:ycm_auto_trigger=0<CR> "turn YCM off
+    nnoremap <leader>Y :let g:ycm_auto_trigger=1<CR> "turn YCM on
+
     " Set color scheme(s)
     colorscheme molokai
     let g:airline_theme='molokai'
+
+
 endif
 " --- End Vundle Stuff ---
 
@@ -57,11 +70,6 @@ filetype plugin indent on
 
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
-
-" YCM settings
-"let g:ycm_min_num_of_chars_for_completion = 99
-nnoremap <leader>y :let g:ycm_auto_trigger=0<CR> "turn YCM off
-nnoremap <leader>Y :let g:ycm_auto_trigger=1<CR> "turn YCM on
 
 " Set a hotkey for toggling paste mode
 nnoremap <F2> :set invpaste paste?<CR>
