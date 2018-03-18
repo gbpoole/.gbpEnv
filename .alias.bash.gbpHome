@@ -42,6 +42,8 @@ alias grep='grep --color=auto'
 if [ "$GBP_OS" == 'Mac' ]; then
    alias ls='ls -CG'
    alias lsl='ls -CGlhrt'
+   # Override the XCode install of gcc
+   alias gcc='gcc-7'
 else
    alias ls='ls -CG --color=auto'
    alias lsl='ls -CGlhrt --color=auto'

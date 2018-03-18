@@ -44,8 +44,8 @@ if [ -n $GBP_HOSTNAME ]; then
     export PATH="/usr/local/sbin:$PATH"
 
     # Add 3rd_party directory to paths
-    export PATH="${GBP_HOME}/3rd_party/bin:$PATH"
-    export LD_LIBRARY_PATH="${GBP_HOME}/3rd_party/lib:${LD_LIBRARY_PATH}"
+    export PATH="${GBP_HOME}/my_code/bin:${GBP_HOME}/3rd_party/bin:$PATH"
+    export LD_LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_party/lib:${LD_LIBRARY_PATH}"
 
   elif [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'

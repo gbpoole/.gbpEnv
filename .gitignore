@@ -1,5 +1,5 @@
 # First, ignore everything
-*
+/*
 # Then, select the things we want to keep
 !.modules.gbpHome
 !.load_python.gbpHome
@@ -14,6 +14,7 @@
 !.gitignore
 !.gitconfig
 !.ssh
+.ssh/*
 !.system.bash.gbpHome
 !.system.csh.gbpHome
 !.vim/
@@ -21,3 +22,8 @@
 !.travis.yml
 !.test/
 !.test/*
+!my_code/
+!my_code/bin
+!my_code/lib
+!my_code/include
+!my_code/share

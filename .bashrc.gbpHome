@@ -42,7 +42,7 @@ if [ -f ${GBP_SRC}/.bashrc.myCode ]; then
 elif [ -f ${GBP_SRC}/.bashrc.gbpCode ]; then
   source ${GBP_SRC}/.bashrc.gbpCode
 fi
-export PATH=${GBP_SRC}/myBin:$PATH
+export PATH=${GBP_HOME}/my_code/bin:$PATH
 
 # Set the prompt
 setprompt
