@@ -22,8 +22,3 @@
 !.travis.yml
 !.test/
 !.test/*
-!my_code/
-!my_code/bin
-!my_code/lib
-!my_code/include
-!my_code/share
