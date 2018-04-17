@@ -63,10 +63,10 @@ else
   echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
 fi
 
-# Add '3rd_party' and 'my_code' directories to paths
-export PATH="${GBP_HOME}/my_code/:${GBP_HOME}/3rd_party/:$PATH"
-export LD_LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_party/lib:${LD_LIBRARY_PATH}"
-export INCLUDE="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_party/include:${INCLUDE}"
+# Add '3rd_Party' and 'my_code' directories to paths
+export PATH="${GBP_HOME}/my_code/:${GBP_HOME}/3rd_Party/:$PATH"
+export LD_LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:${LD_LIBRARY_PATH}"
+export INCLUDE="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${INCLUDE}"
 
 # Set-up some stuff on Macs
 if [ $GBP_OS == 'Mac' ]; then
