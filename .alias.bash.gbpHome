@@ -40,7 +40,7 @@ alias grep='grep --color=auto'
 
 # Use a colourful pager for instead of the stock 'more' and 'cat', if available
 if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
-   export GBP_PAGER=$GBP_HOME/3rd_Party/bin/vimpager
+   export GBP_PAGER="$GBP_HOME/3rd_Party/bin/vimpager -N"
 else
    export GBP_PAGER=`which more`
 fi
