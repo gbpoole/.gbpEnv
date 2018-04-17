@@ -38,6 +38,28 @@ export HISTTIMEFORMAT="$pmt_green%d/%m/%y $pmt_blue%T$pmt_reset "
 export GREP_COLOR='0;33'
 alias grep='grep --color=auto'
 
+# Use a colourful pager for instead of the stock 'more' and 'cat', if available
+if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
+   export GBP_PAGER=$GBP_HOME/3rd_Party/bin/vimpager
+else
+   export GBP_PAGER=`which more`
+fi
+if [ -e $GBP_HOME/3rd_Party/bin/vimcat ]; then
+   export GBP_CAT=$GBP_HOME/3rd_Party/bin/vimcat
+else
+   export GBP_CAT=`which cat`
+fi
+alias more=$GBP_PAGER
+alias cat=$GBP_CAT
+
+# Display a file with Lynx
+more_lynx () {
+    pandoc $1 | lynx -stdin
+}
+
+# Use htop ... way better
+alias top='htop'
+
 # Generic UNIX aliases
 if [ "$GBP_OS" == 'Mac' ]; then
    alias ls='ls -CG'
@@ -51,14 +73,6 @@ fi
 
 # Alias vim -> vi
 alias vi='vim'
-
-# Display a file with Lynx
-more_lynx () {
-    pandoc $1 | lynx -stdin
-}
-
-# Use htop ... way better
-alias top='htop'
 
 # Load modules
 alias load_modules='source ${GBP_HOME}/.modules.gbpHome'
