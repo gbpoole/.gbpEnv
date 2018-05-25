@@ -49,6 +49,10 @@ if [ -n $GBP_HOSTNAME ]; then
     # https://developer.apple.com/library/content/documentation/Security/Conceptual/System_Integrity_Protection_Guide/RuntimeProtections/RuntimeProtections.html
     export PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$PATH"
 
+  elif [ $GBP_HOSTNAME == 'farnarkle1' ] || [ $GBP_HOSTNAME == 'farnarkle2' ]; then
+    # Set UTF encoding locale for OzStar.  Needed by 'Click' for instance.
+    export LC_ALL=en_AU.utf8
+    export LANG=en_AU.utf8
   elif [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
   elif [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ]; then
@@ -73,6 +77,7 @@ fi
 export PATH="${GBP_HOME}/my_code/bin:${GBP_HOME}/3rd_Party/bin:$PATH"
 export LD_LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:${LD_LIBRARY_PATH}"
 export INCLUDE="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${INCLUDE}"
+export CPATH="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${CPATH}"
 
 # Set-up some stuff on Macs
 if [ $GBP_OS == 'Mac' ]; then

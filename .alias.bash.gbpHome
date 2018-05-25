@@ -40,7 +40,7 @@ alias grep='grep --color=auto'
 
 # Use a colourful pager for instead of the stock 'more' and 'cat', if available
 if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
-   export GBP_PAGER=$GBP_HOME/3rd_Party/bin/vimpager
+   export GBP_PAGER="$GBP_HOME/3rd_Party/bin/vimpager -N"
 else
    export GBP_PAGER=`which more`
 fi
@@ -81,6 +81,7 @@ alias load_modules='source ${GBP_HOME}/.modules.gbpHome'
 alias load_python='source ${GBP_HOME}/.load_python.gbpHome'
 
 # List of machines
+alias go_alibaba='ssh -t -Y -l root 47.100.181.223 "cd gbpHome; bash --rcfile .bashrc"'
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'
 alias go_turbot='ssh -Y -l gbpoole turbot.phys.uvic.ca'
 alias go_chinook='ssh -Y -l gbpoole chinook.phys.uvic.ca'
