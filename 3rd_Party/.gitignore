@@ -1,5 +1,10 @@
-# Ignore everything in this directory
+## Ignore everything in this directory
 *
-# Except these files
-!.gitignore bin/ include/ info/ lib/
-
+## Except these files
+!.gitignore 
+!share/
+!bin/
+!include/
+!info/
+!lib/
+!Makefile

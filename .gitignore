@@ -22,3 +22,4 @@
 !.travis.yml
 !.test/
 !.test/*
+!3rd_Party/
