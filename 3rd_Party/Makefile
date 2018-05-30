@@ -15,6 +15,7 @@ export ECHO
 ## set versions ##
 ##################
 VERSION-gcc=7.3.0
+VERSION-cmake=3.11.2
 VERSION-mpich=3.2
 VERSION-gsl=2.4
 VERSION-gd=2.2.5
@@ -24,7 +25,7 @@ VERSION-fftw2=2.1.5
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = gcc mpich gsl cfitsio gd fftw2
+generic_libs = gcc cmake mpich gsl cfitsio gd fftw2
 
 ############################
 ## Generic library target ##
@@ -53,6 +54,22 @@ gcc-install:
 	@cd build-gcc;make install
 gcc-clean:
 	@rm -rf build-gcc gcc-${VERSION-gcc}*
+
+###########
+## CMAKE ##
+###########
+cmake-download:
+	@wget https://cmake.org/files/v3.11/cmake-${VERSION-cmake}.tar.gz
+	@$(ECHO) Uncompressing ...;tar xzf cmake-${VERSION-cmake}.tar.gz;$(ECHO) Done.
+cmake-config:
+	@mkdir build-cmake
+	@cd build-cmake;../cmake-${VERSION-cmake}/bootstrap --prefix=$GBP_HOME/3rd_Party
+cmake-build:
+	@cd build-cmake;gmake 
+cmake-install:
+	@cd build-cmake;gmake install
+cmake-clean:
+	@rm -rf build-cmake cmake-${VERSION-cmake}*
 
 ###########
 ## mpich ##
@@ -164,6 +181,7 @@ help:
 	@$(ECHO) "The following targets are available:"
 	@$(ECHO) "    all     - Make all the libraries listed below."
 	@$(ECHO) "    gcc     - Install GCC     version: "${VERSION-gcc}    " (takes ~2 hr)"
+	@$(ECHO) "    cmake   - Install CMAKE   version: "${VERSION-cmake}  " (takes ~X hr)"
 	@$(ECHO) "    mpich   - Install MPICH   version: "${VERSION-mpich}  " (takes ~2 hr)"
 	@$(ECHO) "    gsl     - Install GSL     version: "${VERSION-gsl}    " (takes ~X hr)"
 	@$(ECHO) "    cfitsio - Install cfitsio version: "${VERSION-cfitsio}" (takes ~X hr)"
