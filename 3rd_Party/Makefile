@@ -143,7 +143,7 @@ gd-build:
 gd-install:
 	@cd build-gd;make install
 gd-clean:
-	@rm -rf build-gd gd-${VERSION-gd}*
+	@rm -rf build-gd libgd-${VERSION-gd}*
 
 ###########
 ## FFTW2 ##
