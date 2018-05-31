@@ -63,7 +63,7 @@ cmake-download:
 	@$(ECHO) Uncompressing ...;tar xzf cmake-${VERSION-cmake}.tar.gz;$(ECHO) Done.
 cmake-config:
 	@mkdir build-cmake
-	@cd build-cmake;../cmake-${VERSION-cmake}/bootstrap --prefix=$GBP_HOME/3rd_Party
+	@cd build-cmake;../cmake-${VERSION-cmake}/bootstrap --prefix=${GBP_HOME}/3rd_Party
 cmake-build:
 	@cd build-cmake;gmake 
 cmake-install:
