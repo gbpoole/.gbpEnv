@@ -27,8 +27,10 @@ if [ -n $GBP_HOSTNAME ]; then
     # Add LLVM/Clang to the path
     export PATH=/usr/local/opt/llvm/bin:$PATH
 
-    # Add Anaconda to the path
-    export PATH=/anaconda/bin:$PATH
+    # Add pyenv python installations to path
+    export PYENV_ROOT=${GBP_HOME}/.pyenv
+    export PATH=$PYENV_ROOT/bin:${PATH}
+    if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
     # Add MacTex to the path
     export PATH=/usr/local/texlive/latest/bin/x86_64-darwin:$PATH

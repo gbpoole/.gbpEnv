@@ -78,7 +78,7 @@ alias vi='vim'
 alias load_modules='source ${GBP_HOME}/.modules.gbpHome'
 
 # Initialize python
-alias load_python='source ${GBP_HOME}/.load_python.gbpHome'
+alias load_conda='source ${GBP_HOME}/.load_conda.gbpHome'
 
 # List of machines
 alias go_alibaba='ssh -t -Y -l root 47.100.181.223 "cd gbpHome; bash --rcfile .bashrc"'
