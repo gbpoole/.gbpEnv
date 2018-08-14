@@ -49,7 +49,8 @@ gcc-config:
 	@mkdir build-gcc
 	@cd build-gcc;../gcc-${VERSION-gcc}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-languages=c,c++ --disable-multilib
 gcc-build:
-	@cd build-gcc;make -j 8
+	# Just use one core; it's easy to run out of RAM with '-j X' with X>1
+	@cd build-gcc;make
 gcc-install:
 	@cd build-gcc;make install
 gcc-clean:
