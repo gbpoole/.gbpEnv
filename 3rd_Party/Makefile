@@ -11,6 +11,9 @@ default: help
 ECHO = /bin/echo
 export ECHO
 
+# Number of cores to compile with
+N_CORES=4
+
 ##################
 ## set versions ##
 ##################
@@ -49,8 +52,7 @@ gcc-config:
 	@mkdir build-gcc
 	@cd build-gcc;../gcc-${VERSION-gcc}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-languages=c,c++ --disable-multilib
 gcc-build:
-	# Just use one core; it's easy to run out of RAM with '-j X' with X>1
-	@cd build-gcc;make
+	@cd build-gcc;make -j ${N_CORES}
 gcc-install:
 	@cd build-gcc;make install
 gcc-clean:
@@ -91,7 +93,7 @@ mpich-config:
         	--enable-g=none                                \
         	--enable-timing=none
 mpich-build:
-	@cd build-mpich;make -j 8
+	@cd build-mpich;make -j ${N_CORES}
 mpich-install:
 	@cd build-mpich;make install
 mpich-clean:
@@ -107,7 +109,7 @@ gsl-config:
 	@mkdir build-gsl
 	@cd build-gsl;../gsl-${VERSION-gsl}/configure --prefix=${GBP_HOME}/3rd_Party/
 gsl-build:
-	@cd build-gsl;make -j 4
+	@cd build-gsl;make -j ${N_CORES}
 gsl-install:
 	@cd build-gsl;make install
 gsl-clean:
@@ -124,7 +126,7 @@ cfitsio-download:
 cfitsio-config:
 	@cd cfitsio;../cfitsio/configure --prefix=${GBP_HOME}/3rd_Party/
 cfitsio-build:
-	@cd cfitsio;make -j 4
+	@cd cfitsio;make -j ${N_CORES}
 cfitsio-install:
 	@cd cfitsio;make install
 cfitsio-clean:
@@ -134,13 +136,15 @@ cfitsio-clean:
 ## GD ##
 ########
 gd-download:
-	@wget https://github.com/libgd/libgd/releases/download/gd-${VERSION-gd}/libgd-${VERSION-gd}.tar.gz
+	# Use '--no-check-certificate' to avoid SSL error. See (for example): 
+	#    https://stackoverflow.com/questions/28757232/unable-to-establish-ssl-connection-upon-wget-on-ubuntu-14-04-lts
+	@wget --no-check-certificate https://github.com/libgd/libgd/releases/download/gd-${VERSION-gd}/libgd-${VERSION-gd}.tar.gz
 	@tar xzf libgd-${VERSION-gd}.tar.gz
 gd-config:
 	@mkdir build-gd
 	@cd build-gd;../libgd-${VERSION-gd}/configure --prefix=${GBP_HOME}/3rd_Party/
 gd-build:
-	@cd build-gd;make -j 4
+	@cd build-gd;make -j ${N_CORES}
 gd-install:
 	@cd build-gd;make install
 gd-clean:
@@ -162,10 +166,10 @@ fftw2-config:
 	@cd build-fftw2-sp-mpi;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi --enable-float
 	@cd build-fftw2-dp-mpi;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi
 fftw2-build:
-	@cd build-fftw2-sp;make -j 4
-	@cd build-fftw2-dp;make -j 4
-	@cd build-fftw2-sp-mpi;make -j 4
-	@cd build-fftw2-dp-mpi;make -j 4
+	@cd build-fftw2-sp;make -j ${N_CORES}
+	@cd build-fftw2-dp;make -j ${N_CORES}
+	@cd build-fftw2-sp-mpi;make -j ${N_CORES}
+	@cd build-fftw2-dp-mpi;make -j ${N_CORES}
 fftw2-install:
 	@cd build-fftw2-sp;make install
 	@cd build-fftw2-dp;make install
