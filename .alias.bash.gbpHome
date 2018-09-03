@@ -38,7 +38,7 @@ export HISTTIMEFORMAT="$pmt_green%d/%m/%y $pmt_blue%T$pmt_reset "
 export GREP_COLOR='0;33'
 alias grep='grep --color=auto'
 
-# Use a colourful pager for instead of the stock 'more' and 'cat', if available
+# Use a colourful pager instead of the stock 'more' and 'cat', if available
 if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
    export GBP_PAGER="$GBP_HOME/3rd_Party/bin/vimpager -N"
 else
@@ -57,22 +57,39 @@ more_lynx () {
     pandoc $1 | lynx -stdin
 }
 
-# Use htop ... way better
-alias top='htop'
+# Save a whole lot'a keystrokes
+alias g='git'
+alias t='task'
 
-# Generic UNIX aliases
-if [ "$GBP_OS" == 'Mac' ]; then
-   alias ls='ls -CG'
-   alias lsl='ls -CGlhrt'
-   # Override the XCode install of gcc
-   alias gcc='gcc-7'
-else
-   alias ls='ls -CG --color=auto'
-   alias lsl='ls -CGlhrt --color=auto'
+# Substitute for a few improved applications, if present
+
+# 'top'->'htop'
+if [ -f "`which htop`" ]; then
+    alias top='htop'
 fi
 
-# Alias vim -> vi
-alias vi='vim'
+# 'vi'->'vim'
+if [ -f "`which vim`" ]; then
+    alias vi='vim'
+fi
+
+# 'ls'->'colorls'
+if [ -f "`which colorls`" ]; then
+    alias ls="colorls"
+    # enable tab completion for flags
+    source $(dirname $(gem which colorls))/tab_complete.sh
+else
+    if [ "$GBP_OS" == 'Mac' ]; then
+        alias ls='ls -CG'
+    else
+        alias ls='ls -CG --color=auto'
+    fi
+fi
+
+# Override the XCode install of gcc
+if [ "$GBP_OS" == 'Mac' ]; then
+   alias gcc='gcc-7'
+fi
 
 # Load modules
 alias load_modules='source ${GBP_HOME}/.modules.gbpHome'
@@ -104,7 +121,9 @@ else
    alias go_tao02='ssh -t -Y -l TAODBAdmin tao02_pf "cd /lustre/projects/p014_swin/gpoole; bash --rcfile .bashrc"'
 fi
 
-alias go_oz='ssh -Y -l gpoole farnarkle1.hpc.swin.edu.au'
+alias go_oz='ssh -Y -l gpoole oz'
+alias go_f1='ssh -Y -l gpoole f1'
+alias go_f2='ssh -Y -l gpoole f2'
 
 # Useful commands to remember
 alias compress_ps='gs -q -dLEVEL3 -dASCII -- ${GBP_HOME}/bin/encode.ps $1 $2'
