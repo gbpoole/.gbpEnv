@@ -1,25 +1,33 @@
 # First, ignore everything
 /*
 # Then, select the things we want to keep
+# generic stuff
 !.modules.gbpHome
 !.load_conda.gbpHome
-!.alias.bash.gbpHome
+!.profile
+!3rd_Party/
+# bash stuff
+!.bashrc
+!.bashrc.alias
+!.bashrc.system
+# csh stuff
 !.alias.csh.gbpHome
 !.alias.csh.gbpHome.osx
-!.profile
-!.bashrc
-!.bashrc.gbpHome
 !.cshrc.gbpHome
-!.gdbinit
-!.gitignore
-!.gitconfig
+!.system.csh.gbpHome
+# ssh stuff
 !.ssh
 .ssh/*
-!.system.bash.gbpHome
-!.system.csh.gbpHome
+# git stuff
+!.gitignore
+!.gitconfig
+# vim stuff
 !.vim/
 !.vim/*
+# gdb stuff
+!.gdbinit
+# travis stuff
 !.travis.yml
+# misc
 !.test/
 !.test/*
-!3rd_Party/
