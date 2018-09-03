@@ -21,11 +21,12 @@ VERSION-gsl=2.4
 VERSION-gd=2.2.5
 VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
+VERSION-fftw3=3.3.8
 
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = gcc cmake mpich gsl cfitsio gd fftw2
+generic_libs = gcc cmake mpich gsl cfitsio gd fftw2 fftw3
 
 ############################
 ## Generic library target ##
@@ -173,6 +174,33 @@ fftw2-install:
 fftw2-clean:
 	@rm -rf build-fftw2* fftw-${VERSION-fftw}*
 
+###########
+## FFTW3 ##
+###########
+fftw3-download:
+	@wget http://www.fftw.org/fftw-${VERSION-fftw3}.tar.gz
+	@tar xzf fftw-${VERSION-fftw3}.tar.gz
+fftw3-config:
+	@mkdir build-fftw3-sp
+	@mkdir build-fftw3-dp
+	@mkdir build-fftw3-sp-mpi
+	@mkdir build-fftw3-dp-mpi
+	@cd build-fftw3-sp;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-float
+	@cd build-fftw3-dp;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ 
+	@cd build-fftw3-sp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi --enable-float
+	@cd build-fftw3-dp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi
+fftw3-build:
+	@cd build-fftw3-sp;make -j 4
+	@cd build-fftw3-dp;make -j 4
+	@cd build-fftw3-sp-mpi;make -j 4
+	@cd build-fftw3-dp-mpi;make -j 4
+fftw3-install:
+	@cd build-fftw3-sp;make install
+	@cd build-fftw3-dp;make install
+	@cd build-fftw3-sp-mpi;make install
+	@cd build-fftw3-dp-mpi;make install
+fftw3-clean:
+	@rm -rf build-fftw3* fftw-${VERSION-fftw}*
 ##############
 # Print help #
 ##############
