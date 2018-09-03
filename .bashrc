@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Set-up some generic UNIX stuff
 umask 22
 ulimit -c 0
@@ -68,4 +70,6 @@ if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
 fi
 
 # Set the prompt
-setprompt
+if [ "${ZSH_THEME}" = "" ]; then
+    setprompt
+fi

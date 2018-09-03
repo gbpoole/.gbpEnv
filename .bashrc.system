@@ -1,10 +1,11 @@
+#!/bin/bash
 
 # Decide what sort of system we're on
 if [ -f /bin/uname ] || [ -f /usr/bin/uname ]; then
   export GBP_OS=`uname`
-  if [ $GBP_OS == 'Darwin' ]; then
+  if [ $GBP_OS = 'Darwin' ]; then
      export GBP_OS='Mac'
-  elif [ $GBP_OS == 'Linux' ]; then
+  elif [ $GBP_OS = 'Linux' ]; then
      export GBP_OS='linux'
   fi
 else
@@ -20,7 +21,7 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 # Set system-specific stuff, first based on HOSTNAME or on HOST
 export GBP_HOSTNAME=`hostname`
 if [ -n $GBP_HOSTNAME ]; then
-  if [ $GBP_OS == 'Mac' ]; then
+  if [ $GBP_OS = 'Mac' ]; then
     export GBP_QUEUE_TYPE='NONE'
 
     # Make sure ._* files don't get added to tar files, etc.
@@ -47,21 +48,21 @@ if [ -n $GBP_HOSTNAME ]; then
 
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 
-  elif [ $GBP_HOSTNAME == 'farnarkle1' ] || [ $GBP_HOSTNAME == 'farnarkle2' ]; then
+  elif [ $GBP_HOSTNAME = 'farnarkle1' ] || [ $GBP_HOSTNAME = 'farnarkle2' ]; then
     # Set UTF encoding locale for OzStar.  Needed by 'Click' for instance.
     export LC_ALL=en_AU.utf8
     export LANG=en_AU.utf8
-  elif [ $GBP_HOSTNAME == 'green.ssi.swin.edu.au' ]; then
+  elif [ $GBP_HOSTNAME = 'green.ssi.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
-  elif [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ]; then
+  elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
-  elif [ $GBP_HOSTNAME == 'sstar001.hpc.swin.edu.au' ] || [ $GBP_HOSTNAME == 'sstar002.hpc.swin.edu.au' ]; then
+  elif [ $GBP_HOSTNAME = 'sstar001.hpc.swin.edu.au' ] || [ $GBP_HOSTNAME = 'sstar002.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='NONE'
-  elif [ $GBP_HOSTNAME == 'epicuser1' ]; then
+  elif [ $GBP_HOSTNAME = 'epicuser1' ]; then
     export GBP_QUEUE_TYPE='PBS'
-  elif [ $GBP_HOSTNAME == 'vayu3' ]; then
+  elif [ $GBP_HOSTNAME = 'vayu3' ]; then
     export GBP_QUEUE_TYPE='PBS'
-  elif [ $GBP_HOSTNAME == 'avoca' ]; then
+  elif [ $GBP_HOSTNAME = 'avoca' ]; then
     export GBP_QUEUE_TYPE='PBS'
   else
 #    echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
@@ -82,7 +83,7 @@ export CPATH="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${CPATH}
 export LD_LIBRARY_PATH="${GBP_HOME}/3rd_Party/lib64:${LD_LIBRARY_PATH}"
 
 # Set-up some stuff on Macs
-if [ $GBP_OS == 'Mac' ]; then
+if [ $GBP_OS = 'Mac' ]; then
   export RUNZ='/Applications/runz/'
 fi
 

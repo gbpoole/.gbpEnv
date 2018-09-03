@@ -19,10 +19,10 @@ fi
 # Decide what sort of system we're on
 if [ -f /bin/uname ] || [ -f /usr/bin/uname ]; then
   export GBP_OS=`uname`
-  if [ $GBP_OS == 'Darwin' ]; then
+  if [ $GBP_OS = 'Darwin' ]; then
      export GBP_OS='Mac'
      export PATH=/anaconda/bin:$PATH
-  elif [ $GBP_OS == 'Linux' ]; then
+  elif [ $GBP_OS = 'Linux' ]; then
      export GBP_OS='linux'
   fi
 else
@@ -35,17 +35,17 @@ export GBP_HOSTNAME=`hostname`
 if [ -n $GBP_HOSTNAME ]; then
 
   # Set-up for nodes on the Swinburne 'OzStar' cluster
-  if [[ $GBP_HOSTNAME == farnarkle* ]] ; then
+  if [[ $GBP_HOSTNAME = farnarkle* ]] ; then
     source activate $MY_ENV >> /dev/null 2>&1
     setprompt
   # Set-up for nodes on the Swinburne 'g2' cluster
-  elif [ $GBP_HOSTNAME == 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME == sstar* ]] ; then
+  elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME = sstar* ]] ; then
     export TCL_LIBRARY="/usr/local/x86_64/anaconda-2.2.0/pkgs/tk-8.5.18-0/lib/tcl8.5/"
     module load anaconda
     source activate $MY_ENV >> /dev/null 2>&1
     setprompt
   # Set-up for OSX
-  elif [ $GBP_OS == 'Mac' ]; then
+  elif [ $GBP_OS = 'Mac' ]; then
     source activate $MY_ENV >> /dev/null 2>&1
     setprompt
   # Unknown host.  Let the user know.
