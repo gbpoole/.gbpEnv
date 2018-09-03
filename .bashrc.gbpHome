@@ -4,9 +4,6 @@ umask 22
 ulimit -c 0
 unset autologout
 
-# Turn 'vi-mode' on by default
-set -o vi
-
 # Make sure the REMOTEHOST variable is set
 if [ -z $REMOTEHOST ]; then
    export REMOTEHOST=$HOST
@@ -32,8 +29,21 @@ source ${GBP_HOME}/.system.bash.gbpHome
 # Create all my aliases
 source ${GBP_HOME}/.alias.bash.gbpHome
 
+# Set default editor
+export EDITOR=`which vim`
+if [ ! -f "${EDITOR}" ]; then
+    echo "test:"${EDITOR}
+    export EDITOR=`which vi`
+fi
+
 # Add 3rd_Party binary directory to the PATH
 export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
+
+# Configure taskwarrior
+if [ "${GBP_HOME}" != "${HOME}" ]; then
+    export TASKRC=${GBP_HOME}/.taskrc
+    export TASKDATA=${GBP_HOME}/.task
+fi
 
 # These lines set-up gbpCode
 export GBP_SRC=${GBP_HOME}'/gbpCode/'
