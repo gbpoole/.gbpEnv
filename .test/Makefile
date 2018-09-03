@@ -36,7 +36,7 @@ tests:
 	.test/assert_bash_config.sh
 
 # Generate coverage information for bash configuration
-BASH_CONFIG_LIST = .bashrc .bashrc.gbpHome .system.bash.gbpHome
+BASH_CONFIG_LIST = .bashrc .bashrc.system
 .test/kcov.tgz:
 	@$(ECHO) -n "Downloading kcov code..."
 	@wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz -O .test/kcov.tgz
