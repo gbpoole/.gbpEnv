@@ -65,17 +65,17 @@ alias t='task'
 # Substitute for a few improved applications, if present
 
 # 'top'->'htop'
-if [ -f "`which htop`" ]; then
+if hash htop 2>/dev/null; then
    alias top='htop'
 fi
 
 # 'vi'->'vim'
-if [ -f "`which vim`" ]; then
+if hash vim 2>/dev/null; then
    alias vi='vim'
 fi
 
 # 'ls'->'colorls'
-if [ -f "`which colorls`" ]; then
+if hash colorls 2>/dev/null; then
    alias ls="colorls"
    # enable tab completion for flags
    source $(dirname $(gem which colorls))/tab_complete.sh
