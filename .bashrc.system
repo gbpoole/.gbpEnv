@@ -16,7 +16,7 @@ fi
 # Add pyenv python installations to path
 export PYENV_ROOT=${GBP_HOME}/.pyenv
 export PATH=$PYENV_ROOT/bin:${PATH}
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+if hash pyenv 2>/dev/null > /dev/null; then eval "$(pyenv init -)"; fi
 
 # Set system-specific stuff, first based on HOSTNAME or on HOST
 export GBP_HOSTNAME=`hostname`
