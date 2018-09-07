@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = gcc cmake mpich gsl cfitsio gd fftw2 fftw3
+generic_libs = zsh gcc cmake mpich gsl cfitsio gd fftw2 fftw3
 
 ############################
 ## Generic library target ##
@@ -41,6 +41,24 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
+
+#########
+## zsh ##
+#########
+zsh-download:
+	@git clone git://zsh.git.sf.net/gitroot/zsh/zsh
+zsh-config:
+	@cd zsh;autoreconf
+	@cd zsh;./configure --prefix=${GBP_HOME}/3rd_Party/ 
+zsh-build:
+	@cd zsh;make -j ${N_CORES}
+zsh-install:
+	# Rather than 'make install', we list individual targets because I can't get install.man
+	# or install.runhelp to work ... man pages are empty and an error results; ./help.txt is missing.
+	@cd zsh;make install.bin install.modules install.fns
+	@cd zsh;make check
+zsh-clean:
+	@rm -rf zsh
 
 #########
 ## GCC ##
