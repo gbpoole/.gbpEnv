@@ -8,11 +8,14 @@ unset autologout
 # It is possible to install this repo somewhere
 # other than the home directory.  Set the path
 # to the repo directory here.
-if [ -f ${PWD}/.bashrc ]; then
-   export GBP_HOME=${PWD}
-else
-   export GBP_HOME=${HOME}
-fi
+if [ ! -f "${GBP_HOME}/.bashrc.system" ]; then
+    if [ -f ${PWD}/.bashrc ]; then
+       export GBP_HOME=${PWD}
+    else
+       export GBP_HOME=${HOME}
+    fi
+ fi
+
 
 # Make sure the REMOTEHOST variable is set
 if [ -z $REMOTEHOST ]; then
