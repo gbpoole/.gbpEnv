@@ -388,7 +388,7 @@ if zplug check "bhilburn/powerlevel9k"; then
     POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='190'
     POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND='176'
     
-    POWERLEVEL9K_MODE='awesome-fontconfig'
+    POWERLEVEL9K_MODE='nerdfont-complete'
 
     # powerlevel9k prompt theme
     #DEFAULT_USER=$USER
