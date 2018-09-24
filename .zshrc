@@ -1,41 +1,39 @@
 # This file is largely that of: https://github.com/tonylambiris/dotfiles/blob/master/dot.zshrc
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Set this variable to '1' to perform profiling of zsh startup
+export ZSH_PROFILE_MODE=0
+if [ $ZSH_PROFILE_MODE -eq 1 ]; then
+    zmodload zsh/zprof
+fi
 
-# Check if zplug is installed
+# Ensure that zplug is installed
 [ ! -d ~/.zplug ] && git clone https://github.com/zplug/zplug ~/.zplug
 source ~/.zplug/init.zsh
 
 # zplug
 zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 
-# oh-my-zsh
-zplug "zplug/zplug"
+# oh-my-zsh -- makes several important plugins available
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 
 # Miscellaneous commands
-#zplug "andrewferrier/fzf-z"
 zplug "k4rthik/git-cal",  as:command
-zplug "peco/peco",        as:command, from:gh-r
-#zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf, \
-#	use:"*${(L)$(uname -s)}*amd64*"
-zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
+zplug "supercrabtree/k",  use:k.sh
 
-# Enhanced cd
+# Filters
+zplug "peco/peco",    as:command, from:gh-r
+zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
+zplug "aperezdc/zsh-fzy"
+
+# Enhancd 
 zplug "b4b4r07/enhancd", use:init.sh
+zplug "b4b4r07/zsh-history-enhanced"
 
 # Bookmarks and jump
-zplug "jocelynmallon/zshmarks"
-
-# Enhanced dir list with git features
-zplug "supercrabtree/k"
+#zplug "jocelynmallon/zshmarks"
 
 # Jump back to parent directory
-zplug "tarrasch/zsh-bd"
-
-# Simple zsh calculator
-zplug "arzzen/calc.plugin.zsh"
+#zplug "tarrasch/zsh-bd", use:bd.zsh
 
 # Directory colors
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
@@ -44,22 +42,11 @@ zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
 
 zplug "plugins/common-aliases",    from:oh-my-zsh
-zplug "plugins/colored-man-pages", from:oh-my-zsh
-zplug "plugins/colorize",          from:oh-my-zsh
-zplug "plugins/command-not-found", from:oh-my-zsh
-zplug "plugins/copydir",           from:oh-my-zsh
-zplug "plugins/copyfile",          from:oh-my-zsh
-zplug "plugins/cp",                from:oh-my-zsh
-zplug "plugins/dircycle",          from:oh-my-zsh
-zplug "plugins/encode64",          from:oh-my-zsh
-zplug "plugins/extract",           from:oh-my-zsh
 zplug "plugins/history",           from:oh-my-zsh
-zplug "plugins/tmux",              from:oh-my-zsh
-zplug "plugins/tmuxinator",        from:oh-my-zsh
-zplug "plugins/urltools",          from:oh-my-zsh
+#zplug "plugins/tmux",              from:oh-my-zsh
+#zplug "plugins/tmuxinator",        from:oh-my-zsh
 zplug "plugins/web-search",        from:oh-my-zsh
-zplug "plugins/z",                 from:oh-my-zsh
-zplug "plugins/fancy-ctrl-z",      from:oh-my-zsh
+zplug "plugins/taskwarrior",       from:oh-my-zsh
 
 # Supports oh-my-zsh plugins and the like
 if [[ $OSTYPE = (linux)* ]]; then
@@ -74,22 +61,15 @@ if [[ $OSTYPE = (darwin)* ]]; then
 fi
 
 zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
-zplug "plugins/svn",               from:oh-my-zsh, if:"(( $+commands[svn] ))"
-zplug "plugins/node",              from:oh-my-zsh, if:"(( $+commands[node] ))"
 zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
-zplug "plugins/bundler",           from:oh-my-zsh, if:"(( $+commands[bundler] ))"
-zplug "plugins/gem",               from:oh-my-zsh, if:"(( $+commands[gem] ))"
-zplug "plugins/rbenv",             from:oh-my-zsh, if:"(( $+commands[rbenv] ))"
-zplug "plugins/rvm",               from:oh-my-zsh, if:"(( $+commands[rvm] ))"
 zplug "plugins/pip",               from:oh-my-zsh, if:"(( $+commands[pip] ))"
 zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
 zplug "plugins/gpg-agent",         from:oh-my-zsh, if:"(( $+commands[gpg-agent] ))"
-zplug "plugins/systemd",           from:oh-my-zsh, if:"(( $+commands[systemctl] ))"
 zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
 zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
 
-#zplug "djui/alias-tips"
-zplug "hlissner/zsh-autopair", defer:2
+# Autocompletion/suggestion stuff
+zplug "djui/alias-tips"
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 
@@ -101,15 +81,6 @@ zplug "zsh-users/zsh-history-substring-search", defer:3
 # =============================================================================
 #                                   Options
 # =============================================================================
-
-# improved less option
-export LESS="--tabs=4 --no-init --LONG-PROMPT --ignore-case --quit-if-one-screen --RAW-CONTROL-CHARS"
-
-# Watching other users
-#WATCHFMT="%n %a %l from %m at %t."
-watch=(notme)         # Report login/logout events for everybody except ourself.
-LOGCHECK=60           # Time (seconds) between checks for login/logout activity.
-REPORTTIME=5          # Display usage statistics for commands running > 5 sec.
 
 # Key timeout and character sequences
 KEYTIMEOUT=1
@@ -279,24 +250,23 @@ zstyle ":completion:*:default" list-colors ${(s.:.)LS_COLORS}
 #                                   Startup
 # =============================================================================
 
-## Load SSH and GPG agents via keychain.
-#setup_agents() {
-#  [[ $UID -eq 0 ]] && return
-#
-#  if (( $+commands[keychain] )); then
-#	local -a ssh_keys gpg_keys
-#	for i in ~/.ssh/**/*pub; do test -f "$i(.N:r)" && ssh_keys+=("$i(.N:r)"); done
-#	gpg_keys=$(gpg -K --with-colons 2>/dev/null | awk -F : '$1 == "sec" { print $5 }')
-#    if (( $#ssh_keys > 0 )) || (( $#gpg_keys > 0 )); then
-#	  alias run_agents='() { $(whence -p keychain) --quiet --eval --inherit any-once --agents ssh,gpg $ssh_keys ${(f)gpg_keys} }'
-#	  #[[ -t ${fd:-0} || -p /dev/stdin ]] && eval `run_agents`
-#	  unalias run_agents
-#    fi
-#  fi
-#}
-#
-#setup_agents
-#unfunction setup_agents
+# Load SSH and GPG agents via keychain.
+setup_agents() {
+  [[ $UID -eq 0 ]] && return
+
+  if (( $+commands[keychain] )); then
+	local -a ssh_keys gpg_keys
+	for i in ~/.ssh/**/*pub; do test -f "$i(.N:r)" && ssh_keys+=("$i(.N:r)"); done
+	gpg_keys=$(gpg -K --with-colons 2>/dev/null | awk -F : '$1 == "sec" { print $5 }')
+    if (( $#ssh_keys > 0 )) || (( $#gpg_keys > 0 )); then
+	  alias run_agents='() { $(whence -p keychain) --quiet --eval --inherit any-once --agents ssh,gpg $ssh_keys ${(f)gpg_keys} }'
+	  #[[ -t ${fd:-0} || -p /dev/stdin ]] && eval `run_agents`
+	  unalias run_agents
+    fi
+  fi
+}
+setup_agents
+unfunction setup_agents
 
 # Install plugins if there are plugins that have not been installed
 if ! zplug check; then
@@ -346,12 +316,11 @@ fi
 
 if zplug check "b4b4r07/enhancd"; then
     ENHANCD_DOT_SHOW_FULLPATH=1
-	ENHANCD_DISABLE_HOME=0
+	ENHANCD_DISABLE_HOME=1
 fi
 
 if zplug check "b4b4r07/zsh-history-enhanced"; then
-	ZSH_HISTORY_FILE="$HISTFILE"
-    ZSH_HISTORY_FILTER="fzf:peco:percol"
+    ZSH_HISTORY_FILTER="fzy:fzf:peco:percol"
     ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
     ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
 fi
@@ -523,12 +492,6 @@ fi
 # Then, source plugins and add commands to $PATH
 zplug load
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
 
@@ -536,7 +499,7 @@ zplug load
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+#COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -551,17 +514,18 @@ zplug load
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-  taskwarrior
-  colorize
-  tmux
-)
+## Oh-my-zsh plugins
+#plugins=(
+#  git
+#  taskwarrior
+#  colorize
+#  tmux
+#)
 
 # User configuration
 source $PWD/.bashrc
+
+# Report profiling
+if [ $ZSH_PROFILE_MODE -eq 1 ]; then
+    zprof
+fi
