@@ -522,8 +522,16 @@ zplug load
 #  tmux
 #)
 
-# User configuration
-source $PWD/.bashrc
+# Source the bash config
+#
+# If we are starting-up an iterm session, then the config
+# will be in the home directory.  If we are not, then we
+# may be starting from an out-of-home position.
+if [ -z $ITERM_PROFILE ]; then
+    source $PWD/.bashrc
+else if
+    source ~/.bashrc
+fi
 
 # Report profiling
 if [ $ZSH_PROFILE_MODE -eq 1 ]; then
