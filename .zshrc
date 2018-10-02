@@ -17,8 +17,8 @@ zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 
 # Miscellaneous commands
-zplug "k4rthik/git-cal",  as:command
-zplug "supercrabtree/k",  use:k.sh
+#zplug "k4rthik/git-cal",  as:command
+#zplug "supercrabtree/k",  use:k.sh
 
 # Filters
 zplug "peco/peco",    as:command, from:gh-r
@@ -29,12 +29,6 @@ zplug "aperezdc/zsh-fzy"
 zplug "b4b4r07/enhancd", use:init.sh
 zplug "b4b4r07/zsh-history-enhanced"
 
-# Bookmarks and jump
-#zplug "jocelynmallon/zshmarks"
-
-# Jump back to parent directory
-#zplug "tarrasch/zsh-bd", use:bd.zsh
-
 # Directory colors
 zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 
@@ -42,11 +36,12 @@ zplug "seebi/dircolors-solarized", ignore:"*", as:plugin
 zplug "bhilburn/powerlevel9k", use:powerlevel9k.zsh-theme
 
 zplug "plugins/common-aliases",    from:oh-my-zsh
-zplug "plugins/history",           from:oh-my-zsh
+zplug "plugins/taskwarrior",       from:oh-my-zsh
+zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
+#zplug "plugins/history",           from:oh-my-zsh
 #zplug "plugins/tmux",              from:oh-my-zsh
 #zplug "plugins/tmuxinator",        from:oh-my-zsh
-zplug "plugins/web-search",        from:oh-my-zsh
-zplug "plugins/taskwarrior",       from:oh-my-zsh
+#zplug "plugins/web-search",        from:oh-my-zsh
 
 # Supports oh-my-zsh plugins and the like
 if [[ $OSTYPE = (linux)* ]]; then
@@ -60,23 +55,15 @@ if [[ $OSTYPE = (darwin)* ]]; then
     zplug "plugins/brew",          from:oh-my-zsh, if:"(( $+commands[brew] ))"
 fi
 
-zplug "plugins/git",               from:oh-my-zsh, if:"(( $+commands[git] ))"
-zplug "plugins/npm",               from:oh-my-zsh, if:"(( $+commands[npm] ))"
-zplug "plugins/pip",               from:oh-my-zsh, if:"(( $+commands[pip] ))"
-zplug "plugins/sudo",              from:oh-my-zsh, if:"(( $+commands[sudo] ))"
-zplug "plugins/gpg-agent",         from:oh-my-zsh, if:"(( $+commands[gpg-agent] ))"
-zplug "plugins/docker",            from:oh-my-zsh, if:"(( $+commands[docker] ))"
-zplug "plugins/docker-compose",    from:oh-my-zsh, if:"(( $+commands[docker-compose] ))"
-
-# Autocompletion/suggestion stuff
+## Autocompletion/suggestion stuff
 zplug "djui/alias-tips"
 zplug "zsh-users/zsh-completions"
 zplug "zsh-users/zsh-autosuggestions"
 
-# zsh-syntax-highlighting must be loaded after executing compinit command
-# and sourcing other plugins
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-history-substring-search", defer:3
+## zsh-syntax-highlighting must be loaded after executing compinit command
+## and sourcing other plugins
+#zplug "zsh-users/zsh-syntax-highlighting", defer:2
+#zplug "zsh-users/zsh-history-substring-search", defer:3
 
 # =============================================================================
 #                                   Options
