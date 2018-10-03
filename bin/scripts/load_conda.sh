@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Accept an environment as a parameter or set to default
 export MY_ENV_DEFAULT="python3.6"
 if [ $# -eq 0 ]; then
@@ -16,7 +18,7 @@ fi
 
 # Decide what sort of system we're on
 if [ -f /bin/uname ] || [ -f /usr/bin/uname ]; then
-  export GBP_OS=`uname`
+  export GBP_OS=$(uname)
   if [ $GBP_OS = 'Darwin' ]; then
      export GBP_OS='Mac'
      export PATH=/anaconda/bin:$PATH
@@ -29,7 +31,7 @@ else
 fi
 
 # Perform system-specific setup
-export GBP_HOSTNAME=`hostname`
+export GBP_HOSTNAME=$(hostname)
 if [ -n $GBP_HOSTNAME ]; then
 
   # Set-up for nodes on the Swinburne 'OzStar' cluster
@@ -50,5 +52,5 @@ if [ -n $GBP_HOSTNAME ]; then
     echo "Unknown hostname:" $GBP_HOSTNAME
     return 1
   fi
-  echo "Anaconda environment set to "$MY_ENV"."
+  echo "Anaconda environment set to ($MY_ENV)."
 fi
