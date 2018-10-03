@@ -82,6 +82,9 @@ export CPATH="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${CPATH}
 # path ... prepend it to make sure it is preferred over a system install
 export LD_LIBRARY_PATH="${GBP_HOME}/3rd_Party/lib64:${LD_LIBRARY_PATH}"
 
+# Add ~/bin to PATH
+export PATH="${GBP_HOME}/bin:$PATH"
+
 # Set-up some stuff on Macs
 if [ $GBP_OS = 'Mac' ]; then
   export RUNZ='/Applications/runz/'

@@ -95,9 +95,6 @@ fi
 # Load modules
 alias load_modules='source ${GBP_HOME}/.modules.gbpHome'
 
-# Initialize python
-alias load_conda='source ${GBP_HOME}/.load_conda.gbpHome'
-
 # List of machines
 alias go_alibaba='ssh -t -Y -l nonroot 106.15.109.75 "cd gbpHome; bash --rcfile .bashrc"'
 alias go_krill='ssh -Y -l gbpoole krill.phys.uvic.ca'
