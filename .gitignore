@@ -3,9 +3,10 @@
 # Then, select the things we want to keep
 # generic stuff
 !.modules.gbpHome
-!.load_conda.gbpHome
 !.profile
 !3rd_Party/
+!bin/
+!bin/scripts/
 # bash stuff
 !.bashrc
 !.bashrc.alias

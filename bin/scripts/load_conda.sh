@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Accept an environment as a parameter or set to default
 export MY_ENV_DEFAULT="python3.6"
 if [ $# -eq 0 ]; then
@@ -37,20 +35,16 @@ if [ -n $GBP_HOSTNAME ]; then
   # Set-up for nodes on the Swinburne 'OzStar' cluster
   if [[ $GBP_HOSTNAME = farnarkle* ]] ; then
     source activate $MY_ENV >> /dev/null 2>&1
-    setprompt
   elif [[ $GBP_HOSTNAME = john* ]] ; then
     source activate $MY_ENV >> /dev/null 2>&1
-    setprompt    
   # Set-up for nodes on the Swinburne 'g2' cluster
   elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME = sstar* ]] ; then
     export TCL_LIBRARY="/usr/local/x86_64/anaconda-2.2.0/pkgs/tk-8.5.18-0/lib/tcl8.5/"
     module load anaconda
     source activate $MY_ENV >> /dev/null 2>&1
-    setprompt
   # Set-up for OSX
   elif [ $GBP_OS = 'Mac' ]; then
     source activate $MY_ENV >> /dev/null 2>&1
-    setprompt
   # Unknown host.  Let the user know.
   else
     echo "Unknown hostname:" $GBP_HOSTNAME
@@ -58,6 +52,3 @@ if [ -n $GBP_HOSTNAME ]; then
   fi
   echo "Anaconda environment set to "$MY_ENV"."
 fi
-
-return 0
-
