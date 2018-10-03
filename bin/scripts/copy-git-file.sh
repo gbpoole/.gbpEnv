@@ -14,11 +14,11 @@
 #Usage: copy-git-file.sh /some/repo/interesting/thing /destination/patch/path
 
 #todo, test $1 and $2
-DESTINATIONPATH=`realpath $2`
-SOURCE=`realpath $1` #first arg to script, either file or dir
+DESTINATIONPATH=$(realpath $2)
+SOURCE=$(realpath $1) #first arg to script, either file or dir
 
-SOURCEDIR=`dirname "$SOURCE"`
-SOURCEFILE=`basename "$SOURCE"`
+SOURCEDIR=$(dirname "$SOURCE")
+SOURCEFILE=$(basename "$SOURCE")
 
 pushd $SOURCEDIR
 #git format-patch -o $DESTINATIONPATH $(git log $SOURCEFILE|grep ^commit|tail -1|awk '{print $2}')..HEAD $SOURCEFILE
