@@ -1,5 +1,7 @@
 # This file is largely that of: https://github.com/tonylambiris/dotfiles/blob/master/dot.zshrc
 
+export TERM="xterm-256color"
+
 # Set this variable to '1' to perform profiling of zsh startup
 export ZSH_PROFILE_MODE=0
 if [ $ZSH_PROFILE_MODE -eq 1 ]; then
