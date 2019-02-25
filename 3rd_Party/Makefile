@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = zsh gcc cmake mpich gsl cfitsio gd fftw2 fftw3
+generic_libs = zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3
 
 ############################
 ## Generic library target ##
@@ -42,9 +42,22 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 #########################################
 all: $(generic_libs)
 
-#########
-## zsh ##
-#########
+###################
+## fzy from HEAD ##
+###################
+fzy-download:
+	@git clone https://github.com/jhawthorn/fzy
+fzy-config:
+fzy-build:
+	@cd fzy;make -j ${N_CORES}
+fzy-install:
+	@cd fzy;PREFIX=${GBP_HOME}/3rd_Party/ make install
+fzy-clean:
+	@rm -rf fzy
+
+###################
+## zsh from HEAD ##
+###################
 zsh-download:
 	@git clone git://zsh.git.sf.net/gitroot/zsh/zsh
 zsh-config:

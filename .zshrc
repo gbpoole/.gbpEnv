@@ -22,6 +22,9 @@ zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
 #zplug "k4rthik/git-cal",  as:command
 #zplug "supercrabtree/k",  use:k.sh
 
+# Add 3rd_Party/bin to the path because fzy needs it
+export PATH="/home/gpoole/3rd_Party/bin:$PATH"
+
 # Filters
 zplug "peco/peco",    as:command, from:gh-r
 zplug "junegunn/fzf", use:"shell/*.zsh", as:plugin
