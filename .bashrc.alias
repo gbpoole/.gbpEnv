@@ -117,6 +117,9 @@ alias go_oz='ssh -Y -l gpoole oz'
 alias go_f1='ssh -Y -l gpoole f1'
 alias go_f2='ssh -Y -l gpoole f2'
 
+# Time shell start-up
+alias time_shell_startup='for i in $(seq 1 10); do /usr/bin/time /bin/zsh -i -c exit; done;'
+
 # Useful commands to remember
 alias compress_ps='gs -q -dLEVEL3 -dASCII -- ${GBP_HOME}/bin/encode.ps $1 $2'
 
