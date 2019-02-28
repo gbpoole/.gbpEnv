@@ -1,13 +1,16 @@
 #!/bin/bash
+# vim:syntax=sh
+# vim:filetype=sh
 
 # Set-up some generic UNIX stuff
 umask 22
 ulimit -c 0
 unset autologout
 
-# It is possible to install this repo somewhere
-# other than the home directory.  Set the path
-# to the repo directory here.
+# It is possible to configure this environment somewhere
+# other than the home directory.  This is useful when you
+# want the configuration here to be applied in a shared-account
+# situation.  Set the path to the install here.
 if [ ! -f "${GBP_HOME}/.bashrc.system" ]; then
     if [ -f ${PWD}/.bashrc ]; then
        export GBP_HOME=${PWD}
@@ -45,29 +48,16 @@ source ${GBP_HOME}/.bashrc.alias
 # Set default editor
 export EDITOR=`which vim`
 if [ ! -f "${EDITOR}" ]; then
-    echo "test:"${EDITOR}
     export EDITOR=`which vi`
 fi
 
 # Add 3rd_Party binary directory to the PATH
 export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
 
-# Configure taskwarrior
-if [ "${GBP_HOME}" != "${HOME}" ]; then
-    export TASKRC=${GBP_HOME}/.taskrc
-    export TASKDATA=${GBP_HOME}/.task
-fi
-
-# These lines set-up gbpCode
-export GBP_SRC=${GBP_HOME}'/gbpCode/'
-if [ -f ${GBP_SRC}/.bashrc.myCode ]; then
-  source ${GBP_SRC}/.bashrc.myCode
-elif [ -f ${GBP_SRC}/.bashrc.gbpCode ]; then
-  source ${GBP_SRC}/.bashrc.gbpCode
-fi
+# These lines set-up my_code
 export PATH=${GBP_HOME}/my_code/bin:$PATH
 
-# added by travis gem
+# Added by travis gem
 if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
     source ${GBP_HOME}/.travis/travis.sh
 fi
