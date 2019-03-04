@@ -14,6 +14,10 @@
 # zsh stuff
 !.oh-my-zsh
 !.zshrc
+!.zlogin 
+!.zshenv 
+!.zprofile
+!.zsh-config
 # csh stuff
 !.alias.csh.gbpHome
 !.alias.csh.gbpHome.osx

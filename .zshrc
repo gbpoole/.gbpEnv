@@ -1,4 +1,6 @@
-# This file is largely that of: https://github.com/tonylambiris/dotfiles/blob/master/dot.zshrc
+#!/usr/bin/env zsh
+# vim:syntax=zsh
+# vim:filetype=zsh
 
 export TERM="xterm-256color"
 
@@ -8,16 +10,13 @@ if [ $ZSH_PROFILE_MODE -eq 1 ]; then
     zmodload zsh/zprof
 fi
 
-# Ensure that zplug is installed
-[ ! -d ~/.zplug ] && git clone https://github.com/zplug/zplug ~/.zplug
-source ~/.zplug/init.zsh
+export SCRIPTS=${HOME}/scripts
 
-# zplug
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
+export ZSHCONFIG=${HOME}/.zsh-config
 
-# oh-my-zsh -- makes several important plugins available
-zplug "robbyrussell/oh-my-zsh", use:"lib/*.zsh"
+ZSH_INIT=${ZSHCONFIG}/_init.sh
 
+<<<<<<< HEAD
 # Miscellaneous commands
 #zplug "k4rthik/git-cal",  as:command
 #zplug "supercrabtree/k",  use:k.sh
@@ -280,239 +279,13 @@ if zplug check "zsh-users/zsh-history-substring-search"; then
 	bindkey "$terminfo[kcud1]" history-substring-search-down
 	bindkey "^[[1;5A" history-substring-search-up
 	bindkey "^[[1;5B" history-substring-search-down
+=======
+if [[ -s ${ZSH_INIT} ]]; then
+    source ${ZSH_INIT}
+else
+    echo "Could not find the zsh init script ${ZSH_INIT}"
+>>>>>>> 27399756bb07e9f320304b1bcc833a0d7f35cf4e
 fi
-
-if zplug check "zsh-users/zsh-syntax-highlighting"; then
-	#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=10'
-	ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor line)
-	ZSH_HIGHLIGHT_PATTERNS=('rm -rf *' 'fg=white,bold,bg=red')
-
-	typeset -A ZSH_HIGHLIGHT_STYLES
-	ZSH_HIGHLIGHT_STYLES[cursor]='bg=yellow'
-	ZSH_HIGHLIGHT_STYLES[globbing]='none'
-	ZSH_HIGHLIGHT_STYLES[path]='fg=white'
-	ZSH_HIGHLIGHT_STYLES[path_pathseparator]='fg=grey'
-	ZSH_HIGHLIGHT_STYLES[alias]='fg=cyan'
-	ZSH_HIGHLIGHT_STYLES[builtin]='fg=cyan'
-	ZSH_HIGHLIGHT_STYLES[function]='fg=cyan'
-	ZSH_HIGHLIGHT_STYLES[command]='fg=green'
-	ZSH_HIGHLIGHT_STYLES[precommand]='fg=green'
-	ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=green'
-	ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=yellow'
-	ZSH_HIGHLIGHT_STYLES[redirection]='fg=magenta'
-	ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=cyan,bold'
-	ZSH_HIGHLIGHT_STYLES[bracket-level-2]='fg=green,bold'
-	ZSH_HIGHLIGHT_STYLES[bracket-level-3]='fg=magenta,bold'
-	ZSH_HIGHLIGHT_STYLES[bracket-level-4]='fg=yellow,bold'
-fi
-
-if zplug check "b4b4r07/enhancd"; then
-    ENHANCD_DOT_SHOW_FULLPATH=1
-	ENHANCD_DISABLE_HOME=1
-fi
-
-if zplug check "b4b4r07/zsh-history-enhanced"; then
-    ZSH_HISTORY_FILTER="fzy:fzf:peco:percol"
-    ZSH_HISTORY_KEYBIND_GET_BY_DIR="^r"
-    ZSH_HISTORY_KEYBIND_GET_ALL="^r^a"
-fi
-
-if zplug check "bhilburn/powerlevel9k"; then
-    # Easily switch primary foreground/background colors
-    DEFAULT_FOREGROUND=006 DEFAULT_BACKGROUND=235
-    DEFAULT_COLOR=$DEFAULT_FOREGROUND
-
-    # Set name of the theme to load --- if set to "random", it will
-    # load a random theme each time oh-my-zsh is loaded, in which case,
-    # to know which specific one was loaded, run: echo $RANDOM_THEME
-    # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-    #ZSH_THEME="agnoster"
-    #ZSH_THEME="powerlevel9k/powerlevel9k"
-    POWERLEVEL9K_MODE='nerdfont-complete'
-    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-    POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-    POWERLEVEL9K_ALWAYS_SHOW_CONTEXT=true
-    
-    POWERLEVEL9K_HOME_ICON=''
-    POWERLEVEL9K_HOME_SUB_ICON=''
-    POWERLEVEL9K_FOLDER_ICON=''
-    POWERLEVEL9K_ETC_ICON=''
-    POWERLEVEL9K_HOME_FOLDER_ABBREVIATION="\uF015 "
-    
-    POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-    POWERLEVEL9K_SHORTEN_DELIMITER=".."
-    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
-    
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir anaconda pyenv vcs dir_writable)
-    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status command_execution_time history time)
-    
-    POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND='190'
-    POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND='176'
-    
-    POWERLEVEL9K_MODE='nerdfont-complete'
-
-    # powerlevel9k prompt theme
-    #DEFAULT_USER=$USER
-
-    #POWERLEVEL9K_SHORTEN_STRATEGY="truncate_right"
-
-    #POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=false
-
-    POWERLEVEL9K_ALWAYS_SHOW_USER=false
-
-    POWERLEVEL9K_CONTEXT_TEMPLATE="\uF109 %m"
-
-    POWERLEVEL9K_CONTEXT_DEFAULT_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_CONTEXT_DEFAULT_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND="$DEFAULT_BACKGROUND"
-
-    POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR="\uE0B4"
-    POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR="%F{$(( $DEFAULT_BACKGROUND - 2 ))}|%f"
-    POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="\uE0B6"
-    POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="%F{$(( $DEFAULT_BACKGROUND - 2 ))}|%f"
-
-    POWERLEVEL9K_STATUS_VERBOSE=true
-    POWERLEVEL9K_STATUS_CROSS=true
-
-    #POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="%F{cyan}\u256D\u2500%f"
-    #POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{014}\u2570%F{cyan}\uF460%F{073}\uF460%F{109}\uF460%f "
-    #POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="╭─%f"
-    #POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰─%F{008}\uF460 %f"
-    #POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
-    #POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="%F{008}> %f"
-
-    POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="╭"
-    #POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="❱ "
-    POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX="╰\uF460 "
-
-    POWERLEVEL9K_VCS_CLEAN_BACKGROUND="green"
-    POWERLEVEL9K_VCS_CLEAN_FOREGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_VCS_MODIFIED_BACKGROUND="yellow"
-    POWERLEVEL9K_VCS_MODIFIED_FOREGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND="magenta"
-    POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND="$DEFAULT_BACKGROUND"
-
-    POWERLEVEL9K_DIR_HOME_BACKGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_DIR_HOME_FOREGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_DIR_HOME_SUBFOLDER_FOREGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_DIR_DEFAULT_BACKGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_DIR_DEFAULT_FOREGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_DIR_WRITABLE_FORBIDDEN_BACKGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_DIR_WRITABLE_FORBIDDEN_FOREGROUND="$DEFAULT_BACKGROUND"
-
-    POWERLEVEL9K_STATUS_OK_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_STATUS_OK_FOREGROUND="green"
-    POWERLEVEL9K_STATUS_OK_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_STATUS_OK_BACKGROUND="$(( $DEFAULT_BACKGROUND + 2 ))"
-
-    POWERLEVEL9K_STATUS_ERROR_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_STATUS_ERROR_FOREGROUND="red"
-    POWERLEVEL9K_STATUS_ERROR_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_STATUS_ERROR_BACKGROUND="$(( $DEFAULT_BACKGROUND + 2 ))"
-
-    POWERLEVEL9K_HISTORY_FOREGROUND="$DEFAULT_FOREGROUND"
-
-    POWERLEVEL9K_TIME_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_TIME_BACKGROUND="$DEFAULT_BACKGROUND"
-
-    POWERLEVEL9K_VCS_GIT_GITHUB_ICON=""
-    POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON=""
-    POWERLEVEL9K_VCS_GIT_GITLAB_ICON=""
-    POWERLEVEL9K_VCS_GIT_ICON=""
-
-    POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_EXECUTION_TIME_ICON="\u23F1"
-
-    #POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-    #POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=0
-
-    POWERLEVEL9K_BACKGROUND_JOBS_FOREGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_BACKGROUND_JOBS_BACKGROUND="$DEFAULT_FOREGROUND"
-
-    POWERLEVEL9K_USER_ICON="\uF415" # 
-    POWERLEVEL9K_USER_DEFAULT_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_USER_DEFAULT_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_USER_ROOT_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_USER_ROOT_BACKGROUND="$DEFAULT_BACKGROUND"
-
-    POWERLEVEL9K_ROOT_INDICATOR_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_ROOT_INDICATOR_FOREGROUND="magenta"
-    POWERLEVEL9K_ROOT_INDICATOR_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_ROOT_INDICATOR_BACKGROUND="$(( $DEFAULT_BACKGROUND + 2 ))"
-    POWERLEVEL9K_ROOT_INDICATOR_BACKGROUND="$(( $DEFAULT_BACKGROUND - 2 ))"
-    #POWERLEVEL9K_ROOT_ICON=$'\uFF03' # ＃
-    POWERLEVEL9K_ROOT_ICON=$'\uF198'  # 
-
-    POWERLEVEL9K_SSH_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_SSH_FOREGROUND="yellow"
-    POWERLEVEL9K_SSH_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_SSH_BACKGROUND="$(( $DEFAULT_BACKGROUND + 2 ))"
-    POWERLEVEL9K_SSH_BACKGROUND="$(( $DEFAULT_BACKGROUND - 2 ))"
-    POWERLEVEL9K_SSH_ICON="\uF489"  # 
-
-    POWERLEVEL9K_HOST_LOCAL_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_HOST_LOCAL_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_HOST_REMOTE_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_HOST_REMOTE_BACKGROUND="$DEFAULT_BACKGROUND"
-
-    POWERLEVEL9K_HOST_ICON_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_HOST_ICON_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_HOST_ICON="\uF109" # 
-
-    POWERLEVEL9K_OS_ICON_FOREGROUND="$DEFAULT_FOREGROUND"
-    POWERLEVEL9K_OS_ICON_BACKGROUND="$DEFAULT_BACKGROUND"
-
-    POWERLEVEL9K_LOAD_CRITICAL_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_LOAD_WARNING_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_LOAD_NORMAL_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_LOAD_CRITICAL_FOREGROUND="red"
-    POWERLEVEL9K_LOAD_WARNING_FOREGROUND="yellow"
-    POWERLEVEL9K_LOAD_NORMAL_FOREGROUND="green"
-    POWERLEVEL9K_LOAD_CRITICAL_VISUAL_IDENTIFIER_COLOR="red"
-    POWERLEVEL9K_LOAD_WARNING_VISUAL_IDENTIFIER_COLOR="yellow"
-    POWERLEVEL9K_LOAD_NORMAL_VISUAL_IDENTIFIER_COLOR="green"
-
-    POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND_COLOR="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_BATTERY_CHARGING_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_BATTERY_CHARGED_BACKGROUND="$DEFAULT_BACKGROUND"
-    POWERLEVEL9K_BATTERY_DISCONNECTED_BACKGROUND="$DEFAULT_BACKGROUND"
-fi
-
-# Then, source plugins and add commands to $PATH
-zplug load
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-#COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-## Oh-my-zsh plugins
-#plugins=(
-#  git
-#  taskwarrior
-#  colorize
-#  tmux
-#)
 
 # Source the bash config
 #
@@ -520,12 +293,25 @@ zplug load
 # will be in the home directory.  If we are not, then we
 # may be starting from an out-of-home position.
 if [ -z $ITERM_PROFILE ]; then
-    source $PWD/.bashrc
+    if [[ -s $PWD/.bashrc ]]; then
+        source $PWD/.bashrc
+    else
+        source ~/.bashrc
+    fi
 else if
     source ~/.bashrc
 fi
 
-# Report profiling
+# https://gist.github.com/ctechols/ca1035271ad134841284
+# https://carlosbecker.com/posts/speeding-up-zsh
+autoload -Uz compinit
+if [ $(date +'%j') != $(/usr/bin/stat -f '%Sm' -t '%j' ${ZDOTDIR:-$HOME}/.zcompdump) ]; then
+    compinit;
+else
+    compinit -C;
+fi
+
+# Report profiling (if activated)
 if [ $ZSH_PROFILE_MODE -eq 1 ]; then
     zprof
 fi

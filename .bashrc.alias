@@ -1,4 +1,6 @@
 #!/bin/bash
+# vim:syntax=sh
+# vim:filetype=sh
 
 # Set prompt, unless terminal is 'dumb'
 if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
@@ -28,18 +30,22 @@ else
 
    # Define the CLI prompt
    if [ "$pmt_usr" = "gpoole" ] || [ "$pmt_usr" = "gbpoole" ]; then
-       alias setprompt='export PS1="\[$pmt_colour\][$pmt_hst: \W] >\[$pmt_reset\] "'
+       alias setprompt='export PS1="${pmt_colour}[${pmt_hst}: ${pmt_usr}] > ${pmt_reset}"'
    else
-       alias setprompt='export PS1="\[$pmt_colour\][\[$usr_colour\]$pmt_usr@\[$pmt_colour\]$pmt_hst: \W] >\[$pmt_reset\] "'
+       alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}@${pmt_colour}${pmt_hst}: ${pmt_usr}] > ${pmt_reset}"'
    fi
 fi
 
-# Add color to some things
+# --- Add color to some things ---
+
+# history
 export HISTTIMEFORMAT="$pmt_green%d/%m/%y $pmt_blue%T$pmt_reset "
+
+# grep
 export GREP_COLOR='0;33'
 alias grep='grep --color=auto'
 
-# Use a colourful pager instead of the stock 'more' and 'cat', if available
+# pagers
 if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
    export GBP_PAGER="$GBP_HOME/3rd_Party/bin/vimpager -N"
 else
@@ -53,14 +59,17 @@ fi
 alias more=$GBP_PAGER
 alias cat=$GBP_CAT
 
-# Display a file with Lynx
-more_lynx () {
-   pandoc $1 | lynx -stdin
-}
+# ls
+if [ ! -n "$ZSH_VERSION" ]; then
+    if [ "$GBP_OS" = 'Mac' ]; then
+        alias ls='ls -CG'
+    else
+        alias ls='ls -CG --color=auto'
+    fi
+fi
 
 # Save a whole lot'a keystrokes
 alias g='git'
-alias t='task'
 
 # Substitute for a few improved applications, if present
 
@@ -72,13 +81,6 @@ fi
 # 'vi'->'vim'
 if hash vim 2>/dev/null; then
    alias vi='vim'
-fi
-
-# Add color to 'ls'
-if [ "$GBP_OS" = 'Mac' ]; then
-    alias ls='ls -CG'
-else
-    alias ls='ls -CG --color=auto'
 fi
 
 # Override the XCode install of gcc
@@ -117,6 +119,9 @@ alias go_oz='ssh -Y -l gpoole oz'
 alias go_f1='ssh -Y -l gpoole f1'
 alias go_f2='ssh -Y -l gpoole f2'
 
+# Perform a timing test of shell start-up
+alias time_shell_startup='for i in $(seq 1 10); do /usr/bin/time /bin/zsh -i -c exit; done;'
+
 # Useful commands to remember
 alias compress_ps='gs -q -dLEVEL3 -dASCII -- ${GBP_HOME}/bin/encode.ps $1 $2'
 
@@ -124,6 +129,7 @@ alias compress_ps='gs -q -dLEVEL3 -dASCII -- ${GBP_HOME}/bin/encode.ps $1 $2'
 if [ "$GBP_OS" = 'Mac' ]; then
    alias runz='/Applications/runz/runz'
    alias rz_completeness='/Applications/runz/rz_completeness.pl'
+   export RUNZ='/Applications/runz/'
    # Aliases for starting/stopping the Homebrew install of PostgreSQL
    alias pg-start="launchctl load ${GBP_HOME}/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
    alias pg-stop="launchctl unload ${GBP_HOME}/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
@@ -136,6 +142,6 @@ if [ "$GBP_QUEUE_TYPE" = 'PBS' ]; then
 fi
 
 # Make sure that the aliases created here are available immediately to any scripts that source this file
-if [ "${ZSH}" = "" ]; then
+if [ ! -n "$ZSH_VERSION" ]; then
    shopt -s expand_aliases
 fi

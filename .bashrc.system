@@ -1,4 +1,6 @@
 #!/bin/bash
+# vim:syntax=sh
+# vim:filetype=sh
 
 # Decide what sort of system we're on
 if [ -f /bin/uname ] || [ -f /usr/bin/uname ]; then
@@ -13,10 +15,19 @@ else
   export GBP_OS='unknown'
 fi
 
-# Add pyenv python installations to path
-export PYENV_ROOT=${GBP_HOME}/.pyenv
-export PATH=$PYENV_ROOT/bin:${PATH}
-if hash pyenv 2>/dev/null > /dev/null; then eval "$(pyenv init -)"; fi
+# Set UTF encoding locale.  Needed by 'Click' for instance.
+if [[ -z "$LANG" ]]; then
+    export LANG='en_AU.UTF-8'
+    export LANGUAGE=en_AU.UTF-8
+fi
+export LC_COLLATE=en_AU.UTF-8
+export LC_CTYPE=en_AU.UTF-8
+export LC_MESSAGES=en_AU.UTF-8
+export LC_MONETARY=en_AU.UTF-8
+export LC_NUMERIC=en_AU.UTF-8
+export LC_TIME=en_AU.UTF-8
+export LC_ALL=en_AU.UTF-8
+export LESSCHARSET=utf-8
 
 # Set system-specific stuff, first based on HOSTNAME or on HOST
 export GBP_HOSTNAME=`hostname`
@@ -49,27 +60,18 @@ if [ -n $GBP_HOSTNAME ]; then
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 
   elif [ $GBP_HOSTNAME = 'farnarkle1' ] || [ $GBP_HOSTNAME = 'farnarkle2' ]; then
-    # Set UTF encoding locale for OzStar.  Needed by 'Click' for instance.
     export LC_ALL=en_AU.utf8
     export LANG=en_AU.utf8
-  elif [ $GBP_HOSTNAME = 'green.ssi.swin.edu.au' ]; then
-    export GBP_QUEUE_TYPE='PBS'
   elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
   elif [ $GBP_HOSTNAME = 'sstar001.hpc.swin.edu.au' ] || [ $GBP_HOSTNAME = 'sstar002.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='NONE'
-  elif [ $GBP_HOSTNAME = 'epicuser1' ]; then
-    export GBP_QUEUE_TYPE='PBS'
-  elif [ $GBP_HOSTNAME = 'vayu3' ]; then
-    export GBP_QUEUE_TYPE='PBS'
-  elif [ $GBP_HOSTNAME = 'avoca' ]; then
-    export GBP_QUEUE_TYPE='PBS'
   else
-#    echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
+    echo There is no default configuration in .bashrc.system for this system.  Assigning defaults.
     export GBP_QUEUE_TYPE='SERIAL'
   fi
 else
-  echo There is no default configuration in .system.bash.gbpHome for this system.  Assigning defaults.
+  echo Could not identify hostname in .bashrc.system for this system.  Assigning defaults.
 fi
 
 # Add '3rd_Party' and 'my_code' directories to paths
@@ -77,6 +79,7 @@ export PATH="${GBP_HOME}/my_code/bin:${GBP_HOME}/3rd_Party/bin:$PATH"
 export LD_LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:${LD_LIBRARY_PATH}"
 export INCLUDE="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${INCLUDE}"
 export CPATH="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${CPATH}"
+export PKG_CONFIG_PATH=${GBP_HOME}/3rd_Party/lib/pkgconfig:${PKG_CONFIG_PATH}
 
 # If using a custom-installed gcc, then 3rd party libraries will end-up in the following 
 # path ... prepend it to make sure it is preferred over a system install
@@ -85,8 +88,17 @@ export LD_LIBRARY_PATH="${GBP_HOME}/3rd_Party/lib64:${LD_LIBRARY_PATH}"
 # Add ~/bin to PATH
 export PATH="${GBP_HOME}/bin:$PATH"
 
-# Set-up some stuff on Macs
-if [ $GBP_OS = 'Mac' ]; then
-  export RUNZ='/Applications/runz/'
-fi
+# Add pyenv python installations to path.  Put this last to
+# mitigate conflicts with other installations.
+export PYENV_ROOT=${GBP_HOME}/.pyenv
+export PATH=$PYENV_ROOT/bin:${PATH}
 
+# Is this needed here? ... it's a bit slow (.1s on Mac).
+if hash pyenv 2>/dev/null > /dev/null; then eval "$(pyenv init -)"; fi
+
+# Eliminate duplicates in paths
+if [ -n "$ZSH_VERSION" ]; then
+   typeset -gU cdpath fpath path
+else
+   typeset -g cdpath fpath path
+fi
