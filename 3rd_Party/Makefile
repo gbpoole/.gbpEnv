@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3
+generic_libs = stow texi2html zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3
 
 ############################
 ## Generic library target ##
@@ -41,6 +41,34 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
+
+#########################
+## texi2html from HEAD ##
+#########################
+texi2html-download:
+	@git clone https://github.com/aosm/texi2html.git
+texi2html-config:
+	@cd texi2html/texi2html;autoreconf -iv;./configure --prefix=${GBP_HOME}/3rd_Party/
+texi2html-build:
+	@cd texi2html/texi2html;make -j ${N_CORES}
+texi2html-install:
+	@cd texi2html/texi2html;make install
+texi2html-clean:
+	@rm -rf texi2html
+
+####################
+## stow from HEAD ##
+####################
+stow-download:
+	@git clone https://github.com/aspiers/stow.git
+stow-config:
+	@cd stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${GBP_HOME}/3rd_Party/ --with-pmdir=${GBP_HOME}/3rd_Party/perl
+stow-build:
+	@cd stow;make -j ${N_CORES}
+stow-install:
+	@cd stow;make install
+stow-clean:
+	@rm -rf stow
 
 ###################
 ## fzy from HEAD ##
