@@ -255,6 +255,7 @@ fftw3-install:
 	@cd build-fftw3-dp-mpi;make install
 fftw3-clean:
 	@rm -rf build-fftw3* fftw-${VERSION-fftw}*
+
 ##############
 # Print help #
 ##############
@@ -262,6 +263,7 @@ help:
 	@$(ECHO) 
 	@$(ECHO) "The following targets are available:"
 	@$(ECHO) "    all     - Make all the libraries listed below."
+	@$(ECHO) "    zsh     - Install ZSH     version: "${VERSION-zsh}    " (takes ~X hr)"
 	@$(ECHO) "    gcc     - Install GCC     version: "${VERSION-gcc}    " (takes ~2 hr)"
 	@$(ECHO) "    cmake   - Install CMAKE   version: "${VERSION-cmake}  " (takes ~X hr)"
 	@$(ECHO) "    mpich   - Install MPICH   version: "${VERSION-mpich}  " (takes ~2 hr)"
