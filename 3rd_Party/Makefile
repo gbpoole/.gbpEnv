@@ -26,10 +26,15 @@ VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
 VERSION-fftw3=3.3.8
 
+###########################################################
+# List of targets associated with development environment #
+###########################################################
+devenv = zsh antibody
+
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = zsh gcc cmake mpich gsl cfitsio gd fftw2 fftw3
+generic_libs = libgit2 antibody zsh gcc cmake mpich gsl cfitsio gd fftw2 fftw3
 
 ############################
 ## Generic library target ##
@@ -41,6 +46,32 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
+
+#############
+## libgit2 ##
+#############
+libgit2-download:
+	@git clone https://github.com/libgit2/libgit2.git
+libgit2-config:
+libgit2-build:
+	@cd libgit2; mkdir build ; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=~/3rd_Party/ ..
+libgit2-install:
+	@cd libgit2/build; make install
+libgit2-clean:
+	@rm -rf libgit2
+
+##############
+## antibody ##
+##############
+antibody-download:
+	@curl -s -L -o /tmp/antibody.tar.gz https://github.com/getantibody/antibody/releases/download/$(shell curl -s https://raw.githubusercontent.com/getantibody/homebrew-tap/master/Formula/antibody.rb | grep url | cut -f8 -d'/')/antibody_$(shell uname -s)_$(shell uname -m).tar.gz
+antibody-config:
+antibody-build:
+	@$(ECHO) Uncompressing ...;tar xzf /tmp/antibody.tar.gz;$(ECHO) Done.
+antibody-install:
+	@mv -f antibody ${GBP_HOME}/3rd_Party/bin/
+antibody-clean:
+	@rm -rf antibody_install
 
 #########
 ## zsh ##

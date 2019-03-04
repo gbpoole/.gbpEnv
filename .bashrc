@@ -62,7 +62,7 @@ if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
     source ${GBP_HOME}/.travis/travis.sh
 fi
 
-# Set the prompt
-if [ "${ZSH_THEME}" = "" ]; then
+# Set the prompt (if we're not in zsh)
+if [ "${ZSH_VERSION}" = "" ]; then
     setprompt
 fi

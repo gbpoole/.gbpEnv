@@ -7,4 +7,8 @@ mafredri/zsh-async
 djui/alias-tips
 supercrabtree/k
 #bhilburn/powerlevel9k
-sindresorhus/pure
+#romkatv/powerlevel10k
+#romkatv/gitstatus
+intelfx/pure
+mafredri/zsh-async
+#sindresorhus/pure
