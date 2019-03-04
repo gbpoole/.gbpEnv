@@ -2,30 +2,45 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
-#
-# Antibody plugin management
-#
-# brew install getantibody/tap/antibody
-#
-# https://getantibody.github.io/usage
-#
-local plugins_list=${ZSHCONFIG}/zsh-antibody-plugins-list
+local ANTIBODY=~/3rd_Party/bin/antibody
 
-local managed_plugins=${ZSHCONFIG}/zsh-managed-plugins.zsh
-
-function antibody.install(){
-    echo 'Installing plugins ... '
-    /usr/local/bin/antibody bundle < ${plugins_list} > ${managed_plugins}
-    echo 'Done!'
-}
-
-function antibody.purge(){
-    if [[ ! -z "$1" ]]; then
-       /usr/local/bin/antibody purge $1
+if [[ -x ${ANTIBODY} ]]; then
+    if [[ $OSTYPE = (darwin)* ]]; then
+        local plugins_list=${ZSHCONFIG}/zsh-antibody-plugins-list.darwin
+    else
+        local plugins_list=${ZSHCONFIG}/zsh-antibody-plugins-list.linux
     fi
-}
+    local managed_plugins=${ZSHCONFIG}/zsh-managed-plugins.zsh
 
-alias antibody.list='antibody list'
-alias antibody.update='antibody update'
-alias antibody.home='antibody home'
+    # Set some aliases    
+    alias antibody.list=${ANTIBODY}' list'
+    alias antibody.update=${ANTIBODY}' update'
+    alias antibody.home=${ANTIBODY}' home'
 
+    function antibody.install(){
+        echo 'Installing plugins ... '
+        # Needed for oh-my-zsh ... see: https://github.com/getantibody/antibody/issues/218
+        ZSH=`antibody.home`"/https-COLON--SLASH--SLASH-github.com-SLASH-robbyrussell-SLASH-oh-my-zsh"
+        ${ANTIBODY} bundle < ${plugins_list} > ${managed_plugins}
+        echo 'Done!'
+    }
+    
+    function antibody.purge(){
+        if [[ ! -z "$1" ]]; then
+           ${ANTIBODY} purge $1
+        fi
+    }
+    
+    # Make sure plugin directory exists and plugins are installed
+    if [[ ! -d `antibody.home` ]]; then
+        echo 'Creating antibody directory: '`antibody.home`
+        mkdir `antibody.home`
+        if [[ ! -d `antibody.home` ]]; then
+            echo 'Failed.  Could not configure antibody.'
+        else
+            antibody.install
+        fi
+    fi
+else
+    echo 'Antibody not installed; plugins could not be started.  Please run `make antibody` in ${HOME}/3rd_Party'
+fi

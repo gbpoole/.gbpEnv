@@ -2,5 +2,9 @@ zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
 zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-history-substring-search
+aperezdc/zsh-fzy
 mafredri/zsh-async
+djui/alias-tips
+supercrabtree/k
+#bhilburn/powerlevel9k
 sindresorhus/pure
