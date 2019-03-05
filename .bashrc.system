@@ -104,5 +104,5 @@ if hash pyenv 2>/dev/null > /dev/null; then eval "$(pyenv init -)"; fi
 if [ -n "$ZSH_VERSION" ]; then
    typeset -aU cdpath fpath path
 else
-   typeset -ag cdpath fpath path
+   typeset -a cdpath fpath path
 fi
