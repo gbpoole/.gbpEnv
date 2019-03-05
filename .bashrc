@@ -63,6 +63,6 @@ if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
 fi
 
 # Set the prompt (if we're not in zsh)
-if [ "$PS1" ]; then
+if [ `alias | grep "setprompt" | wc -l` = 0 ]; then
     setprompt
 fi
