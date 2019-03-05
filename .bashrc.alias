@@ -3,9 +3,7 @@
 # vim:filetype=sh
 
 # Set prompt, unless terminal is 'dumb'
-if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
-   alias setprompt=':'
-else
+if [ "$PS1" ]; then
    # Set control sequences for prompt
    pmt_black=$(tput setaf   0)
    pmt_red=$(tput setaf     1)
@@ -34,6 +32,8 @@ else
    else
        alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}@${pmt_colour}${pmt_hst}: ${pmt_usr}] > ${pmt_reset}"'
    fi
+else
+   alias setprompt=''
 fi
 
 # --- Add color to some things ---
