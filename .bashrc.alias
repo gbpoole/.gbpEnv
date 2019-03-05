@@ -32,8 +32,6 @@ if [ "$PS1" ]; then
    else
        alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}@${pmt_colour}${pmt_hst}: ${pmt_usr}] > ${pmt_reset}"'
    fi
-else
-   alias setprompt=''
 fi
 
 # --- Add color to some things ---

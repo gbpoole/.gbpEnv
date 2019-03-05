@@ -63,6 +63,6 @@ if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
 fi
 
 # Set the prompt (if we're not in zsh)
-if [ "${ZSH_VERSION}" = "" ]; then
+if [ "$PS1" ]; then
     setprompt
 fi
