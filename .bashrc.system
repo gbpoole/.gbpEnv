@@ -29,7 +29,7 @@ export LC_TIME=en_AU.UTF-8
 export LC_ALL=en_AU.UTF-8
 export LESSCHARSET=utf-8
 
-# Set system-specific stuff, first based on HOSTNAME or on HOST
+# Set system-specific stuff, first based on HOSTNAME
 export GBP_HOSTNAME=`hostname`
 if [ -n $GBP_HOSTNAME ]; then
   if [ $GBP_OS = 'Mac' ]; then
@@ -60,11 +60,15 @@ if [ -n $GBP_HOSTNAME ]; then
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 
   elif [ $GBP_HOSTNAME = 'farnarkle1' ] || [ $GBP_HOSTNAME = 'farnarkle2' ]; then
-    export LC_ALL=en_AU.utf8
-    export LANG=en_AU.utf8
+    #export LC_ALL=en_AU.utf8
+    #export LANG=en_AU.utf8
+    export GBP_QUEUE_TYPE='SLURM'
   elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
   elif [ $GBP_HOSTNAME = 'sstar001.hpc.swin.edu.au' ] || [ $GBP_HOSTNAME = 'sstar002.hpc.swin.edu.au' ]; then
+    export GBP_QUEUE_TYPE='NONE'
+  # This case is needed because CI tests break if bash returns text
+  elif [ "$GBPHOME_TEST" = 1 ]; then
     export GBP_QUEUE_TYPE='NONE'
   else
     echo There is no default configuration in .bashrc.system for this system.  Assigning defaults.

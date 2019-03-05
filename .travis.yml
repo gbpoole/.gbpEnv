@@ -19,6 +19,7 @@ addons:
 # Make sure the home directory is set to 
 # be the TravisCI project directory
 env:
+  GBPHOME_TEST=1
   HOME=${TRAVIS_BUILD_DIR}
 
 # All the tests will be run by this Makefile
