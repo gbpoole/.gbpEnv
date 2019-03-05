@@ -102,7 +102,7 @@ if hash pyenv 2>/dev/null > /dev/null; then eval "$(pyenv init -)"; fi
 
 # Eliminate duplicates in paths
 if [ -n "$ZSH_VERSION" ]; then
-   typeset -gU cdpath fpath path
+   typeset -aU cdpath fpath path
 else
-   typeset -g cdpath fpath path
+   typeset -ag cdpath fpath path
 fi
