@@ -1,4 +1,14 @@
-#!/bin/bash
+# vim:syntax=sh
+# vim:filetype=sh
+
+# Check that an anaconda path has been defined
+if [ -z ${GBP_CONDA_PATH+x} ];then
+    echo 'GBP_CONDA_PATH has not been defined.'
+    return 3
+elif [ ! -d $GBP_CONDA_PATH ]; then
+    echo 'GBP_CONDA_PATH ('$GBP_CONDA_PATH') does not exist.'
+    return 3
+fi
 
 # Accept an environment as a parameter or set to default
 export MY_ENV_DEFAULT="python3.6"
@@ -21,7 +31,6 @@ if [ -f /bin/uname ] || [ -f /usr/bin/uname ]; then
   export GBP_OS=$(uname)
   if [ $GBP_OS = 'Darwin' ]; then
      export GBP_OS='Mac'
-     export PATH=/anaconda/bin:$PATH
   elif [ $GBP_OS = 'Linux' ]; then
      export GBP_OS='linux'
   fi
@@ -36,21 +45,26 @@ if [ -n $GBP_HOSTNAME ]; then
 
   # Set-up for nodes on the Swinburne 'OzStar' cluster
   if [[ $GBP_HOSTNAME = farnarkle* ]] ; then
-    source activate $MY_ENV >> /dev/null 2>&1
+    source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
   elif [[ $GBP_HOSTNAME = john* ]] ; then
-    source activate $MY_ENV >> /dev/null 2>&1
+    source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
   # Set-up for nodes on the Swinburne 'g2' cluster
   elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME = sstar* ]] ; then
     export TCL_LIBRARY="/usr/local/x86_64/anaconda-2.2.0/pkgs/tk-8.5.18-0/lib/tcl8.5/"
     module load anaconda
-    source activate $MY_ENV >> /dev/null 2>&1
+    source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
   # Set-up for OSX
   elif [ $GBP_OS = 'Mac' ]; then
-    source activate $MY_ENV >> /dev/null 2>&1
+    source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
   # Unknown host.  Let the user know.
   else
     echo "Unknown hostname:" $GBP_HOSTNAME
     return 1
   fi
-  echo "Anaconda environment set to ($MY_ENV)."
+  if [ "$CONDA_DEFAULT_ENV" = "$MY_ENV" ]; then
+    echo "Anaconda environment set to '$MY_ENV'."
+  else
+    echo "Anaconda environment could not be set to '$MY_ENV'."
+    return 1
+  fi
 fi

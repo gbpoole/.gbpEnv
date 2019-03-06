@@ -59,9 +59,13 @@ if [ -n $GBP_HOSTNAME ]; then
 
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 
+    # Set installation dir of Ananaconda
+    export GBP_CONDA_PATH="/anaconda/"
+
   elif [ $GBP_HOSTNAME = 'farnarkle1' ] || [ $GBP_HOSTNAME = 'farnarkle2' ]; then
-    #export LC_ALL=en_AU.utf8
-    #export LANG=en_AU.utf8
+    if [ -z ${EBROOTANACONDA3+x} ];then
+       export GBP_CONDA_PATH=${EBROOTANACONDA3}
+    fi
     export GBP_QUEUE_TYPE='SLURM'
   elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
@@ -92,13 +96,26 @@ export LD_LIBRARY_PATH="${GBP_HOME}/3rd_Party/lib64:${LD_LIBRARY_PATH}"
 # Add ~/bin to PATH
 export PATH="${GBP_HOME}/bin:$PATH"
 
-# Add pyenv python installations to path.  Put this last to
-# mitigate conflicts with other installations.
-export PYENV_ROOT=${GBP_HOME}/.pyenv
-export PATH=$PYENV_ROOT/bin:${PATH}
+## Add pyenv python installations to path.  Put this last to
+## mitigate conflicts with other installations.
+#export PYENV_ROOT=${GBP_HOME}/.pyenv
+#export PATH=$PYENV_ROOT/bin:${PATH}
+#
+## Is this needed here? ... it's a bit slow (.1s on Mac).
+#if hash pyenv 2>/dev/null > /dev/null; then eval "$(pyenv init -)"; fi
 
-# Is this needed here? ... it's a bit slow (.1s on Mac).
-if hash pyenv 2>/dev/null > /dev/null; then eval "$(pyenv init -)"; fi
+# Set path to Anaconda
+if [ -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
+    source ${GBP_CONDA_PATH}/etc/profile.d/conda.sh
+
+    # Set-up some python aliases so that Tox can find all the versions of 
+    # python we have installed under Anaconda.  See here for more info and
+    # for directions for how to do this under windows: 
+    #    https://deparkes.co.uk/2018/06/04/use-tox-with-anaconda/
+    for path_i in `find $GBP_CONDA_PATH/envs/python*/bin -name "python?.?"`; do
+        alias `basename $path_i`="$path_i"
+    done
+fi
 
 # Eliminate duplicates in paths
 if [ -n "$ZSH_VERSION" ]; then

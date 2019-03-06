@@ -5,7 +5,7 @@
 # Set prompt, unless terminal is 'dumb'
 if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
     [ `alias | grep "setprompt" | wc -l` != 0 ] && unalias setprompt
-else   
+elif [ ! -n "$ZSH_VERSION" ]; then
     # Set control sequences for prompt
     pmt_black=$(tput setaf   0)
     pmt_red=$(tput setaf     1)
@@ -142,6 +142,10 @@ if [ "$GBP_QUEUE_TYPE" = 'PBS' ]; then
    alias qstat_me='qstat -n1 -u '$USER
    alias qsm='qstat_me'
 fi
+
+# Some Anaconda stuff
+alias conda.list='conda info --envs'
+alias conda.unload='conda deactivate'
 
 #
 # Define common system-wide configurations
