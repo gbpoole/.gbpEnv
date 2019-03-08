@@ -81,6 +81,12 @@ if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
 fi
 
 # Set the prompt (if setprompt is defined; generally not if we're not in zsh)
-if [ ! `alias | grep "setprompt" | wc -l` = 0 ]; then
-    setprompt
+if [ -n "$ZSH_VERSION" ]; then
+    if [ ! `alias | grep "setprompt" | wc -l` = 0 ]; then
+        setprompt
+    fi
+else
+    if [ `type -t setprompt` ]; then
+        setprompt
+    fi
 fi
