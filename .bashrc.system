@@ -63,7 +63,7 @@ if [ -n $GBP_HOSTNAME ]; then
     export GBP_CONDA_PATH="/anaconda/"
 
   elif [ $GBP_HOSTNAME = 'farnarkle1' ] || [ $GBP_HOSTNAME = 'farnarkle2' ]; then
-    if [ -z ${EBROOTANACONDA3+x} ];then
+    if [ ! -z ${EBROOTANACONDA3+x} ];then
        export GBP_CONDA_PATH=${EBROOTANACONDA3}
     fi
     export GBP_QUEUE_TYPE='SLURM'
@@ -113,20 +113,35 @@ if [ -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
     #
     # See here for more info and for directions for how to do this under windows:
     #    https://deparkes.co.uk/2018/06/04/use-tox-with-anaconda/
+    unsetopt nomatch
     GBP_CONDA_SCRIPTS_PATH=$GBP_HOME/bin/anaconda
     if [ ! -d $GBP_CONDA_SCRIPTS_PATH ];then
         mkdir $GBP_CONDA_SCRIPTS_PATH
     fi
-    for path_i in `find $GBP_CONDA_PATH/envs/python?.?/bin -name "python?.?"`; do
-        version_i=`basename $path_i`
-        exec_i=$GBP_CONDA_SCRIPTS_PATH/$version_i
-        if [ ! -x $exec_i ]; then
-            echo "#!/bin/bash" > $exec_i
-            echo $path_i '"$@"' >> $exec_i
-            chmod uo+x $exec_i
-        fi
-    done
+    if [ -d $GBP_CONDA_PATH/envs ]; then
+        export GBP_CONDA_ENVS_PATH=$GBP_CONDA_PATH/envs
+        GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
+    fi
+    if [ -z $GBP_CONDA_ENVS_PATH_LIST ]; then
+        export GBP_CONDA_ENVS_PATH=${GBP_HOME}/.conda/envs
+        GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
+    fi
+    if [[ -z $GBP_CONDA_ENVS_PATH_LIST ]]; then
+        unset GBP_CONDA_ENVS_PATH
+    else
+        # For some reason, I need to redo the find because it doesn't iterate over items if I use $GBP_CONDA_ENVS_PATH_LIST
+        for path_i in `find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?"`; do
+            version_i=`basename $path_i`
+            exec_i=$GBP_CONDA_SCRIPTS_PATH/$version_i
+            if [ ! -x $exec_i ]; then
+                echo "#!/bin/bash" > $exec_i
+                echo $path_i '"$@"' >> $exec_i
+                chmod uo+x $exec_i
+            fi
+        done
+    fi
     export PATH="$GBP_CONDA_SCRIPTS_PATH:$PATH"
+    setopt nomatch
 fi
 
 # Eliminate duplicates in paths

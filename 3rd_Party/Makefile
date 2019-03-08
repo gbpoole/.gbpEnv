@@ -83,8 +83,9 @@ texi2html: texinfo
 	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
 	@$(ECHO) '# See the texi2html node in the Texinfo manual for more.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
 	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# The following line does not  work, but commenting it out lets the stow build below pass.  Good enough for now."
-	@$(ECHO) '#exec texi2any --set-init-variable TEXI2HTML=1 "$@"' >> ${GBP_HOME}/3rd_Party/bin/texi2html
+	@$(ECHO) '# The following line does not  work, but commenting it out and adding the 'touch' command that follows lets the stow build below pass." ' >> ${GBP_HOME}/3rd_Party/bin/texi2html
+	@$(ECHO) '# exec texi2any --set-init-variable TEXI2HTML=1 "$@"' >> ${GBP_HOME}/3rd_Party/bin/texi2html
+	@$(ECHO) 'touch doc/manual-single.html' >> ${GBP_HOME}/3rd_Party/bin/texi2html
 	@chmod a+x ${GBP_HOME}/3rd_Party/bin/texi2html
 
 #########################
@@ -115,6 +116,7 @@ stow-install:
 	@cd stow;make install
 stow-clean:
 	@rm -rf stow
+	@rm -rf ${GBP_HOME}/3rd_Party/bin/texi2html
 
 ###################
 ## fzy from HEAD ##
