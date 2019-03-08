@@ -70,12 +70,13 @@ $fg[105]╰%f${prompt_suffix}'
 
 # precmd is called just before the prompt is printed
 precmd () {
-  RPROMPT=""
-  print -Pn "\e]2; %~/ \a"
+  # Draw an underlined blank line
+  print -Pn "%U${(r:$COLUMNS:: :)}%u"
 }
 # preexec is called just before any command line is executed
 preexec () {
-  print -Pn "\e]2; %~/ \a"
+  # Draw a blank line
+  print 
 }
 
 #export PROMPT="

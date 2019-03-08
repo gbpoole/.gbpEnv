@@ -5,7 +5,6 @@
 !.modules.gbpHome
 !.profile
 !3rd_Party/
-!bin/
 !bin/scripts/
 # bash stuff
 !.bashrc
