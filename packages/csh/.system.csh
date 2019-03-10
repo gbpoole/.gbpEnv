@@ -63,14 +63,14 @@ if ( $?GBP_HOSTNAME ) then
     setenv COPYFILE_DISABLE 1
     setenv PATH /opt/local/bin:/opt/local/sbin:$PATH
   else
-    echo There is no default configuration in .system.cshrc.gbpHome for this system.  Assigning defaults.
+    echo There is no default configuration in .system.cshrc for this system.  Assigning defaults.
     setenv GBP_QUEUE_TYPE 'SERIAL'
   endif
 else if ( $GBP_OS == 'Mac' ) then
    setenv GBP_QUEUE_TYPE 'SERIAL'
    setenv PATH /opt/local/bin:/opt/local/sbin:$PATH
 else
-   echo There is no default configuration in .system.cshrc.gbpHome for this system.  Assigning defaults.
+   echo There is no default configuration in .system.cshrc for this system.  Assigning defaults.
    setenv GBP_QUEUE_TYPE 'SERIAL'
 endif
 

@@ -15,7 +15,7 @@ if (!(${?DISPLAY}) && ${?REMOTEHOST}) then
 endif
 
 # Set all system-specific stuff
-source ${GBP_HOME}/.system.csh.gbpHome
+source ${GBP_HOME}/.system.csh
 
 # These lines set-up gbpCode
 setenv GBP_SRC  ${GBP_HOME}'/gbpCode/'
@@ -30,7 +30,7 @@ setenv PATH  ${GBP_SRC}/my_code/bin/:$PATH
 setenv PATH ${GBP_HOME}/3rd_Party/bin/:$PATH
 
 # Create all my aliases
-source ${GBP_HOME}/.alias.csh.gbpHome
+source ${GBP_HOME}/.alias.csh
 
 # Set the prompt
 setprompt

@@ -25,12 +25,11 @@ VERSION-gd=2.2.5
 VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
 VERSION-fftw3=3.3.8
-VERSION-texinfo=6.6
 
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = stow texinfo libgit2 antibody zsh gcc cmake mpich gsl cfitsio gd fftw2 fftw3
+generic_libs = libgit2 antibody zsh gcc cmake mpich gsl cfitsio gd fftw2 fftw3
 
 ############################
 ## Generic library target ##
@@ -42,81 +41,6 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
-
-###########################################################
-# List of targets associated with development environment #
-###########################################################
-devenv: zsh antibody stow
-
-########################################################################################################
-# texi2html                                                                                            #
-# -----------------------------------------------------------------------------------------------------#
-# This creates a wrapper from texi2html -> texi2any, which is in texinfo.  This is needed to build the #
-# docs for `stow` which, breaks the install if it fails.   There's no option to build `stow` without   #
-# docs! :( This was obtained here:                                                                     #
-#     https://svn.savannah.gnu.org/viewvc/texinfo/trunk/util/texi2html?view=markup                     #
-########################################################################################################
-texi2html: texinfo
-	@$(ECHO) '#! /bin/sh' > ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# Copyright 2012 Free Software Foundation, Inc.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# This file is free software; as a special exception the author gives' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# unlimited permission to copy and/or distribute it, with or without' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# modifications, as long as this notice is preserved.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# This program is distributed in the hope that it will be useful, but' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# Original author: Patrice Dumas.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# Convert Texinfo to HTML, setting the default style to be the texi2html' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# style.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# It is not fully compatible with texi2html.  There is no possibility of' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# splitting indices, and translated strings cannot (yet?) be customized.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# Command line processing and options have also changed, and the' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# customization API is new.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# Thus, since this is not a drop-in replacement for the old texi2html,' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) "# we do not install it.  It's here as an example." >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# See the texi2html node in the Texinfo manual for more.' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '#' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# The following line does not  work, but commenting it out and adding the 'touch' command that follows lets the stow build below pass." ' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) '# exec texi2any --set-init-variable TEXI2HTML=1 "$@"' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@$(ECHO) 'touch doc/manual-single.html' >> ${GBP_HOME}/3rd_Party/bin/texi2html
-	@chmod a+x ${GBP_HOME}/3rd_Party/bin/texi2html
-
-#########################
-## texinfo from HEAD ##
-#########################
-texinfo-download:
-	@wget https://ftp.gnu.org/gnu/texinfo/texinfo-${VERSION-texinfo}.tar.gz
-	@tar xzf texinfo-${VERSION-texinfo}.tar.gz
-texinfo-config:
-	@cd texinfo-${VERSION-texinfo};autoreconf -iv;./configure --prefix=${GBP_HOME}/3rd_Party/
-texinfo-build:
-	@cd texinfo-${VERSION-texinfo};make -j ${N_CORES}
-texinfo-install:
-	@cd texinfo-${VERSION-texinfo};make install
-texinfo-clean:
-	@rm -rf texinfo-${VERSION-texinfo}
-
-####################
-## stow from HEAD ##
-####################
-stow-download: texi2html
-	@git clone https://github.com/aspiers/stow.git
-stow-config:
-	@cd stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${GBP_HOME}/3rd_Party/ --with-pmdir=${GBP_HOME}/3rd_Party/perl
-stow-build:
-	@cd stow;make -j ${N_CORES}
-stow-install:
-	@cd stow;make install
-stow-clean:
-	@rm -rf stow
-	@rm -rf ${GBP_HOME}/3rd_Party/bin/texi2html
 
 ###################
 ## fzy from HEAD ##
@@ -160,7 +84,7 @@ antibody-clean:
 ###################
 ## zsh from HEAD ##
 ###################
-zsh-download:
+zsh-download: antibody
 	@git clone git://zsh.git.sf.net/gitroot/zsh/zsh
 zsh-config:
 	@cd zsh;autoreconf
