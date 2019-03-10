@@ -22,12 +22,17 @@ env:
   GBPHOME_TEST=1
   HOME=${TRAVIS_BUILD_DIR}
 
-# All the tests will be run by this Makefile
-#    using assert.sh
+# Install and then run tests (via Makefile) using assert.sh
 script: |
+    # Install
+    cd ${HOME}/.gbpEnv
+    make
+    # tests
+    cd ${HOME}
     make -f .test/Makefile tests
 
 # Add the following lines to generate Codecov report
 after_success: |
+    cd ${HOME}/.gbpEnv
     make -f .test/Makefile kcov
 
