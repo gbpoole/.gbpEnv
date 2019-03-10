@@ -49,7 +49,7 @@ submodules-update:
 #################################
 .PHONY: $(addsuffix .install,$(PACKAGE_LIST)) packages-install
 $(addsuffix .install,$(PACKAGE_LIST)):
-	@$(ECHO) -n Uninstalling $(basename $@)...
+	@$(ECHO) -n Installing $(basename $@)...
 	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d packages $(basename $@)
 	@$(ECHO) Done.
 packages-install: $(addsuffix .install,$(PACKAGE_LIST))
@@ -69,7 +69,7 @@ packages-uninstall: $(addsuffix .uninstall,$(PACKAGE_LIST))
 ###################################
 .PHONY: $(addsuffix .reinstall,$(PACKAGE_LIST)) packages-reinstall
 $(addsuffix .reinstall,$(PACKAGE_LIST)):
-	@$(ECHO) -n Uninstalling $(basename $@)...
+	@$(ECHO) -n Reinstalling $(basename $@)...
 	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d packages -R $(basename $@)
 	@$(ECHO) Done.
 packages-reinstall: $(addsuffix .reinstall,$(PACKAGE_LIST))
