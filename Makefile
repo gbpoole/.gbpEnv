@@ -7,11 +7,15 @@
 .PHONY: default static_dirs devenv_libs
 default: all
 
+# Makefile path & directory
+MAKEFILE_PATH = $(abspath $(lastword $(MAKEFILE_LIST)))
+MAKEFILE_DIR = $(dir $(MAKEFILE_PATH))
+
 # Location of the repository
-REPO_DIR=${PWD}
+REPO_DIR = ${MAKEFILE_DIR}
 
 # Root into which we will install everything
-INSTALL_DIR=${REPO_DIR}/../
+INSTALL_DIR = ${REPO_DIR}/../
 
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
@@ -29,20 +33,20 @@ all: submodules-init static_dirs stow packages-install
 ## part of this repository.                         ##
 ######################################################
 static_dirs:
-	@cp -r static_dirs/* ${INSTALL_DIR}
+	@cp -r ${REPO_DIR}/static_dirs/* ${INSTALL_DIR}
 
 #####################################################
 ## Create list of packages to be installed by Stow ##
 #####################################################
-PACKAGE_LIST=$(notdir $(wildcard packages/*))
+PACKAGE_LIST=$(notdir $(wildcard ${REPO_DIR}/packages/*))
 
 ##################################
 ## Initialize/update submodules ##
 ##################################
 submodules-init:
-	@git submodule update --init --recursive
+	@cd ${REPO_DIR};git submodule update --init --recursive
 submodules-update:
-	@git submodule update --recursive
+	@cd ${REPO_DIR};git submodule update --recursive
 
 #################################
 ### Install packages with Stow ##
@@ -50,7 +54,7 @@ submodules-update:
 .PHONY: $(addsuffix .install,$(PACKAGE_LIST)) packages-install
 $(addsuffix .install,$(PACKAGE_LIST)):
 	@$(ECHO) -n Installing $(basename $@)...
-	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d packages $(basename $@)
+	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d ${REPO_DIR}/packages $(basename $@)
 	@$(ECHO) Done.
 packages-install: $(addsuffix .install,$(PACKAGE_LIST))
 
@@ -60,7 +64,7 @@ packages-install: $(addsuffix .install,$(PACKAGE_LIST))
 .PHONY: $(addsuffix .uninstall,$(PACKAGE_LIST)) packages-uninstall
 $(addsuffix .uninstall,$(PACKAGE_LIST)):
 	@$(ECHO) -n Uninstalling $(basename $@)...
-	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d packages -D $(basename $@)
+	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d ${REPO_DIR}/packages -D $(basename $@)
 	@$(ECHO) Done.
 packages-uninstall: $(addsuffix .uninstall,$(PACKAGE_LIST))
 
@@ -70,7 +74,7 @@ packages-uninstall: $(addsuffix .uninstall,$(PACKAGE_LIST))
 .PHONY: $(addsuffix .reinstall,$(PACKAGE_LIST)) packages-reinstall
 $(addsuffix .reinstall,$(PACKAGE_LIST)):
 	@$(ECHO) -n Reinstalling $(basename $@)...
-	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d packages -R $(basename $@)
+	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d ${REPO_DIR}/packages -R $(basename $@)
 	@$(ECHO) Done.
 packages-reinstall: $(addsuffix .reinstall,$(PACKAGE_LIST))
 
@@ -85,15 +89,15 @@ $(generic_libs): % : %-download %-config %-build %.install %-clean
 ## Install stow  ##
 ###################
 stow-download: 
-	@git clone https://github.com/aspiers/stow.git
+	@cd ${REPO_DIR};git clone https://github.com/aspiers/stow.git
 stow-config:
-	@cd stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${INSTALL_DIR}/3rd_Party/ --with-pmdir=${INSTALL_DIR}/3rd_Party/perl
+	@cd ${REPO_DIR}/stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${INSTALL_DIR}/3rd_Party/ --with-pmdir=${INSTALL_DIR}/3rd_Party/perl
 stow-build: texi2html
-	@cd stow;make -j 4
+	@cd ${REPO_DIR}/stow;make -j 4
 stow.install:
-	@cd stow;make install
+	@cd ${REPO_DIR}/stow;make install
 stow-clean:
-	@rm -rf stow
+	@rm -rf ${REPO_DIR}/stow
 
 ########################################################################################################
 # texi2html                                                                                            #
@@ -104,10 +108,10 @@ stow-clean:
 #     https://svn.savannah.gnu.org/viewvc/texinfo/trunk/util/texi2html?view=markup                     #
 ########################################################################################################
 texi2html: 
-	@$(ECHO) "#! /bin/sh" > stow/texi2html
-	@$(ECHO) "# The 'touch' command that follows lets the stow build below pass." >> stow/texi2html
-	@$(ECHO) "touch doc/manual-single.html" >> stow/texi2html
-	@chmod a+x stow/texi2html
+	@$(ECHO) "#! /bin/sh" > ${REPO_DIR}/stow/texi2html
+	@$(ECHO) "# The 'touch' command that follows lets the stow build below pass." >> ${REPO_DIR}/stow/texi2html
+	@$(ECHO) "touch doc/manual-single.html" >> ${REPO_DIR}/stow/texi2html
+	@chmod a+x ${REPO_DIR}/stow/texi2html
 
 ##############
 # Print help #
