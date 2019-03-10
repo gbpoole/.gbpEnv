@@ -21,7 +21,7 @@ STOW = ${INSTALL_DIR}/3rd_Party/bin/stow
 
 export PATH := ${REPO_DIR}/stow:$(PATH)
 
-all: static_dirs stow packages-install
+all: submodules-init static_dirs stow packages-install
 
 ######################################################
 ## These directories are installed directly because ##
@@ -35,6 +35,14 @@ static_dirs:
 ## Create list of packages to be installed by Stow ##
 #####################################################
 PACKAGE_LIST=$(notdir $(wildcard packages/*))
+
+##################################
+## Initialize/update submodules ##
+##################################
+submodules-init:
+	@git submodule update --init --recursive
+submodules-update:
+	@git submodule update --recursive
 
 #################################
 ### Install packages with Stow ##

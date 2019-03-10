@@ -24,7 +24,7 @@ env:
 
 # Perform environment install
 before_script:
-  cd .gbpEnv ; make
+  make -f .gbpEnv/Makefile
 
 # Run tests (via Makefile) using assert.sh
 script:
