@@ -13,7 +13,7 @@ addons:
     packages:
       # Needed to build Stow documentation
       - texlive-latex-recommended
-      - texlive-latex-extra
+        #- texlive-latex-extra
       - texlive-fonts-recommended
       - texinfo
         ## Needed by Codecov
@@ -22,10 +22,10 @@ addons:
         #- libdw-dev
         #- cmake
   homebrew:
-    packages:
+    casks:
       # Needed to build Stow documentation
       - mactex
-      - texinfo
+        #- texinfo
         ## Needed by Codecov
         #- libcurl4-openssl-dev
         #- libelf-dev
