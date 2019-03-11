@@ -23,15 +23,16 @@ env:
   HOME=${TRAVIS_BUILD_DIR}
 
 # Perform environment install
+# i* n.b.: We are in the repo dir at this point *
 before_script: |
-  echo dir=${TRAVIS_BUILD_DIR}
-  ls
-  make -f .gbpEnv/Makefile
+  make
 
 # Run tests (via Makefile) using assert.sh
 script: |
+  cd ${TRAVIS_BUILD_DIR}/.. 
   make -f .test/Makefile tests
 
 # Add the following lines to generate Codecov report
 after_success: |
+  cd ${TRAVIS_BUILD_DIR}/.. 
   make -f .test/Makefile kcov
