@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libgit2 antibody zsh gcc cmake mpich gsl cfitsio gd fftw2 fftw3
+generic_libs = libgit2 antibody zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3
 
 ############################
 ## Generic library target ##

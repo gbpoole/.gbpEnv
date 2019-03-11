@@ -10,9 +10,10 @@ if [ $ZSH_PROFILE_MODE -eq 1 ]; then
     zmodload zsh/zprof
 fi
 
-export SCRIPTS=${HOME}/scripts
+export ZSHCONFIG=${PWD}/.zsh-config
 
-export ZSHCONFIG=${HOME}/.zsh-config
+# Add 3rd_Party/bin tpo path because it may be needed by antibody packages
+export PATH=$PWD/3rd_Party/bin:$PATH
 
 # Run initialisation script
 ZSH_INIT=${ZSHCONFIG}/_init.sh
