@@ -10,4 +10,4 @@ source ${ZSHCONFIG}/lib/prompts-pure-gbp.sh
 
 # Custom Powerlevel9k theme of gbp
 # https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions
-source ${ZSHCONFIG}/lib/prompts-powerlevel9k-gbp.sh
+#source ${ZSHCONFIG}/lib/prompts-powerlevel9k-gbp.sh
