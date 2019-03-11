@@ -12,7 +12,7 @@ fi
 # The version of the pure shell we are using generates
 # 4 spurious carriage returns when run as a non-login shell
 if [ ! -n "${GBPENV_TEST}" ]; then
-    assert "./.zshrc 2>&1" "\n\n\n\n" # Turned-off for Travis becuase I couldn't figure-out how to install zsh adequately
+    assert "./.zshrc 2>&1" "" # Turned-off for Travis becuase I couldn't figure-out how to install zsh adequately
 fi
 
 # end of test suite
