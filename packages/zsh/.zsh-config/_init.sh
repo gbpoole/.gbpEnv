@@ -9,7 +9,9 @@ export PATH=/usr/local/sbin:/usr/local/bin:$PATH
 
 # Make sure ZSH is calling this:
 # https://stackoverflow.com/a/9911082/339302
-[ ! -n "$ZSH_VERSION" ] && return
+if [ ! -n "$ZSH_VERSION" ]; then
+    return
+fi
 
 # Set autoloaded functions
 my_zsh_fpath=${ZSHCONFIG}/autoloaded

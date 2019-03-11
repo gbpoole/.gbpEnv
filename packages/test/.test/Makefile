@@ -8,6 +8,9 @@ KCOV_TOKEN="093d2255-106c-40f4-b3f9-5056c7935cd1"
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
 
+# Set a flag alerting that we are running tests
+GBPENV_TEST=1
+
 # Determine what sort of environment we're in (eg. OSX or Linux)
 # Set linux defaults
 KCOV_DIR='.test/kcov-master'
@@ -31,8 +34,12 @@ export _MAC_BUILD
 export _TRAVIS_BUILD
 
 # Generate tests for the CI service
-tests:
-	.test/assert_bash_config.sh
+TEST_LIST=$(notdir $(wildcard .test/tests/*))
+.PHONY: ${TEST_LIST} tests
+${TEST_LIST}:
+	.test/tests/$@
+tests: ${TEST_LIST}
+	@$(ECHO) processed ${TEST_LIST}
 
 # Generate coverage information for bash configuration
 BASH_CONFIG_LIST = .bashrc .bashrc.system

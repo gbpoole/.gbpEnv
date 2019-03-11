@@ -2,6 +2,11 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
+# If we're running tests, then exit with failure upon any error
+if [ -n "$GBPENV_TEST" ] ; then
+    set -e
+fi
+
 # Set-up some generic UNIX stuff
 umask 22
 ulimit -c 0
