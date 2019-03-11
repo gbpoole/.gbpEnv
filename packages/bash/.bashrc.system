@@ -72,7 +72,7 @@ if [ -n $GBP_HOSTNAME ]; then
   elif [ $GBP_HOSTNAME = 'sstar001.hpc.swin.edu.au' ] || [ $GBP_HOSTNAME = 'sstar002.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='NONE'
   # This case is needed because CI tests break if bash returns text
-  elif [ "$GBPHOME_TEST" = 1 ]; then
+  elif [ "$GBPENV_TEST" = 1 ]; then
     export GBP_QUEUE_TYPE='NONE'
   else
     echo There is no default configuration in .bashrc.system for this system.  Assigning defaults.

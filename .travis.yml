@@ -19,18 +19,19 @@ addons:
 # Make sure the home directory is set to 
 # be the TravisCI project directory
 env:
-  GBPHOME_TEST=1
+  GBPENV_TEST=1
   HOME=${TRAVIS_BUILD_DIR}
 
 # Perform environment install
-before_script:
+before_script: |
+  echo dir=${TRAVIS_BUILD_DIR}
+  ls
   make -f .gbpEnv/Makefile
 
 # Run tests (via Makefile) using assert.sh
-script:
+script: |
   make -f .test/Makefile tests
 
 # Add the following lines to generate Codecov report
 after_success: |
-  cd ${HOME}/.gbpEnv
   make -f .test/Makefile kcov
