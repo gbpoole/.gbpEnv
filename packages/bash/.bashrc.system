@@ -113,7 +113,9 @@ if [ -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
     #
     # See here for more info and for directions for how to do this under windows:
     #    https://deparkes.co.uk/2018/06/04/use-tox-with-anaconda/
-    unsetopt nomatch
+    if [ -n "$ZSH_VERSION" ]; then
+        unsetopt nomatch
+    fi
     GBP_CONDA_SCRIPTS_PATH=$GBP_HOME/bin/anaconda
     if [ ! -d $GBP_CONDA_SCRIPTS_PATH ];then
         mkdir $GBP_CONDA_SCRIPTS_PATH
@@ -122,11 +124,11 @@ if [ -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
         export GBP_CONDA_ENVS_PATH=$GBP_CONDA_PATH/envs
         GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
     fi
-    if [ -z $GBP_CONDA_ENVS_PATH_LIST ]; then
+    if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
         export GBP_CONDA_ENVS_PATH=${GBP_HOME}/.conda/envs
         GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
     fi
-    if [[ -z $GBP_CONDA_ENVS_PATH_LIST ]]; then
+    if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
         unset GBP_CONDA_ENVS_PATH
     else
         # For some reason, I need to redo the find because it doesn't iterate over items if I use $GBP_CONDA_ENVS_PATH_LIST
@@ -141,7 +143,9 @@ if [ -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
         done
     fi
     export PATH="$GBP_CONDA_SCRIPTS_PATH:$PATH"
-    setopt nomatch
+    if [ -n "$ZSH_VERSION" ]; then
+        setopt nomatch
+    fi
 fi
 
 # Eliminate duplicates in paths

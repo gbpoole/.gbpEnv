@@ -181,18 +181,18 @@ alias H=' | head '
 alias W=' | wc -l '
 alias S=' | sort '
 
-function handle-multi-arguments(){
-	if [ ! "$#" -gt 1 ] ; then
-	  echo "Usage: $0 file1 file2 ..." >&2
-	  return -1
-	fi
-	for file in $@; do
-		if [ -f $file ] ; then
-			echo -n $file
-		fi
-	done
-	echo 'Done!'
-}
+#function handle-multi-arguments(){
+#	if [ ! "$#" -gt 1 ] ; then
+#	  echo "Usage: $0 file1 file2 ..." >&2
+#	  return -1
+#	fi
+#	for file in $@; do
+#		if [ -f $file ] ; then
+#			echo -n $file
+#		fi
+#	done
+#	echo 'Done!'
+#}
 
 # macOS specific
 #

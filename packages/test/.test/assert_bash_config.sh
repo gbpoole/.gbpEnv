@@ -12,4 +12,3 @@ assert "source .bashrc.alias 2>&1" ""
 
 # end of test suite
 assert_end examples
-
