@@ -65,7 +65,11 @@ else
     nnoremap <leader>Y :let g:ycm_auto_trigger=1<CR> "turn YCM on
 
     " Set color scheme(s)
-    colorscheme molokai
+    try
+        colorscheme molokai
+    catch /^Vim\%((\a\+)\)\=:E185/
+        echom "Colourscheme not found.  Perhaps Vundle packages have not been installed?  Try running :PluginInstall"
+    endtry
     let g:airline_theme='molokai'
 
 endif

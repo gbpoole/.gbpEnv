@@ -1,4 +1,0 @@
-# First, ignore everything
-*
-# Then, select the things we want to keep
-!.gitignore
