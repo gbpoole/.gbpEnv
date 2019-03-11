@@ -36,8 +36,7 @@ env:
 
 # Perform environment install
 # i* n.b.: We are in the repo dir at this point *
-before_script:
-  echo XXXXXXXXXXXXXXXXXXXXX $PATH
+before_script: |
   make
 
 # Run tests (via Makefile) using assert.sh
