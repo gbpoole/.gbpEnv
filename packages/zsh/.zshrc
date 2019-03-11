@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/zsh
 # vim:syntax=zsh
 # vim:filetype=zsh
 
