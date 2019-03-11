@@ -15,7 +15,7 @@ addons:
       - texlive-latex-recommended
       - texlive-latex-extra
       - texlive-fonts-recommended
-      - chktex
+      - texinfo
       # Needed by Codecov
       - libcurl4-openssl-dev
       - libelf-dev
