@@ -19,12 +19,6 @@ addons:
     casks:
       # Needed to build Stow documentation
       - basictex
-        #- texinfo
-        ## Needed by Codecov
-        #- libcurl4-openssl-dev
-        #- libelf-dev
-        #- libdw-dev
-        #- cmake
 
 # Make sure the home directory is set to 
 # be the TravisCI project directory
