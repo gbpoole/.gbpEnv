@@ -78,6 +78,14 @@ $(addsuffix .reinstall,$(PACKAGE_LIST)):
 	@$(ECHO) Done.
 packages-reinstall: $(addsuffix .reinstall,$(PACKAGE_LIST))
 
+##########
+# Update #
+##########
+.PHONY: pull_from_master update
+pull_from_master:
+	@cd ${REPO_DIR};git pull origin master
+update: packages-uninstall pull_from_master packages-install
+
 #######################
 ## Generic libraries ##
 #######################
