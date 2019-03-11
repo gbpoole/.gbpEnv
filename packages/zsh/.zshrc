@@ -27,7 +27,7 @@ if [ ! -f "${GBP_HOME}/.zshrc" ]; then
     fi
 fi
 
-# Add 3rd_Party/bin tpo path because it may be needed by antibody packages
+# Add 3rd_Party/bin to path because it may be needed by antibody packages
 export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
 
 # Run initialisation script

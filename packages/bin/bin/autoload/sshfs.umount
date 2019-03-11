@@ -1,0 +1,26 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+# --------------
+# Validate input
+if [ $# -eq 1 ]; then
+    REMOTE_HOST=$1
+else
+    echo 'Syntax:' $0 'remote_host'
+    return 2
+fi
+# --------------
+
+# Set-up some paths
+MNT_DIR=${GBP_HOME}/mnt
+LOCAL_DIR=${MNT_DIR}/${REMOTE_HOST}
+
+# Unmount
+umount ${LOCAL_DIR}
+
+# Teardown the local directory
+if [ -d "${LOCAL_DIR}" ]; then
+    rm -rf ${LOCAL_DIR}
+fi
+
+echo ${REMOTE_HOST} umounted.
