@@ -1,0 +1,26 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+gbp_user_validate(){
+    # Render prompt
+    if [ $# -lt 1 ];then
+        echo "Confirm (y/n)? \c"
+    else
+        echo "$@ (y/n)? \c"
+    fi
+
+    # Fetch-and-return input
+    old_stty_cfg=$(stty -g)
+    stty raw -echo
+    answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
+    stty $old_stty_cfg
+    if echo "$answer" | grep -iq "^y" ;then
+        message="Yes"
+        result=1
+    else
+        message="No"
+        result=0
+    fi
+    echo $message
+    return result
+}

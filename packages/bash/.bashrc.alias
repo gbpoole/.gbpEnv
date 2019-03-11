@@ -72,6 +72,8 @@ fi
 
 # Save a whole lot'a keystrokes
 alias g='git'
+alias gpu='git push origin master'
+alias gpl='git pull origin master'
 
 # Substitute for a few improved applications, if present
 
