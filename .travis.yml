@@ -13,18 +13,12 @@ addons:
     packages:
       # Needed to build Stow documentation
       - texlive-latex-recommended
-        #- texlive-latex-extra
       - texlive-fonts-recommended
       - texinfo
-        ## Needed by Codecov
-        #- libcurl4-openssl-dev
-        #- libelf-dev
-        #- libdw-dev
-        #- cmake
   homebrew:
     casks:
       # Needed to build Stow documentation
-      - mactex
+      - basictex
         #- texinfo
         ## Needed by Codecov
         #- libcurl4-openssl-dev
