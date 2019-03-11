@@ -14,8 +14,8 @@ export SCRIPTS=${HOME}/scripts
 
 export ZSHCONFIG=${HOME}/.zsh-config
 
+# Run initialisation script
 ZSH_INIT=${ZSHCONFIG}/_init.sh
-
 if [[ -s ${ZSH_INIT} ]]; then
     source ${ZSH_INIT}
 else
