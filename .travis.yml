@@ -6,14 +6,17 @@ os:
   - linux
   - osx
 
-# The following lines are needed by Codecov
+# Install build and test dependancies
 sudo: required
 addons:
   apt:
     packages:
+      # Needed to build Stow documentation
       - texlive-latex-recommended
       - texlive-latex-extra
       - texlive-fonts-recommended
+      - chktex
+      # Needed by Codecov
       - libcurl4-openssl-dev
       - libelf-dev
       - libdw-dev
