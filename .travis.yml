@@ -25,8 +25,7 @@ addons:
 # be the TravisCI project directory
 env:
   GBPENV_TEST=1
-  HOME=${TRAVIS_BUILD_DIR}
-  GBP_HOME=${TRAVIS_BUILD_DIR}
+  HOME=${TRAVIS_BUILD_DIR}/../
 
 # Perform environment install
 # i* n.b.: We are in the repo dir at this point *
