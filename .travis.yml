@@ -11,16 +11,13 @@ sudo: required
 addons:
   apt:
     packages:
-      # Needed for testing
-      - zsh
       # Needed to build Stow documentation
       - texlive-latex-recommended
       - texlive-fonts-recommended
       - texinfo
   homebrew:
+    packages:
     casks:
-      # Needed for testing
-      - zsh
       # Needed to build Stow documentation
       - basictex
 
@@ -38,6 +35,9 @@ before_script: |
   # Perform install of packages
   cd ${TRAVIS_BUILD_DIR}/.. 
   make -f .gbpEnv/Makefile
+  # Needed for testing zsh config
+  cd 3rd_Party
+  make zsh
 
 # Run tests (via Makefile) using assert.sh
 script: |
