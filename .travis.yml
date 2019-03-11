@@ -16,11 +16,21 @@ addons:
       - texlive-latex-extra
       - texlive-fonts-recommended
       - texinfo
-      # Needed by Codecov
-      - libcurl4-openssl-dev
-      - libelf-dev
-      - libdw-dev
-      - cmake
+        ## Needed by Codecov
+        #- libcurl4-openssl-dev
+        #- libelf-dev
+        #- libdw-dev
+        #- cmake
+  homebrew:
+    packages:
+      # Needed to build Stow documentation
+      - mactex
+      - texinfo
+        ## Needed by Codecov
+        #- libcurl4-openssl-dev
+        #- libelf-dev
+        #- libdw-dev
+        #- cmake
 
 # Make sure the home directory is set to 
 # be the TravisCI project directory
