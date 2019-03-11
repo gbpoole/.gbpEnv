@@ -11,6 +11,9 @@ sudo: required
 addons:
   apt:
     packages:
+      - texlive-latex-recommended
+      - texlive-latex-extra
+      - texlive-fonts-recommended
       - libcurl4-openssl-dev
       - libelf-dev
       - libdw-dev
