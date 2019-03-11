@@ -15,7 +15,7 @@ MAKEFILE_DIR = $(dir $(MAKEFILE_PATH))
 REPO_DIR = ${MAKEFILE_DIR}
 
 # Root into which we will install everything
-INSTALL_DIR = ${REPO_DIR}/../
+INSTALL_DIR = ${PWD}
 
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
@@ -118,7 +118,7 @@ texi2html:
 ##############
 help:
 	@$(ECHO) 
-	@$(ECHO) "The following targets are available:"
+	@$(ECHO) "The following targets are available (install directory assumed to be the run directory):"
 	@$(ECHO) "    all [default]      - Initialize"
 	@$(ECHO) "    stow               - Build and install Gnu Stow"
 	@$(ECHO) "    packages-install   - Install everython in 'packages' with Stow"
