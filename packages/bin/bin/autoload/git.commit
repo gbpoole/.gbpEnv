@@ -28,4 +28,4 @@ gbp_user_validate "Commit with message {$COMMIT_MESSAGE}"
 if [ $? -eq 0 ] ; then
     return 1
 fi
-git commit -m "$COMMIT_MESSAGE"
+git commit -m \"$COMMIT_MESSAGE\"
