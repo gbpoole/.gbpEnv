@@ -82,7 +82,9 @@ packages-reinstall: $(addsuffix .reinstall,$(PACKAGE_LIST))
 # Update #
 ##########
 .PHONY: pull_from_master update
-pull_from_master:
+# We may have wiped (or may not have initialized) git.  Temporarily install and then uninstall.
+pull_from_master: git.install _do_pull_from_master git.uninstall
+_do_pull_from_master: git.install
 	@cd ${REPO_DIR};git pull origin master
 update: packages-uninstall pull_from_master packages-install
 
