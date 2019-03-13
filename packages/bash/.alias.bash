@@ -72,7 +72,7 @@ fi
 
 # Save a whole lot'a keystrokes
 alias g='git'
-alias gpu='git push origin master'
+alias gph='git push origin master'
 alias gpl='git pull origin master'
 alias gst='git status'
 alias glg='git lg | head'

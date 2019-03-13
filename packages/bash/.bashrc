@@ -47,7 +47,7 @@ fi
 source ${GBP_HOME}/.bashrc.system
 
 # Create some aliases
-source ${GBP_HOME}/.bashrc.alias
+source ${GBP_HOME}/.alias.bash
 
 # Set default editor
 export EDITOR=`which vim`
