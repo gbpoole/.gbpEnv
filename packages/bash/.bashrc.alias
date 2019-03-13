@@ -64,10 +64,10 @@ if [ "$GBP_OS" = 'Mac' ]; then
     if [ -e '/usr/local/bin/gls' ]; then
         alias ls='/usr/local/bin/gls --color=auto'
     else
-        alias ls='ls -CG'
+        alias ls='ls -C'
     fi
 else
-    alias ls='ls -CG --color=auto'
+    alias ls='ls -C --color=auto'
 fi
 
 # Save a whole lot'a keystrokes
