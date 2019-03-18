@@ -62,14 +62,14 @@ if [ -n $GBP_HOSTNAME ]; then
     # Set installation dir of Ananaconda
     export GBP_CONDA_PATH="/anaconda/"
 
-  elif [ $GBP_HOSTNAME = 'farnarkle1' ] || [ $GBP_HOSTNAME = 'farnarkle2' ]; then
+  elif [[ $GBP_HOSTNAME = farnarkle* ]] || [[ $GBP_HOSTNAME = data-mover* ]] || [[ $GBP_HOSTNAME = john* ]] ; then
     if [ ! -z ${EBROOTANACONDA3+x} ];then
        export GBP_CONDA_PATH=${EBROOTANACONDA3}
     fi
     export GBP_QUEUE_TYPE='SLURM'
   elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
-  elif [ $GBP_HOSTNAME = 'sstar001.hpc.swin.edu.au' ] || [ $GBP_HOSTNAME = 'sstar002.hpc.swin.edu.au' ]; then
+  elif [[ $GBP_HOSTNAME = sstar* ]]; then
     export GBP_QUEUE_TYPE='NONE'
   # This case is needed because CI tests break if bash returns text
   elif [ "$GBPENV_TEST" = 1 ]; then
