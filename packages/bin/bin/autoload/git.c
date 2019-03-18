@@ -7,7 +7,7 @@ if [ ! $# -eq 0 ]; then
     # This does not preserve single-quotes
     #COMMIT_MESSAGE="$@"
     # This comes from here: https://unix.stackexchange.com/questions/197792/joining-bash-arguments-into-single-string-with-spaces
-    COMMIT_MESSAGE="'$*'"
+    COMMIT_MESSAGE="$*"
 else
     COMMIT_MESSAGE=""
 fi
