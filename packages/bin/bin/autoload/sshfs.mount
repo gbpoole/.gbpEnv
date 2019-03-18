@@ -23,4 +23,4 @@ fi
 mkdir ${LOCAL_DIR}
 
 # Perform mount
-sshfs -o auto_cache,allow_other,defer_permissions,noappledouble,follow_symlinks gpoole@${REMOTE_HOST}: ${LOCAL_DIR}
+sshfs -o allow_other,defer_permissions,noappledouble,follow_symlinks gpoole@${REMOTE_HOST}: ${LOCAL_DIR}
