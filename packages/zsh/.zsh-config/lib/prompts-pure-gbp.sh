@@ -63,7 +63,7 @@ at_strikeoff=%{$'\e[29m'%}
 
 local prompt_suffix='%{3$reset_color%}'
 local current_dir='${fg_purple}%~%f%{$reset_color%}'
-local user_host='%B${fg_lgreen} %n%{$reset_color%}${fg_pink}@${fg_lcyan}%M%b%f${prompt_suffix}'
+local user_host='\uF109 %B${fg_lgreen}%n%{$reset_color%}${fg_pink}@${fg_lcyan}%M%b%f${prompt_suffix}'
 local current_datetime='${fg_blue}%D{%d.%m.%Y} ${fg_red}%T%f${prompt_suffix}'
 local the_prompt_sign='%b
 $fg[105]╰%f${prompt_suffix}'
@@ -71,7 +71,7 @@ $fg[105]╰%f${prompt_suffix}'
 # precmd is called just before the prompt is printed
 precmd () {
   # Draw an underlined blank line
-  print -Pn "%U${(r:$COLUMNS:: :)}%u"
+  print -Pn "${fg_brown}%U${(r:$COLUMNS:: :)}%u%{$reset_color%}"
 }
 # preexec is called just before any command line is executed
 preexec () {
