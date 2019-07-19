@@ -91,7 +91,7 @@ update: packages-uninstall pull_from_master packages-install
 #######################
 ## Generic libraries ##
 #######################
-generic_libs = stow texinfo
+generic_libs = stow
 .PHONY: $(generic_libs)
 $(generic_libs): % : %-download %-config %-build %.install %-clean
 
@@ -99,10 +99,10 @@ $(generic_libs): % : %-download %-config %-build %.install %-clean
 ## Install stow  ##
 ###################
 stow-download: 
-	@cd ${REPO_DIR};git clone https://github.com/aspiers/stow.git
+	@cd ${REPO_DIR};git clone https://git.savannah.gnu.org/git/stow.git
 stow-config:
 	@cd ${REPO_DIR}/stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${INSTALL_DIR}/3rd_Party/ --with-pmdir=${INSTALL_DIR}/3rd_Party/perl
-stow-build: texi2html
+stow-build:
 	@cd ${REPO_DIR}/stow;make -j 4
 stow.install:
 	@cd ${REPO_DIR}/stow;make install
@@ -117,11 +117,12 @@ stow-clean:
 # docs! :( This was obtained here:                                                                     #
 #     https://svn.savannah.gnu.org/viewvc/texinfo/trunk/util/texi2html?view=markup                     #
 ########################################################################################################
-texi2html: 
-	@$(ECHO) "#! /bin/sh" > ${REPO_DIR}/stow/texi2html
-	@$(ECHO) "# The 'touch' command that follows lets the stow build below pass." >> ${REPO_DIR}/stow/texi2html
-	@$(ECHO) "touch doc/manual-single.html" >> ${REPO_DIR}/stow/texi2html
-	@chmod a+x ${REPO_DIR}/stow/texi2html
+#texi2html: 
+#	@$(ECHO) "#! /bin/sh" > ${REPO_DIR}/stow/texi2html
+#	@$(ECHO) "# The 'touch' command that follows lets the stow build below pass." >> ${REPO_DIR}/stow/texi2html
+#	@$(ECHO) "touch doc/manual-single.html" >> ${REPO_DIR}/stow/texi2html
+#	@chmod a+x ${REPO_DIR}/stow/texi2html
+# Should be depricated, now that Stow has addressed this problem in v2.3.0
 
 ##############
 # Print help #
