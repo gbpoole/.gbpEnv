@@ -36,6 +36,11 @@ env:
 before_script: |
   # Make sure 'tex' is in the path for building the Stow documentation on OSX
   if [ $TRAVIS_OS_NAME = osx ]; then export PATH=/Library/TeX/texbin/:$PATH; fi
+  echo "TEST START:"$PATH
+  which latex
+  which tex
+  which pdftex
+  echo "TEST STOP"
   # Perform install of packages
   cd ${TRAVIS_BUILD_DIR}/.. 
   make -f .gbpEnv/Makefile
