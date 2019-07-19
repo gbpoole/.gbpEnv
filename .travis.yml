@@ -20,6 +20,8 @@ addons:
     casks:
       # Needed to build Stow documentation
       - basictex
+    # Build fails if brew is not updated whenver used
+    update: true
 
 # Make sure the home directory is set to 
 # be the TravisCI project directory
@@ -28,12 +30,6 @@ env:
   HOME=${TRAVIS_BUILD_DIR}/../
   GBP_HOME=${TRAVIS_BUILD_DIR}/../
 
-before_install: |
-  if [ "$TRAVIS_OS_NAME" == "osx" ]; then
-    # Update homebrew
-    brew update
-  fi
-  
 # Perform environment install
 # * n.b.: We are in the repo dir at this point *
 before_script: |
