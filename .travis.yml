@@ -39,8 +39,8 @@ before_script: |
   # Perform install of packages
   cd ${TRAVIS_BUILD_DIR}/.. 
   make -f .gbpEnv/Makefile
-  ls .gbpEnv
-  cat .gbpEnv/stow/stow.log
+  ls .gbpEnv/stow
+  find . --name stow.log --exec cat {} \;
 
 # Run tests (via Makefile) using assert.sh
 script: |
