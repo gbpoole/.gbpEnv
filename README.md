@@ -12,24 +12,20 @@ Instructions for configuring an account:
 ```bash
 export REPO_INSTALL_PATH=$HOME
 ```
-
 - Identify a directory into which you want to install this home directory configuration (let's call it $INSTALL_PATH; usually ~, or $HOME ... although it does not need to be; see below). For example (assuming you are using `bash` or `zsh`):
 ```bash
 export DESTINATION_PATH=$HOME
 ```
-
 - Clone the repo:
 ```bash
 cd $REPO_INSTALL_PATH
 git clone git@github.com:gbpoole/.gbpEnv.git
 ```
-
 - Make sure that any old or default config files are moved out of the way:
 ```bash
 cd $INSTALL_PATH
 mkdir .default_config; mv .bash* .zsh* .default_config
 ```
-
 - Move to the install directory (important!) and perform the install:
 ```bash
 cd $INSTALL_PATH
@@ -38,8 +34,9 @@ make -f $REPO_INSTALL_PATH/.gbpEnv/Makefile
 
 Some advantages of this setup:
 ------------------------------
-- In instances where you are sharing an account with someone else, you can have your own configuration somewhere other than $HOME and have your own defaults by login in like this:
+- In instances where you are sharing an account (eg. SHARED_LOGIN) with someone else on a system (eg. IP_ADDRESS), you can have your own configuration somewhere other than $HOME and have your own defaults by login in like this:
 ```bash
+ssh -t -Y -l SHARED_LOGIN IP_ADDRESS "cd DESTINATION_PATH; bash --rcfile .bashrc"
 ```
 - You don't have your home directory managed by git, which can create unnecessary overhead with tools (like zsh) which monitor the current directory's repository status
 - When managing dot files with Stow, you have more fine-grained control over your install.  You can install different applications to different systems
