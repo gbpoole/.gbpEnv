@@ -2,9 +2,11 @@
 language: generic
 
 # Test on both Linux and OSX
-os:
-  - linux
-  - osx
+matrix:
+    include:
+        - os: linux
+        - os: osx
+          osx_image: xcode11
 
 # Install build and test dependancies
 sudo: required
@@ -20,8 +22,7 @@ addons:
     casks:
       # Needed to build Stow documentation
       - basictex
-    # Build fails if brew is not updated whenver used
-    update: true
+    #update: true
 
 # Make sure the home directory is set to 
 # be the TravisCI project directory
