@@ -21,7 +21,7 @@ addons:
     packages:
     casks:
       # Needed to build Stow documentation
-      - basictex
+      - mactex
     #update: true
 
 # Make sure the home directory is set to 
