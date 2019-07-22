@@ -34,7 +34,7 @@ make -f $REPO_INSTALL_PATH/.gbpEnv/Makefile
 
 Some advantages of this setup:
 ------------------------------
-- In instances where you are sharing an account (eg. SHARED_LOGIN) with someone else on a system (eg. IP_ADDRESS), you can have your own configuration somewhere other than $HOME and have your own defaults by loging in like this:
+- In instances where you are sharing an account (eg. SHARED_LOGIN) with someone else on a system (eg. IP_ADDRESS), you can have your own configuration somewhere other than $HOME and have your own defaults by logging in like this:
 ```bash
 ssh -t -Y -l SHARED_LOGIN IP_ADDRESS "cd DESTINATION_PATH; bash --rcfile .bashrc"
 ```
