@@ -14,7 +14,7 @@ export REPO_INSTALL_PATH=$HOME
 ```
 - Identify a directory into which you want to install this home directory configuration (let's call it $INSTALL_PATH; usually ~, or $HOME ... although it does not need to be; see below). For example (assuming you are using `bash` or `zsh`):
 ```bash
-export DESTINATION_PATH=$HOME
+export INSTALL_PATH=$HOME
 ```
 - Clone the repo:
 ```bash
