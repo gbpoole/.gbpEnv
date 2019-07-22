@@ -39,6 +39,7 @@ Some advantages of this setup:
 ssh -t -Y -l SHARED_LOGIN IP_ADDRESS "cd DESTINATION_PATH; bash --rcfile .bashrc"
 ```
 - You don't have your home directory managed by git, which can create unnecessary overhead with tools (like zsh) which monitor the current directory's repository status
+- Clear separation of files which are part of this repository (all indicated as links) and those which are not.
 - When managing dot files with Stow, you have more fine-grained control over your install.  You can install different applications to different systems
 - System branching can be handled by the repository and it's install, reducing complexity
 
