@@ -16,7 +16,7 @@ export REPO_INSTALL_PATH=$HOME
 ```bash
 export INSTALL_PATH=$HOME
 ```
-- Clone the repo:
+- Clone the repo (n.b.: you may need to make sure that your ssh keys are in order before executing these lines):
 ```bash
 cd $REPO_INSTALL_PATH
 git clone git@github.com:gbpoole/.gbpEnv.git
