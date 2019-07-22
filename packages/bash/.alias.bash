@@ -4,7 +4,7 @@
 
 # Set prompt, unless terminal is 'dumb'
 if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
-    [ `alias | grep "setprompt" | wc -l` != 0 ] && unalias setprompt
+    [ $(alias | grep "setprompt" | wc -l) != 0 ] && unalias setprompt
 elif [ ! -n "$ZSH_VERSION" ]; then
     # Set control sequences for prompt
     pmt_black=$(tput setaf   0)
@@ -49,12 +49,12 @@ alias grep='grep --color=auto'
 if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
    export GBP_PAGER="$GBP_HOME/3rd_Party/bin/vimpager -N"
 else
-   export GBP_PAGER=`which more`
+   export GBP_PAGER=$(which more)
 fi
 if [ -e $GBP_HOME/3rd_Party/bin/vimcat ]; then
    export GBP_CAT=$GBP_HOME/3rd_Party/bin/vimcat
 else
-   export GBP_CAT=`which cat`
+   export GBP_CAT=$(which cat)
 fi
 alias more=$GBP_PAGER
 alias cat=$GBP_CAT
