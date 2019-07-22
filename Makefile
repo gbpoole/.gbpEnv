@@ -116,13 +116,13 @@ stow-clean:
 # docs for `stow` which, breaks the install if it fails.   There's no option to build `stow` without   #
 # docs! :( This was obtained here:                                                                     #
 #     https://svn.savannah.gnu.org/viewvc/texinfo/trunk/util/texi2html?view=markup                     #
+#        ****** Should be depricated, now that Stow has addressed this problem in v2.3.0 ******        #
 ########################################################################################################
-texi2html: 
-	@$(ECHO) "#! /bin/sh" > ${REPO_DIR}/stow/texi2html
-	@$(ECHO) "# The 'touch' command that follows lets the stow build below pass." >> ${REPO_DIR}/stow/texi2html
-	@$(ECHO) "touch doc/manual-single.html" >> ${REPO_DIR}/stow/texi2html
-	@chmod a+x ${REPO_DIR}/stow/texi2html
-# Should be depricated, now that Stow has addressed this problem in v2.3.0
+#texi2html: 
+#	@$(ECHO) "#! /bin/sh" > ${REPO_DIR}/stow/texi2html
+#	@$(ECHO) "# The 'touch' command that follows lets the stow build below pass." >> ${REPO_DIR}/stow/texi2html
+#	@$(ECHO) "touch doc/manual-single.html" >> ${REPO_DIR}/stow/texi2html
+#	@chmod a+x ${REPO_DIR}/stow/texi2html
 
 ##############
 # Print help #
