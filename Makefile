@@ -113,9 +113,10 @@ stow-clean:
 ## Required 3rd Party Code ##
 #############################
 3rd_Party_required = antibody fzy
-.PHONY: $(3rd_Party_required)
+.PHONY: $(3rd_Party_required) 3rd_Party_required
 $(3rd_Party_required):
 	cd ${INSTALL_DIR}/3rd_Party/; make $@
+3rd_Party_required: $(3rd_Party_required)
 
 ########################################################################################################
 # texi2html                                                                                            #

@@ -93,6 +93,9 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
 zstyle ':vcs_info:*' enable git cvs svn
 
+# Set colours
+zstyle :prompt:pure:git:branch color cyan
+
 # or use pre_cmd, see man zshcontrib
 vcs_info_wrapper() {
   vcs_info
