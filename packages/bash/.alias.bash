@@ -16,7 +16,6 @@ elif [ ! -n "$ZSH_VERSION" ]; then
     pmt_reset=$(tput sgr0)
     pmt_hst=$(hostname -s)
     pmt_usr=$(who am i | awk '{print $1}')
-    pmt_pwd=$(pwd)
  
     # Set terminal prompt color
     if [ "$GBPDOCKER_ENV" = "ON" ]; then
@@ -29,9 +28,9 @@ elif [ ! -n "$ZSH_VERSION" ]; then
  
     # Define the CLI prompt
     if [ "$pmt_usr" = "gpoole" ] || [ "$pmt_usr" = "gbpoole" ]; then
-        alias setprompt='export PS1="${pmt_colour}[${pmt_hst}: ${pmt_pwd}] > ${pmt_reset}"'
+        alias setprompt='export PS1="${pmt_colour}[${pmt_hst}: \W] > ${pmt_reset}"'
     else
-        alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}@${pmt_colour}${pmt_hst}: ${pmt_pwd}] > ${pmt_reset}"'
+        alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}@${pmt_colour}${pmt_hst}: \W] > ${pmt_reset}"'
     fi
 fi
 
