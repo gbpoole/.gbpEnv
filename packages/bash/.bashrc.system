@@ -71,6 +71,8 @@ if [ -n $GBP_HOSTNAME ]; then
     export GBP_QUEUE_TYPE='PBS'
   elif [[ $GBP_HOSTNAME = sstar* ]]; then
     export GBP_QUEUE_TYPE='NONE'
+  elif [ $GBP_HOSTNAME = 'ldas-pcdev1' ]; then
+    export GBP_QUEUE_TYPE='NONE'
   # This case is needed because CI tests break if bash returns text
   elif [ "$GBPENV_TEST" = 1 ]; then
     export GBP_QUEUE_TYPE='NONE'

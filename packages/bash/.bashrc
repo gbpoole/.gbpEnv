@@ -64,6 +64,13 @@ export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
 # Add my_code binary directory to the PATH
 export PATH=${GBP_HOME}/my_code/bin:$PATH
 
+# Configure Perl
+export PERL_LOCAL_LIB_ROOT=${GBP_HOME}/.perl5
+export PATH=${PERL_LOCAL_LIB_ROOT}/bin:$PATH
+export PERL5LIB=${PERL_LOCAL_LIB_ROOT}/lib/perl5:$PERL5LIB
+export PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
+export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
+
 # Set autoloaded functions
 my_autoload_path=${GBP_HOME}/bin/autoload
 fpath=($my_autoload_path $fpath)
