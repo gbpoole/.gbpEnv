@@ -4,35 +4,33 @@
 
 # Set prompt, unless terminal is 'dumb'
 if [ -z ${TERM+x} -o "$TERM" = "dumb" ]; then
-    [ `alias | grep "setprompt" | wc -l` != 0 ] && unalias setprompt
+    [ $(alias | grep "setprompt" | wc -l) != 0 ] && unalias setprompt
 elif [ ! -n "$ZSH_VERSION" ]; then
     # Set control sequences for prompt
-    pmt_black=$(tput setaf   0)
+    # pmt_black=$(tput setaf   0)
     pmt_red=$(tput setaf     1)
     pmt_green=$(tput setaf   2)
-    pmt_yellow=$(tput setaf  3)
     pmt_blue=$(tput setaf    4)
     pmt_magenta=$(tput setaf 5)
     pmt_cyan=$(tput setaf    6)
-    pmt_white=$(tput setaf   7)
     pmt_reset=$(tput sgr0)
     pmt_hst=$(hostname -s)
     pmt_usr=$(who am i | awk '{print $1}')
  
     # Set terminal prompt color
     if [ "$GBPDOCKER_ENV" = "ON" ]; then
-        pmt_colour=$pmt_cyan
-        usr_colour=$pmt_blue
+        export pmt_colour=$pmt_cyan
+        export usr_colour=$pmt_blue
     else
-        pmt_colour=$pmt_red
-        usr_colour=$pmt_magenta
+        export pmt_colour=$pmt_red
+        export usr_colour=$pmt_magenta
     fi
  
     # Define the CLI prompt
     if [ "$pmt_usr" = "gpoole" ] || [ "$pmt_usr" = "gbpoole" ]; then
-        alias setprompt='export PS1="${pmt_colour}[${pmt_hst}: ${pmt_usr}] > ${pmt_reset}"'
+        alias setprompt='export PS1="${pmt_colour}[${pmt_hst}: \W] > ${pmt_reset}"'
     else
-        alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}@${pmt_colour}${pmt_hst}: ${pmt_usr}] > ${pmt_reset}"'
+        alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}@${pmt_colour}${pmt_hst}: \W] > ${pmt_reset}"'
     fi
 fi
 
@@ -49,12 +47,12 @@ alias grep='grep --color=auto'
 if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
    export GBP_PAGER="$GBP_HOME/3rd_Party/bin/vimpager -N"
 else
-   export GBP_PAGER=`which more`
+   export GBP_PAGER=$(which more)
 fi
 if [ -e $GBP_HOME/3rd_Party/bin/vimcat ]; then
    export GBP_CAT=$GBP_HOME/3rd_Party/bin/vimcat
 else
-   export GBP_CAT=`which cat`
+   export GBP_CAT=$(which cat)
 fi
 alias more=$GBP_PAGER
 alias cat=$GBP_CAT

@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libgit2 antibody zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3
+generic_libs = libgit2 antibody zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
 
 ############################
 ## Generic library target ##
@@ -71,8 +71,10 @@ libgit2-clean:
 ##############
 ## antibody ##
 ##############
+antibody_version = $(shell curl -s https://raw.githubusercontent.com/getantibody/homebrew-tap/master/Formula/antibody.rb | grep url | tail -n1 | cut -f8 -d'/')
 antibody-download:
-	@curl -s -L -o /tmp/antibody.tar.gz https://github.com/getantibody/antibody/releases/download/$(shell curl -s https://raw.githubusercontent.com/getantibody/homebrew-tap/master/Formula/antibody.rb | grep url | cut -f8 -d'/')/antibody_$(shell uname -s)_$(shell uname -m).tar.gz
+	@curl -s -L -o /tmp/antibody.tar.gz \
+		https://github.com/getantibody/antibody/releases/download/$(antibody_version)/antibody_$(shell uname -s)_$(shell uname -m).tar.gz
 antibody-config:
 antibody-build:
 	@$(ECHO) Uncompressing ...;tar xzf /tmp/antibody.tar.gz;$(ECHO) Done.

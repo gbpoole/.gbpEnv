@@ -71,6 +71,8 @@ if [ -n $GBP_HOSTNAME ]; then
     export GBP_QUEUE_TYPE='PBS'
   elif [[ $GBP_HOSTNAME = sstar* ]]; then
     export GBP_QUEUE_TYPE='NONE'
+  elif [ $GBP_HOSTNAME = 'ldas-pcdev1' ]; then
+    export GBP_QUEUE_TYPE='NONE'
   # This case is needed because CI tests break if bash returns text
   elif [ "$GBPENV_TEST" = 1 ]; then
     export GBP_QUEUE_TYPE='NONE'
@@ -81,6 +83,16 @@ if [ -n $GBP_HOSTNAME ]; then
 else
   echo Could not identify hostname in .bashrc.system for this system.  Assigning defaults.
 fi
+
+# LIGO Data Grid configuration
+pcdev1=gregory.poole@ldas-pcdev1.ligo.caltech.edu
+GLOBUS_LOCATION=/opt/ldg
+export GLOBUS_LOCATION
+if [ -f ${GLOBUS_LOCATION}/etc/globus-user-env.sh ] ; then
+	. ${GLOBUS_LOCATION}/etc/globus-user-env.sh
+fi
+go_LDG.proxy () { ligo-proxy-init albert.einstein; }
+go_LDG () { gsissh -YC $pcdev1 ; }
 
 # Add '3rd_Party' and 'my_code' directories to paths
 export PATH="${GBP_HOME}/my_code/bin:${GBP_HOME}/3rd_Party/bin:$PATH"
