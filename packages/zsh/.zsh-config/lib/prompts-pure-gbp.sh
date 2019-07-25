@@ -61,41 +61,27 @@ at_blinkoff=%{$'\e[25m'%}
 at_reverseoff=%{$'\e[27m'%}
 at_strikeoff=%{$'\e[29m'%}
 
-local prompt_suffix='%{3$reset_color%}'
-local current_dir='${fg_purple}%~%f%{$reset_color%}'
-local user_host='\uF109 %B${fg_lgreen}%n%{$reset_color%}${fg_pink}@${fg_lcyan}%M%b%f${prompt_suffix}'
-local current_datetime='${fg_blue}%D{%d.%m.%Y} ${fg_red}%T%f${prompt_suffix}'
-local the_prompt_sign='%b
-$fg[105]╰%f${prompt_suffix}'
-
 # precmd is called just before the prompt is printed
 precmd () {
   # Draw an underlined blank line
   print -Pn "${fg_brown}%U${(r:$COLUMNS:: :)}%u%{$reset_color%}"
 }
+
 # preexec is called just before any command line is executed
 preexec () {
   # Draw a blank line
   print 
 }
 
-#export PROMPT="
-#${current_datetime} - ${user_host} [${current_dir}] ${the_prompt_sign} "
 export PROMPT="╰ "
 
-autoload -Uz vcs_info
-
-zstyle ':vcs_info:*' actionformats \
-    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
-zstyle ':vcs_info:*' formats       \
-    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
-zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
-
-zstyle ':vcs_info:*' enable git cvs svn
+# Set colours
+zstyle :prompt:pure:git:branch color cyan
 
 # or use pre_cmd, see man zshcontrib
 vcs_info_wrapper() {
   vcs_info
+  echo 
   if [ -n "$vcs_info_msg_0_" ]; then
     echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
   fi
@@ -110,9 +96,3 @@ function zle-line-init zle-keymap-select {
 }
 zle -N zle-line-init
 zle -N zle-keymap-select
-
-unset current_datetime
-unset current_dir
-unset prompt_suffix
-unset the_prompt_sign
-unset user_host

@@ -5,7 +5,7 @@
 
 # Set the default target to 'help', which displays a list of supported targets
 .PHONY: default static_dirs devenv_libs
-default: all
+default: init
 
 # Makefile path & directory
 MAKEFILE_PATH = $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -25,7 +25,7 @@ STOW = ${INSTALL_DIR}/3rd_Party/bin/stow
 
 export PATH := ${REPO_DIR}/stow:$(PATH)
 
-all: submodules-init static_dirs stow packages-install
+init: submodules-init static_dirs stow packages-install 3rd_Party_required
 
 ######################################################
 ## These directories are installed directly because ##
@@ -91,7 +91,7 @@ update: packages-uninstall pull_from_master packages-install
 #######################
 ## Generic libraries ##
 #######################
-generic_libs = stow texinfo
+generic_libs = stow
 .PHONY: $(generic_libs)
 $(generic_libs): % : %-download %-config %-build %.install %-clean
 
@@ -99,7 +99,7 @@ $(generic_libs): % : %-download %-config %-build %.install %-clean
 ## Install stow  ##
 ###################
 stow-download: 
-	@cd ${REPO_DIR};git clone https://github.com/aspiers/stow.git
+	@cd ${REPO_DIR};git clone https://git.savannah.gnu.org/git/stow.git
 stow-config:
 	@cd ${REPO_DIR}/stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${INSTALL_DIR}/3rd_Party/ --with-pmdir=${INSTALL_DIR}/3rd_Party/perl
 stow-build: texi2html
@@ -109,6 +109,15 @@ stow.install:
 stow-clean:
 	@rm -rf ${REPO_DIR}/stow
 
+#############################
+## Required 3rd Party Code ##
+#############################
+3rd_Party_required = antibody fzy
+.PHONY: $(3rd_Party_required) 3rd_Party_required
+$(3rd_Party_required):
+	cd ${INSTALL_DIR}/3rd_Party/; make $@
+3rd_Party_required: $(3rd_Party_required)
+
 ########################################################################################################
 # texi2html                                                                                            #
 # -----------------------------------------------------------------------------------------------------#
@@ -116,6 +125,7 @@ stow-clean:
 # docs for `stow` which, breaks the install if it fails.   There's no option to build `stow` without   #
 # docs! :( This was obtained here:                                                                     #
 #     https://svn.savannah.gnu.org/viewvc/texinfo/trunk/util/texi2html?view=markup                     #
+#        ****** Should be depricated, now that Stow has addressed this problem in v2.3.0 ******        #
 ########################################################################################################
 texi2html: 
 	@$(ECHO) "#! /bin/sh" > ${REPO_DIR}/stow/texi2html
@@ -129,8 +139,9 @@ texi2html:
 help:
 	@$(ECHO) 
 	@$(ECHO) "The following targets are available (install directory assumed to be the run directory):"
-	@$(ECHO) "    all [default]      - Initialize"
+	@$(ECHO) "    init [default]     - Initialize"
 	@$(ECHO) "    stow               - Build and install Gnu Stow"
+	@$(ECHO) "    3rd_Party_required - Build all the 3rd Party codes required by this install"
 	@$(ECHO) "    packages-install   - Install everython in 'packages' with Stow"
 	@$(ECHO) "    packages-uninstall - Uninstall everython in 'packages' with Stow"
 	@$(ECHO) "    packages-reinstall - Reinstall everython in 'packages' with Stow"

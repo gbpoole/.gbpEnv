@@ -42,5 +42,5 @@ if [[ -x ${ANTIBODY} ]]; then
         fi
     fi
 else
-    echo 'Antibody not installed; plugins could not be started.  Please run `make antibody` in ${HOME}/3rd_Party'
+    echo 'Antibody not installed; plugins could not be started.  Please run `make antibody` in ${GBP_HOME}/3rd_Party'
 fi

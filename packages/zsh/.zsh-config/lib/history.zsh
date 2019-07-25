@@ -18,4 +18,4 @@ setopt HIST_IGNORE_SPACE	    # ignore entries starting with a space
 setopt HIST_REDUCE_BLANKS       # leave blanks out
 setopt HIST_SAVE_NO_DUPS        # do not save duplicates
 setopt INC_APPEND_HISTORY       # write after each command
-setopt SHARE_HISTORY            # share history between sessions
+#setopt SHARE_HISTORY            # share history between sessions
