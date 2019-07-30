@@ -1,0 +1,7 @@
+channels:
+  - defaults
+ssl_verify: true
+changeps1: false
+create_default_packages:
+  - pip
+  - libtool

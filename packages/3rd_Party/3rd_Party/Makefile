@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libgit2 antibody zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
+generic_libs = libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
 
 ############################
 ## Generic library target ##
@@ -54,6 +54,24 @@ fzy-install:
 	@cd fzy;PREFIX=${GBP_HOME}/3rd_Party/ make install
 fzy-clean:
 	@rm -rf fzy
+
+#######################################
+## Neovim from HEAD                  ##
+## n.b.: You might need to make sure ##
+##       to have libtool installed   ## 
+##       if linking against conda:   ##
+##   > conda install libtool         ##
+#######################################
+neovim-download:
+	@git clone https://github.com/neovim/neovim.git
+neovim-config:
+	@cd neovim; rm -rf build/  # clear the CMake cache
+neovim-build:
+	@cd neovim; make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${GBP_HOME}/3rd_Party/"
+neovim-install:
+	@cd neovim; make install
+neovim-clean:
+	@rm -rf neovim
 
 #############
 ## libgit2 ##
