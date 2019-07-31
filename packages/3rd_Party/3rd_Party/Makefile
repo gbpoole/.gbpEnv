@@ -67,7 +67,7 @@ neovim-download:
 neovim-config:
 	@cd neovim; rm -rf build/  # clear the CMake cache
 neovim-build:
-	@cd neovim; make CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${GBP_HOME}/3rd_Party/"
+	@cd neovim; make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${GBP_HOME}/3rd_Party/"
 neovim-install:
 	@cd neovim; make install
 neovim-clean:

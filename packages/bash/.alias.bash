@@ -82,8 +82,10 @@ if hash htop 2>/dev/null; then
    alias top='htop'
 fi
 
-# 'vi'->'vim'
-if hash vim 2>/dev/null; then
+# 'nvim' or 'vim'->'vi'
+if hash nvim 2>/dev/null; then
+   alias vi='nvim'
+elif hash vim 2>/dev/null; then
    alias vi='vim'
 fi
 
