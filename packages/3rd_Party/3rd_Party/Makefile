@@ -291,12 +291,12 @@ help:
 	@$(ECHO) 
 	@$(ECHO) "The following targets are available:"
 	@$(ECHO) "    all     - Make all the libraries listed below."
-	@$(ECHO) "    zsh     - Install ZSH     version: "${VERSION-zsh}    " (takes ~X hr)"
+	@$(ECHO) "    zsh     - Install ZSH     version: "${VERSION-zsh}
 	@$(ECHO) "    gcc     - Install GCC     version: "${VERSION-gcc}    " (takes ~2 hr)"
-	@$(ECHO) "    cmake   - Install CMAKE   version: "${VERSION-cmake}  " (takes ~X hr)"
+	@$(ECHO) "    cmake   - Install CMAKE   version: "${VERSION-cmake}
 	@$(ECHO) "    mpich   - Install MPICH   version: "${VERSION-mpich}  " (takes ~2 hr)"
-	@$(ECHO) "    gsl     - Install GSL     version: "${VERSION-gsl}    " (takes ~X hr)"
-	@$(ECHO) "    cfitsio - Install cfitsio version: "${VERSION-cfitsio}" (takes ~X hr)"
-	@$(ECHO) "    gd      - Install libgd   version: "${VERSION-gd}     " (takes ~X hr)"
-	@$(ECHO) "    fftw2   - Install FFTW    version: "${VERSION-fftw2}  " (takes ~X hr)"
+	@$(ECHO) "    gsl     - Install GSL     version: "${VERSION-gsl}
+	@$(ECHO) "    cfitsio - Install cfitsio version: "${VERSION-cfitsio}
+	@$(ECHO) "    gd      - Install libgd   version: "${VERSION-gd}
+	@$(ECHO) "    fftw2   - Install FFTW    version: "${VERSION-fftw2}
 	@$(ECHO) 
