@@ -46,6 +46,17 @@ fi
 # Set all system-specific stuff
 source ${GBP_HOME}/.bashrc.system
 
+# Run all interactive shells in tmux
+TMUX_CMD="tmux"
+TMUX_DEFAULT_SESSION="default"
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+    if tmux has-session -t $TMUX_DEFAULT_SESSION 2>/dev/null; then
+        ${TMUX_CMD} -2 attach-session -t $TMUX_DEFAULT_SESSION
+    else
+        ${TMUX_CMD} -2 new-session -s $TMUX_DEFAULT_SESSION
+    fi
+fi
+
 # Create some aliases
 source ${GBP_HOME}/.alias.bash
 
