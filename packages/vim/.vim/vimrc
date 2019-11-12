@@ -53,6 +53,9 @@ else
         " Add support for editorconfig files (see http://editorconfig.org/ &
         " https://github.com/editorconfig/editorconfig-vim)
         Plugin 'editorconfig/editorconfig-vim'
+        " Make terminal vim and tmux work better together"
+        " https://github.com/tmux-plugins/vim-tmux-focus-events"
+        Plugin 'tmux-plugins/vim-tmux-focus-events'
     call vundle#end() " required
 
     " --------------------------------------------------------------
