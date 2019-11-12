@@ -73,7 +73,8 @@ preexec () {
   print 
 }
 
-export PROMPT="╰ "
+#export PROMPT="╰ "
+export PROMPT="╰> "
 
 # Set colours
 zstyle :prompt:pure:git:branch color cyan

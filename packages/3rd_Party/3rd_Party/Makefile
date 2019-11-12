@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libgit2 antibody zsh fzy gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
+generic_libs = libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
 
 ############################
 ## Generic library target ##
@@ -54,6 +54,24 @@ fzy-install:
 	@cd fzy;PREFIX=${GBP_HOME}/3rd_Party/ make install
 fzy-clean:
 	@rm -rf fzy
+
+#######################################
+## Neovim from HEAD                  ##
+## n.b.: You might need to make sure ##
+##       to have libtool installed   ## 
+##       if linking against conda:   ##
+##   > conda install libtool         ##
+#######################################
+neovim-download:
+	@git clone https://github.com/neovim/neovim.git
+neovim-config:
+	@cd neovim; rm -rf build/  # clear the CMake cache
+neovim-build:
+	@cd neovim; make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${GBP_HOME}/3rd_Party/"
+neovim-install:
+	@cd neovim; make install
+neovim-clean:
+	@rm -rf neovim
 
 #############
 ## libgit2 ##
@@ -273,12 +291,12 @@ help:
 	@$(ECHO) 
 	@$(ECHO) "The following targets are available:"
 	@$(ECHO) "    all     - Make all the libraries listed below."
-	@$(ECHO) "    zsh     - Install ZSH     version: "${VERSION-zsh}    " (takes ~X hr)"
+	@$(ECHO) "    zsh     - Install ZSH     version: "${VERSION-zsh}
 	@$(ECHO) "    gcc     - Install GCC     version: "${VERSION-gcc}    " (takes ~2 hr)"
-	@$(ECHO) "    cmake   - Install CMAKE   version: "${VERSION-cmake}  " (takes ~X hr)"
+	@$(ECHO) "    cmake   - Install CMAKE   version: "${VERSION-cmake}
 	@$(ECHO) "    mpich   - Install MPICH   version: "${VERSION-mpich}  " (takes ~2 hr)"
-	@$(ECHO) "    gsl     - Install GSL     version: "${VERSION-gsl}    " (takes ~X hr)"
-	@$(ECHO) "    cfitsio - Install cfitsio version: "${VERSION-cfitsio}" (takes ~X hr)"
-	@$(ECHO) "    gd      - Install libgd   version: "${VERSION-gd}     " (takes ~X hr)"
-	@$(ECHO) "    fftw2   - Install FFTW    version: "${VERSION-fftw2}  " (takes ~X hr)"
+	@$(ECHO) "    gsl     - Install GSL     version: "${VERSION-gsl}
+	@$(ECHO) "    cfitsio - Install cfitsio version: "${VERSION-cfitsio}
+	@$(ECHO) "    gd      - Install libgd   version: "${VERSION-gd}
+	@$(ECHO) "    fftw2   - Install FFTW    version: "${VERSION-fftw2}
 	@$(ECHO) 

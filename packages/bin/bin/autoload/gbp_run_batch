@@ -1,0 +1,29 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+# Report the script's syntax
+usage () {
+    echo "Usage: "$(basename $0)" filename_submit_script" 
+}
+
+# --------------
+# Validate input
+if [[ $# -eq 1 ]]; then
+    FILENAME_SUBMIT_SCRIPT="$1"
+else
+    usage
+    return 2
+fi
+
+# Submit to queue
+if [[ "$(echo $GBP_QUEUE_TYPE |awk '{print tolower($0)}')" = "slurm" ]] ; then
+    sbatch $FILENAME_SUBMIT_SCRIPT
+    return 0
+elif [[ "$(echo $GBP_QUEUE_TYPE |awk '{print tolower($0)}')" = "slurm" ]] ; then
+    qsub $FILENAME_SUBMIT_SCRIPT
+    return 0
+else
+    echo "Unknown queue set by GBP_QUEUE_TYPE: "$GBP_QUEUE_TYPE
+    echo "Script not submitted by "$(basename $0)"."
+    return 1
+fi
