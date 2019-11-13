@@ -60,7 +60,7 @@ if [ -n $GBP_HOSTNAME ]; then
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 
     # Set installation dir of Ananaconda
-    export GBP_CONDA_PATH="/anaconda/"
+    export GBP_CONDA_PATH="${GBP_HOME}/miniconda3/"
 
   elif [[ $GBP_HOSTNAME = farnarkle* ]] || [[ $GBP_HOSTNAME = data-mover* ]] || [[ $GBP_HOSTNAME = john* ]] ; then
     if [ ! -z ${EBROOTANACONDA3+x} ];then

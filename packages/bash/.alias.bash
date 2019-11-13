@@ -119,9 +119,9 @@ else
    alias go_tao02='ssh -t -Y -l TAODBAdmin tao02_pf "cd /lustre/projects/p014_swin/gpoole; bash --rcfile .bashrc"'
 fi
 
-alias go_oz='ssh -Y -l gpoole oz'
-alias go_f1='ssh -Y -l gpoole f1'
-alias go_f2='ssh -Y -l gpoole f2'
+alias go_oz='set_iterm2_tab_name oz;ssh -Y -l gpoole oz;unset_iterm2_tab_name'
+alias go_f1='set_iterm2_tab_name f1;ssh -Y -l gpoole f1;unset_iterm2_tab_name'
+alias go_f2='set_iterm2_tab_name f2;ssh -Y -l gpoole f2;unset_iterm2_tab_name'
 
 # Perform a timing test of shell start-up
 alias time_shell_startup='for i in $(seq 1 10); do /usr/bin/time /bin/zsh -i -c exit; done;'
