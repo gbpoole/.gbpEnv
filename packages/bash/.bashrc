@@ -100,7 +100,9 @@ unset my_autoload_path
 
 # Set 'default' Anaconda environment
 # This needs to be after the autoload functions are loaded
-conda.load default
+if type conda.load > /dev/null 2>&1; then
+   conda.load default
+fi
 
 # Added by travis gem
 if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
