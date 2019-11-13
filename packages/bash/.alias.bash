@@ -68,10 +68,9 @@ else
     alias ls='ls -C --color=auto'
 fi
 
-# Save a whole lot'a keystrokes
+# Git aliases
 alias g='git'
-alias gph='git push origin master'
-alias gpl='git pull origin master'
+alias gdiff='git diff'
 alias gst='git status'
 alias glg='git lg | head'
 

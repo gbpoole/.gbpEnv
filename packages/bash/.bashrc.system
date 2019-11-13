@@ -31,6 +31,8 @@ export LESSCHARSET=utf-8
 
 # Set system-specific stuff, first based on HOSTNAME
 export GBP_HOSTNAME=`hostname`
+export GBP_QUEUE_TYPE='NONE'
+export GBP_CUDA_ENABLED='NO'
 if [ -n $GBP_HOSTNAME ]; then
   if [ $GBP_OS = 'Mac' ]; then
     export GBP_QUEUE_TYPE='NONE'
@@ -63,10 +65,11 @@ if [ -n $GBP_HOSTNAME ]; then
     export GBP_CONDA_PATH="${GBP_HOME}/miniconda3/"
 
   elif [[ $GBP_HOSTNAME = farnarkle* ]] || [[ $GBP_HOSTNAME = data-mover* ]] || [[ $GBP_HOSTNAME = john* ]] ; then
+    export GBP_QUEUE_TYPE='SLURM'
+    export GBP_CUDA_ENABLED='YES'
     if [ ! -z ${EBROOTANACONDA3+x} ];then
        export GBP_CONDA_PATH=${EBROOTANACONDA3}
     fi
-    export GBP_QUEUE_TYPE='SLURM'
   elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ]; then
     export GBP_QUEUE_TYPE='PBS'
   elif [[ $GBP_HOSTNAME = sstar* ]]; then
@@ -78,7 +81,6 @@ if [ -n $GBP_HOSTNAME ]; then
     export GBP_QUEUE_TYPE='NONE'
   else
     echo There is no default configuration in .bashrc.system for this system.  Assigning defaults.
-    export GBP_QUEUE_TYPE='SERIAL'
   fi
 else
   echo Could not identify hostname in .bashrc.system for this system.  Assigning defaults.

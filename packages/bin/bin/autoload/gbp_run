@@ -3,23 +3,24 @@
 
 # Report the script's syntax
 usage () {
-    echo "Usage: "$(basename $0)" -n <n_cores_per_node> -N <n_nodes> [-s -h -p -k -f <filename>] COMMAND"
+    echo "Usage: "$(basename $0)" -n <n_cores_per_node> -N <n_nodes> [-s -h -p -k -g -f <filename>] COMMAND"
 }
 
 # Set defaults
 keep=false
 run_script=true
 print_script=false
-filename_script=$(mktemp slurm.XXXXXXXXX.sh)
+use_gpu=false
+filename_script=$(mktemp gbp_run.XXXXXX.sh)
 N_NODES=1
 N_CORES_PER_NODE=1
-WALLCLOCK="1m"
+WALLCLOCK="00:01:00"
 MEM="1G"
 
 # Parse options
 n_required=2
 n_required_found=0
-while getopts ":n:N:f:t:m:shpk" opt; do
+while getopts ":n:N:f:t:m:shpkg" opt; do
   case $opt in
     n)
         N_CORES_PER_NODE=$OPTARG
@@ -51,6 +52,9 @@ while getopts ":n:N:f:t:m:shpk" opt; do
         ;;
     k)
         keep=true
+        ;;
+    g)
+        use_gpu=true
         ;;
     \?)
         echo "Invalid option: -$OPTARG" >&2
@@ -84,35 +88,8 @@ if [[ -z "$COMMAND" ]]; then
     return 1
 fi
 
-# Take the job name from the filename
-JOB_NAME="$(basename -s .sh $filename_script)"
-
-# Generate script
-echo "#!/bin/bash" > ${filename_script}
-echo "#SBATCH -N "$N_NODES" -n "$N_CORES_PER_NODE >> ${filename_script}
-echo "#SBATCH -J "$JOB_NAME >> ${filename_script}
-echo "#SBATCH -e "$JOB_NAME".err" >> ${filename_script}
-echo "#SBATCH -o "$JOB_NAME".out" >> ${filename_script}
-echo "#SBATCH --time="$WALLCLOCK >> ${filename_script}
-echo "#SBATCH --mem="$MEM >> ${filename_script}
-echo "#SBATCH --export=NONE" >> ${filename_script}
-echo >> ${filename_script}
-
-echo "# Setup system environment" >> ${filename_script}
-# This is needed because the SLURM manager does not pass this to the script
-echo "export GBP_HOME=$GBP_HOME"  >> ${filename_script}
-echo "source \${GBP_HOME}/.bashrc" >> ${filename_script}
-echo >> ${filename_script}
-
-echo "# Setup project environment" >> ${filename_script}
-echo "source \${GBP_HOME}/projects/ADACS/ellert/init.sh" >> ${filename_script}
-echo >> ${filename_script}
-
-echo "# Run command" >> ${filename_script}
-echo $COMMAND >> ${filename_script}
-
-# Set executable permissions for the script (needed by Slurm, for example)
-chmod a+x $filename_script
+# Create batch script
+gbp_run.make_script
 
 # Optionally print script to screen and run script
 if [[ "$print_script" = "true" ]]; then 
@@ -122,17 +99,17 @@ if [[ "$print_script" = "true" ]]; then
     if [[ "$run_script" != "false" ]]; then
         gbp_user_validate "Submit script"
         if [[ $? -ne 0 ]] ; then
-            gbp_run_batch $filename_script
+            gbp_run.submit $filename_script
             return 0
         fi
     fi
 else
     if [[ "$run_script" = "true" ]]; then
-        gbp_run_batch $filename_script
+        gbp_run.submit $filename_script
     fi
 fi
 
-# Optionally keep script
+# Optionally remove script
 if [[ "$keep" = "false" ]]; then
     rm ${filename_script}
 fi
