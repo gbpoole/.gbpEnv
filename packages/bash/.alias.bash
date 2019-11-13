@@ -82,8 +82,10 @@ if hash htop 2>/dev/null; then
    alias top='htop'
 fi
 
-# 'vi'->'vim'
-if hash vim 2>/dev/null; then
+# 'nvim' or 'vim'->'vi'
+if hash nvim 2>/dev/null; then
+   alias vi='nvim'
+elif hash vim 2>/dev/null; then
    alias vi='vim'
 fi
 
@@ -92,8 +94,9 @@ if [ "$GBP_OS" = 'Mac' ]; then
    alias gcc='gcc-7'
 fi
 
-# Load modules
-alias load_modules='source ${GBP_HOME}/.modules.gbpEnv'
+# Slurm stuff
+alias squeue='squeue -o "%.18i %.9P %.8j %.8u %.6D %.6C %.11M %.11l %.8T %R"'
+alias squeue_me='squeue -o "%.18i %.9P %.8j %.8u %.6D %.6C %.11M %.11l %.8T %R" -u gpoole'
 
 # List of machines
 alias go_alibaba='ssh -t -Y -l nonroot 106.15.109.75 "cd .gbpEnv; bash --rcfile .bashrc"'

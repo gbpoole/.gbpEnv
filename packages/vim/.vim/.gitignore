@@ -1,7 +1,3 @@
-# First, ignore everything
-*
-# Then, select the things we want to keep
-!.gitignore
-!vimrc
-!bundle/
-!bundle/Vundle.vim
+bundle/*
+!bundle/.gitignore
+.netrwhist
