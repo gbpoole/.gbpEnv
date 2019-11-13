@@ -126,6 +126,9 @@ alias go_oz='set_iterm2_tab_name oz;ssh -Y -l gpoole oz;unset_iterm2_tab_name'
 alias go_f1='set_iterm2_tab_name f1;ssh -Y -l gpoole f1;unset_iterm2_tab_name'
 alias go_f2='set_iterm2_tab_name f2;ssh -Y -l gpoole f2;unset_iterm2_tab_name'
 
+# Update gbpEnv install
+alias update_gbpEnv='cd $GBP_HOME;make -f .gbpEnv/Makefile update'
+
 # Perform a timing test of shell start-up
 alias time_shell_startup='for i in $(seq 1 10); do /usr/bin/time /bin/zsh -i -c exit; done;'
 
