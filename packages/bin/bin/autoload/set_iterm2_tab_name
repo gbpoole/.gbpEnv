@@ -1,0 +1,5 @@
+set_iterm2_tab_name(){
+    if [[ ! -z "$ITERM_PROFILE" ]]; then
+        python $GBP_HOME/bin/scripts/set_iterm2_tab_name.py "$@" 2&> /dev/null
+    fi
+}

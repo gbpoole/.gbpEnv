@@ -98,6 +98,10 @@ if [[ -d "$my_autoload_path" ]]; then
 fi
 unset my_autoload_path
 
+# Set 'default' Anaconda environment
+# This needs to be after the autoload functions are loaded
+conda.load default
+
 # Added by travis gem
 if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
     source ${GBP_HOME}/.travis/travis.sh
