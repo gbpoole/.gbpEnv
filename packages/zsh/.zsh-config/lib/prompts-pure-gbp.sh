@@ -64,7 +64,7 @@ at_strikeoff=%{$'\e[29m'%}
 # precmd is called just before the prompt is printed
 precmd () {
   # Draw an underlined blank line
-  print -Pn "${fg_brown}%U${(r:$COLUMNS:: :)}%u%{$reset_color%}"
+  print -Pn "${fg_cyan}%U${(r:$COLUMNS:: :)}%u%{$reset_color%}"
 }
 
 # preexec is called just before any command line is executed
@@ -77,7 +77,9 @@ preexec () {
 export PROMPT="╰> "
 
 # Set colours
-zstyle :prompt:pure:git:branch color cyan
+zstyle :prompt:pure:git:branch color yellow
+zstyle :prompt:pure:virtualenv color green
+zstyle :prompt:pure:execution_time color red
 
 # or use pre_cmd, see man zshcontrib
 vcs_info_wrapper() {
