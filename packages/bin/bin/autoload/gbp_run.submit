@@ -22,6 +22,9 @@ if [[ "$(echo $GBP_QUEUE_TYPE |awk '{print tolower($0)}')" = "slurm" ]] ; then
 elif [[ "$(echo $GBP_QUEUE_TYPE |awk '{print tolower($0)}')" = "slurm" ]] ; then
     qsub $FILENAME_SUBMIT_SCRIPT
     return 0
+elif [[ "$(echo $GBP_QUEUE_TYPE |awk '{print tolower($0)}')" = "none" ]] ; then
+    exec $FILENAME_SUBMIT_SCRIPT
+    return 0
 else
     echo "Unknown queue set by GBP_QUEUE_TYPE: "$GBP_QUEUE_TYPE
     echo "Script not submitted by "$(basename $0)"."

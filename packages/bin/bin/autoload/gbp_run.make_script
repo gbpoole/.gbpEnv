@@ -1,0 +1,43 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+gbp_run.make_script(){
+    # Take the job name from the filename
+    JOB_NAME="$(basename -s .sh $filename_script)"
+    
+    if [ "$GBP_QUEUE_TYPE" = 'SLURM' ]; then
+    
+        # Generate script
+        echo "#!/bin/bash" > ${filename_script}
+        echo "#SBATCH -N "$N_NODES" -n "$N_CORES_PER_NODE >> ${filename_script}
+        echo "#SBATCH -J "$JOB_NAME >> ${filename_script}
+        echo "#SBATCH -e "$JOB_NAME".err" >> ${filename_script}
+        echo "#SBATCH -o "$JOB_NAME".out" >> ${filename_script}
+        echo "#SBATCH --time="$WALLCLOCK >> ${filename_script}
+        echo "#SBATCH --mem-per-cpu="$MEM >> ${filename_script}
+        echo "#SBATCH --export=NONE" >> ${filename_script}
+        if [[ "$use_gpu" = "true" ]]; then 
+            echo "#SBATCH --gres=gpu" >> ${filename_script}
+        fi
+        echo >> ${filename_script}
+        
+        echo "# Setup system environment" >> ${filename_script}
+        # This is needed because the SLURM manager does not pass this to the script
+        echo "export GBP_HOME=$GBP_HOME"  >> ${filename_script}
+        echo "source \${GBP_HOME}/.bashrc" >> ${filename_script}
+        echo >> ${filename_script}
+        
+        echo "# Setup project environment" >> ${filename_script}
+        echo "source \${GBP_HOME}/projects/ADACS/ellert/init.sh" >> ${filename_script}
+        echo >> ${filename_script}
+        
+        echo "# Run command" >> ${filename_script}
+        echo "srun "$COMMAND >> ${filename_script}
+    else
+        echo "Unsupported queue type declared in gbp_run.make_script."
+        return 1
+    fi
+    
+    # Set executable permissions for the script (needed by Slurm, for example)
+    chmod a+x $filename_script
+}
