@@ -75,6 +75,10 @@ else
     endtry
     let g:airline_theme='molokai'
 
+    " Needed to make sure that tmux pane highlighting works
+    autocmd ColorScheme * highlight Normal ctermbg=None
+    autocmd ColorScheme * highlight NonText ctermbg=None
+
 endif
 " --- End Vundle Stuff ---
 
