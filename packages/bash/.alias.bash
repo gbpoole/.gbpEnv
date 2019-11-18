@@ -74,6 +74,9 @@ alias gdiff='git diff'
 alias gst='git status'
 alias glg='git lg | head'
 
+# Make sure the pip in the current environment is always used
+alias pip='python -m pip'
+
 # Substitute for a few improved applications, if present
 
 # 'top'->'htop'
