@@ -1,0 +1,23 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+gbp.prj.init () {
+    # Parse arguments
+    local project_name="$1"
+
+    # Set project file
+    local project_file="$GBP_HOME/projects/$project_name/init.sh"
+
+    # Check to see if project exists
+    if [[ ! -e $project_file ]]; then
+        echo Project init file {$project_file} not found.
+        return 1
+    fi
+
+    # Source project init script
+    if [ ! type shopt > /dev/null 2>&1 ]; then
+       shopt -s expand_aliases
+    fi
+    source $project_file
+    return $?
+}

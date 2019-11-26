@@ -27,9 +27,11 @@ gbp_run.make_script(){
         echo "source \${GBP_HOME}/.bashrc" >> ${filename_script}
         echo >> ${filename_script}
         
-        echo "# Setup project environment" >> ${filename_script}
-        echo "source \${GBP_HOME}/projects/ADACS/ellert/init.sh" >> ${filename_script}
-        echo >> ${filename_script}
+        if [ ! -z "$gbp_prj" ]; then 
+            echo "# Setup project environment" >> ${filename_script}
+            echo gbp.prj.init $gbp_prj >> ${filename_script}
+            echo >> ${filename_script}
+        fi
         
         echo "# Run command" >> ${filename_script}
         echo "srun "$COMMAND >> ${filename_script}

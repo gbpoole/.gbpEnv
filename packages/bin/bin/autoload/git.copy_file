@@ -13,31 +13,33 @@
 #0005-Gum-Use-article-title-as-the-title-of-the-generated-.patch
 #0006-Gum-HTML-escape-tag-names-when-rendering-them.patch
 
-# --------------
-# Validate input
-if [ $# -eq 2 ]; then
-    #todo, test $1 and $2
-    DESTINATIONPATH=$(realpath $2)
-    SOURCE=$(realpath $1) #first arg to script, either file or dir
-else
-    echo 'Syntax: '$0 ' /some/repo/interesting/thing /destination/patch/path'
-    return 2
-fi
-
-if [ ! -f $SOURCEFILE ]; then
-    echo Invalid source file: $SOURCEFILE 
-    return 1
-fi
-
-if [ ! -d $DESTINATIONPATH ]; then
-    echo Invalid destination path: $DESTINATIONPATH
-    return 1
-fi
-# --------------
-
-SOURCEDIR=$(dirname "$SOURCE")
-SOURCEFILE=$(basename "$SOURCE")
-
-pushd $SOURCEDIR
-git format-patch -o $DESTINATIONPATH $(git log $SOURCEFILE|grep ^commit|awk '{print $2}') $SOURCEFILE
-popd
+git.copy_file () {
+    # --------------
+    # Validate input
+    if [ $# -eq 2 ]; then
+        #todo, test $1 and $2
+        DESTINATIONPATH=$(realpath $2)
+        SOURCE=$(realpath $1) #first arg to script, either file or dir
+    else
+        echo 'Syntax: '$0 ' /some/repo/interesting/thing /destination/patch/path'
+        return 2
+    fi
+    
+    if [ ! -f $SOURCEFILE ]; then
+        echo Invalid source file: $SOURCEFILE 
+        return 1
+    fi
+    
+    if [ ! -d $DESTINATIONPATH ]; then
+        echo Invalid destination path: $DESTINATIONPATH
+        return 1
+    fi
+    # --------------
+    
+    SOURCEDIR=$(dirname "$SOURCE")
+    SOURCEFILE=$(basename "$SOURCE")
+    
+    pushd $SOURCEDIR
+    git format-patch -o $DESTINATIONPATH $(git log $SOURCEFILE|grep ^commit|awk '{print $2}') $SOURCEFILE
+    popd
+}

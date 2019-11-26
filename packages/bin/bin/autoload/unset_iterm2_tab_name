@@ -1,3 +1,6 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
 unset_iterm2_tab_name(){
     set_iterm2_tab_name ""
 }

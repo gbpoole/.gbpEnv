@@ -73,10 +73,14 @@ preexec () {
   print 
 }
 
-#export PROMPT="╰ "
-export PROMPT="╰> "
+# Prompt symbol
+export PURE_PROMPT_PRESYMBOL="╰"
+export PURE_PROMPT_SYMBOL=""
 
 # Set colours
+zstyle :prompt:pure:prompt:success color green
+zstyle :prompt:pure:prompt:error color red
+zstyle :prompt:pure:path color blue
 zstyle :prompt:pure:git:branch color yellow
 zstyle :prompt:pure:virtualenv color green
 zstyle :prompt:pure:execution_time color red
