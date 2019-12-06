@@ -123,3 +123,5 @@ else
         setprompt
     fi
 fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
