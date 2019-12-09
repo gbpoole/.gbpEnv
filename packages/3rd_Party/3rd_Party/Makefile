@@ -29,7 +29,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
+generic_libs = libgit2 antibody zsh fzy fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
 
 ############################
 ## Generic library target ##
@@ -41,6 +41,17 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
+
+###################
+## fzf from HEAD ##
+###################
+fzf-download:
+	@git clone --depth 1 https://github.com/junegunn/fzf.git ${GBP_HOME}/.fzf
+fzf-config:
+fzf-build:
+fzf-install:
+	@cd ${GBP_HOME}/.fzf;./install
+fzf-clean:
 
 ###################
 ## fzy from HEAD ##
