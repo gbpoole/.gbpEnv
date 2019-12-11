@@ -125,7 +125,7 @@ else
 fi
 
 if [ -n "$ZSH_VERSION" ]; then
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-else
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+else
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 fi
