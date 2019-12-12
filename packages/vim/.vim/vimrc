@@ -48,6 +48,18 @@ let os = substitute(system('uname'), "\n", "", "")
 let hostname = substitute(system('hostname'), '\n', '', '')
 " }}}
 
+" System and OS dependencies {{{
+if os == "Darwin"
+    let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
+    let cscope_cmd="/usr/local/bin/cscope"
+    "let g:python3_host_prog = '/usr/local/Caskroom/miniconda/base/envs/nvim/bin/python'
+    "let g:cmake_opts = '-DHDF5_ROOT=/usr/local -DMPI_C_COMPILER=/usr/local/bin/mpicc'
+else
+    let g:cmake_opts = ''
+    let cscope_cmd="/usr/bin/cscope"
+end
+" }}}
+
 " Determine file type {{{
 filetype plugin indent on
 
@@ -84,92 +96,9 @@ runtime plugin/documap.vim
 " Ensure autodoc'd plugins are supported {{{
 runtime plugin/_autodoc.vim
 " }}}
-
-" Edit and auto-update this config file and plugins {{{
-augroup VimReload
-    autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
-augroup END
-Nmap <silent> <leader>ve [Edit .vimrc] :next $MYVIMRC<CR>
-Nmap <silent> <leader>vr [Edit .vimrc] :source $MYVIMRC<CR>
 " }}}
 
-" Prefer vertical orientation when using :diffsplit {{{
-set diffopt+=vertical
-" }}}
-
-" Goto last location in non-empty files {{{
-autocmd BufReadPost *  if line("'\"") > 1 && line("'\"") <= line("$")
-                   \|     exe "normal! g`\""
-                   \|  endif
-" }}}
-
-" Smarter search behaviour {{{
-set incsearch       "Lookahead as search pattern is specified
-"set ignorecase      "Ignore case in all searches...
-"set smartcase       "...unless uppercase letters used
-
-" Absolute direction for n and N...
-nnoremap  <silent><expr> n  'Nn'[v:searchforward] . ":call HLNext()\<CR>"
-nnoremap  <silent><expr> N  'nN'[v:searchforward] . ":call HLNext()\<CR>"
-
-"Delete in normal mode to switch off highlighting till next search and clear messages...
-"Nmap <silent> <BS> [Cancel highlighting]  :call HLNextOff() <BAR> :nohlsearch <BAR> :call VG_Show_CursorColumn('off')<CR>::HierClear<CR>
-
-"Double-delete to remove trailing whitespace...
-function! TrimTrailingWS ()
-    if search('\s\+$', 'cnw')
-        :%s/\s\+$//g
-    endif
-endfunction
-Nmap <silent> <BS><BS>  [Remove trailing whitespace] mz:call TrimTrailingWS()<CR>`z
-
-" Improved search mapping to replace :%s/.../.../g {{{
-Nmap S  [Shortcut for :s///g]  :%s//g<LEFT><LEFT>
-xmap S                         :s//g<LEFT><LEFT>
-
-Nmap <expr> M  [Shortcut for :s/<last match>//g]  ':%s/' . @/ . '//g<LEFT><LEFT>'
-xmap <expr> M                                     ':s/' . @/ . '//g<LEFT><LEFT>'
-" }}}
-
-" }}}
-
-" Smart wrapping {{{
-
-" No smartwrapping in any of these files...
-"let g:SW_IGNORE_FILES = '.vimrc,*.vim,*.pl,*.pm,**/bin/**'
-
-" set comments-=s1:/*,mb:*,ex:*/      "Don't recognize C comments
-" set comments-=:XCOMM                "Don't recognize lmake comments
-" set comments-=:%                    "Don't recognize PostScript comments
-" set comments-=:#                    "Don't recognize Perl/shell comments
-" set comments+=fb:*                  "Star-space is a bullet
-" set comments+=fb:-                  "Dash-space is a bullets
-set formatoptions-=cro
-set formatoptions+=j                  " Remove comment introducers when joining comment lines
-set wrapmargin=2                      "Wrap 2 characters from the edge of the window
-"set cinwords = ""                    "But not for C-like keywords
-set cinoptions+=#1
-set cinkeys-=0#
-" }}}
-
-" Smart indent {{{
-set autoindent             " Retain indentation on next line
-set smartindent            " Turn on autoindenting of blocks
-let g:vim_indent_cont = 0  " No magic shifts on Vim line continuations
-
-"And no shift magic on comments...
-function! ShiftLine() range
-    set nosmartindent
-    exec "normal! " . v:count . ">>"
-    set smartindent
-    silent! call repeat#set( "\<Plug>ShiftLine" )
-endfunction
-nmap <silent>  >>  <Plug>ShiftLine
-nnoremap <Plug>ShiftLine :call ShiftLine()<CR>
-" }}}
-
-" MISC. OPTIONS {{{
+" ### OPTIONS ### {{{
 set title           "Show filename in titlebar of window
 set titleold=
 set title titlestring=
@@ -266,77 +195,7 @@ endif
 "endif
 " }}}
 
-" Use ripgrep if possible {{{
-"    ... if not then ack, and fall back to grep if all else fails
-if executable('rg')
-    set grepprg=set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case\ --trim
-elseif executable('ack')
-    set grepprg=ack\ -s\ -H\ --nocolor\ --nogroup\ --column
-    set grepformat=%f:%l:%c:%m,%f:%l:%m
-else
-    " Grep will sometimes skip displaying the file name if you
-    " search in a singe file. Set grep
-    " program to always generate a file-name.
-    set grepprg=grep\ -nHRI\ $*\ .
-endif
-nnoremap <leader>* :silent grep! "<C-r><C-w>"<CR>:copen<CR>:redraw!<CR>
-command! -nargs=+ -complete=file -bar Grep silent grep! <args>|copen|redraw!
-nnoremap <leader>/ :Grep
-" }}}
-
-" Back up the current file{{{
-Nmap BB [Back up current file]  :!bak -q %<CR><CR>:echomsg "Backed up" expand('%')<CR>
-" }}}
-
-" Automatically create tmp directories {{{
-function! InitBackupDir()
-  if exists('*mkdir')
-    if !isdirectory(&directory)
-      call mkdir(&directory)
-    endif
-    if !isdirectory(&backupdir)
-      call mkdir(&backupdir)
-    endif
-    if !isdirectory(&undodir)
-      call mkdir(&undodir)
-    endif
-  endif
-  let l:missing_dir = 0
-  if !isdirectory(&directory)
-    let l:missing_dir = 1
-  endif
-  if !isdirectory(&backupdir)
-    let l:missing_dir = 1
-  endif
-  if !isdirectory(&undodir)
-    let l:missing_dir = 1
-  endif
-  if l:missing_dir
-    echo 'Warning: Unable to create scratch directories:' &directory ',' &backupdir 'and' &undodir
-    echo 'Try: mkdir -p' &directory
-    echo 'and: mkdir -p' &backupdir
-    echo 'and: mkdir -p' &undodir
-    set directory=.
-    set backupdir=.
-    set undodir=.
-  endif
-endfunction
-call InitBackupDir()
-" }}}
-
-" System and OS dependencies {{{
-if os == "Darwin"
-    let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
-    let cscope_cmd="/usr/local/bin/cscope"
-    "let g:python3_host_prog = '/usr/local/Caskroom/miniconda/base/envs/nvim/bin/python'
-    "let g:cmake_opts = '-DHDF5_ROOT=/usr/local -DMPI_C_COMPILER=/usr/local/bin/mpicc'
-else
-    let g:cmake_opts = ''
-    let cscope_cmd="/usr/bin/cscope"
-end
-" }}}
-" }}}
-
+" ### PLUGINS ### {{{
 " Load plugins {{{
 
 " Install vim-plug automatically if absent
@@ -443,54 +302,6 @@ call plug#begin()
 call plug#end()
 " }}}
 
-" Aesthetics {{{
-" Set color scheme(s)
-try
-    colorscheme molokai
-    let g:airline_theme='molokai'
-catch /^Vim\%((\a\+)\)\=:E185/
-    echom "Colourscheme not found.  Perhaps plugins have not been installed?  Try running :PlugInstall"
-endtry
-
-" }}}
-
-" Tags stuff {{{
-
-" CScope {{{
-if has('cscope')
-    let &cscopeprg = cscope_cmd
-    set cscopetagorder=0
-    " set cst
-    set nocscopeverbose
-    " add any database in current directory
-    if filereadable('cscope.out')
-        cs add cscope.out
-    " else add database pointed to by environment
-    elseif $CSCOPE_DB != ''
-        cs add $CSCOPE_DB
-    endif
-    set cscopeverbose
-
-    " put the cscope output in the quickfix window
-    set cscopequickfix=s-,c-,d-,i-,t-,e-
-
-    " map g<C-]> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
-    " map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
-    " map g<C-/> :cs find s <C-R>=expand("<cword>")<CR><CR>
-endif
-" }}}
-
-set tags+=./tags;$HOME   " recursively search up dir stack for tags file
-function! GenCtags()
-    let s:cmd = ' -R --fields=+iaS --extra=+q'
-    if exists('g:Tlist_Ctags_Cmd')
-        execute ':!'.g:Tlist_Ctags_Cmd.s:cmd
-    else
-        execute ':! ctags'.s:cmd
-    endif
-endfun
-" }}}
-
 " Plugin Settings {{{
 
 " ALE {{{
@@ -540,15 +351,6 @@ autocmd ColorScheme * highlight NonText ctermbg=None
 "
 "highlight SpellBad term=reverse ctermbg=1
 "
-
-augroup ColorSchemeALE
-    autocmd ColorScheme * highlight ALEError cterm=underline gui=underline guisp=Red 
-    autocmd ColorScheme * highlight link ALEWarning WarningMsg
-    autocmd ColorScheme * highlight link ALEInfo MoreMsg
-    autocmd ColorScheme * highlight ALEWarningSign ctermfg=Yellow ctermbg=236
-    autocmd ColorScheme * highlight ALEErrorSign ctermfg=Red ctermbg=236
-    autocmd ColorScheme * highlight ALEInfoSign ctermfg=White ctermbg=236
-augroup end
 
 let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = '» '
@@ -838,6 +640,192 @@ inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<Plug>(MyCR)", 'im')
 " }}}
 
 " }}}
+"}}}
+
+" ### AESTHETICS ### {{{
+" Set color scheme(s) {{{
+try
+    colorscheme molokai
+    let g:airline_theme='molokai'
+catch /^Vim\%((\a\+)\)\=:E185/
+    echom "Colourscheme not found.  Perhaps plugins have not been installed?  Try running :PlugInstall"
+endtry
+" }}}
+
+" ALE Highlighting {{{
+augroup ColorSchemeALE
+    autocmd ColorScheme * highlight ALEError cterm=underline gui=underline guisp=Red 
+    autocmd ColorScheme * highlight link ALEWarning WarningMsg
+    autocmd ColorScheme * highlight link ALEInfo MoreMsg
+    autocmd ColorScheme * highlight ALEWarningSign ctermfg=Yellow ctermbg=236
+    autocmd ColorScheme * highlight ALEErrorSign ctermfg=Red ctermbg=236
+    autocmd ColorScheme * highlight ALEInfoSign ctermfg=White ctermbg=236
+augroup end
+" }}}
+
+" Cursor line number Highlighting {{{
+augroup ColorSchemeCursorLineNumber
+    autocmd ColorScheme * highlight CursorLineNr ctermfg=208 ctermbg=236
+augroup end
+" }}}
+
+" Fold Highlighting {{{
+augroup ColorSchemeFolded
+    autocmd ColorScheme * highlight Folded ctermfg=67 ctermbg=236
+    autocmd ColorScheme * highlight FoldColumn ctermfg=67 ctermbg=236
+augroup end
+" }}}
+
+" Needed to make sure that tmux pane highlighting works {{{
+augroup ColorSchemeTmux
+    autocmd ColorScheme * highlight Normal ctermbg=None
+    autocmd ColorScheme * highlight NonText ctermbg=None
+augroup end
+" }}}
+" }}}
+
+" Custom features {{{
+" Edit and auto-update this config file and plugins {{{
+augroup VimReload
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END
+Nmap <silent> <leader>ve [Edit .vimrc] :next $MYVIMRC<CR>
+Nmap <silent> <leader>vr [Edit .vimrc] :source $MYVIMRC<CR>
+" }}}
+
+" Prefer vertical orientation when using :diffsplit {{{
+set diffopt+=vertical
+" }}}
+
+" Goto last location in non-empty files {{{
+autocmd BufReadPost *  if line("'\"") > 1 && line("'\"") <= line("$")
+                   \|     exe "normal! g`\""
+                   \|  endif
+" }}}
+
+" Smarter search behaviour {{{
+set incsearch       "Lookahead as search pattern is specified
+"set ignorecase      "Ignore case in all searches...
+"set smartcase       "...unless uppercase letters used
+
+" Absolute direction for n and N...
+nnoremap  <silent><expr> n  'Nn'[v:searchforward] . ":call HLNext()\<CR>"
+nnoremap  <silent><expr> N  'nN'[v:searchforward] . ":call HLNext()\<CR>"
+
+"Delete in normal mode to switch off highlighting till next search and clear messages...
+"Nmap <silent> <BS> [Cancel highlighting]  :call HLNextOff() <BAR> :nohlsearch <BAR> :call VG_Show_CursorColumn('off')<CR>::HierClear<CR>
+
+"Double-delete to remove trailing whitespace...
+function! TrimTrailingWS ()
+    if search('\s\+$', 'cnw')
+        :%s/\s\+$//g
+    endif
+endfunction
+Nmap <silent> <BS><BS>  [Remove trailing whitespace] mz:call TrimTrailingWS()<CR>`z
+
+" Improved search mapping to replace :%s/.../.../g {{{
+Nmap S  [Shortcut for :s///g]  :%s//g<LEFT><LEFT>
+xmap S                         :s//g<LEFT><LEFT>
+
+Nmap <expr> M  [Shortcut for :s/<last match>//g]  ':%s/' . @/ . '//g<LEFT><LEFT>'
+xmap <expr> M                                     ':s/' . @/ . '//g<LEFT><LEFT>'
+" }}}
+
+" }}}
+
+" Smart wrapping {{{
+
+" No smartwrapping in any of these files...
+"let g:SW_IGNORE_FILES = '.vimrc,*.vim,*.pl,*.pm,**/bin/**'
+
+" set comments-=s1:/*,mb:*,ex:*/      "Don't recognize C comments
+" set comments-=:XCOMM                "Don't recognize lmake comments
+" set comments-=:%                    "Don't recognize PostScript comments
+" set comments-=:#                    "Don't recognize Perl/shell comments
+" set comments+=fb:*                  "Star-space is a bullet
+" set comments+=fb:-                  "Dash-space is a bullets
+set formatoptions-=cro
+set formatoptions+=j                  " Remove comment introducers when joining comment lines
+set wrapmargin=2                      "Wrap 2 characters from the edge of the window
+"set cinwords = ""                    "But not for C-like keywords
+set cinoptions+=#1
+set cinkeys-=0#
+" }}}
+
+" Smart indent {{{
+set autoindent             " Retain indentation on next line
+set smartindent            " Turn on autoindenting of blocks
+let g:vim_indent_cont = 0  " No magic shifts on Vim line continuations
+
+"And no shift magic on comments...
+function! ShiftLine() range
+    set nosmartindent
+    exec "normal! " . v:count . ">>"
+    set smartindent
+    silent! call repeat#set( "\<Plug>ShiftLine" )
+endfunction
+nmap <silent>  >>  <Plug>ShiftLine
+nnoremap <Plug>ShiftLine :call ShiftLine()<CR>
+" }}}
+
+" Use ripgrep if possible {{{
+"    ... if not then ack, and fall back to grep if all else fails
+if executable('rg')
+    set grepprg=set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case\ --trim
+elseif executable('ack')
+    set grepprg=ack\ -s\ -H\ --nocolor\ --nogroup\ --column
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+else
+    " Grep will sometimes skip displaying the file name if you
+    " search in a singe file. Set grep
+    " program to always generate a file-name.
+    set grepprg=grep\ -nHRI\ $*\ .
+endif
+nnoremap <leader>* :silent grep! "<C-r><C-w>"<CR>:copen<CR>:redraw!<CR>
+command! -nargs=+ -complete=file -bar Grep silent grep! <args>|copen|redraw!
+nnoremap <leader>/ :Grep
+" }}}
+
+" Back up the current file{{{
+Nmap BB [Back up current file]  :!bak -q %<CR><CR>:echomsg "Backed up" expand('%')<CR>
+" }}}
+
+" Automatically create tmp directories {{{
+function! InitBackupDir()
+  if exists('*mkdir')
+    if !isdirectory(&directory)
+      call mkdir(&directory)
+    endif
+    if !isdirectory(&backupdir)
+      call mkdir(&backupdir)
+    endif
+    if !isdirectory(&undodir)
+      call mkdir(&undodir)
+    endif
+  endif
+  let l:missing_dir = 0
+  if !isdirectory(&directory)
+    let l:missing_dir = 1
+  endif
+  if !isdirectory(&backupdir)
+    let l:missing_dir = 1
+  endif
+  if !isdirectory(&undodir)
+    let l:missing_dir = 1
+  endif
+  if l:missing_dir
+    echo 'Warning: Unable to create scratch directories:' &directory ',' &backupdir 'and' &undodir
+    echo 'Try: mkdir -p' &directory
+    echo 'and: mkdir -p' &backupdir
+    echo 'and: mkdir -p' &undodir
+    set directory=.
+    set backupdir=.
+    set undodir=.
+  endif
+endfunction
+call InitBackupDir()
+" }}}
 
 " Cycle through relativenumber + number, number (only), and no numbering. {{{
 function! Cycle_numbering() abort
@@ -854,14 +842,45 @@ function! Cycle_numbering() abort
 endfunction
 Nmap <Leader>r [Cycle line numbering] :call Cycle_numbering()<CR>
 "}}}
-
-" Some final stuff {{{
-" Needed to make sure that tmux pane highlighting works
-augroup ColorSchemeTmux
-    autocmd ColorScheme * highlight Normal ctermbg=None
-    autocmd ColorScheme * highlight NonText ctermbg=None
-augroup end
-
-syntax on
 " }}}
 
+" Tag stuff {{{
+
+" CScope {{{
+if has('cscope')
+    let &cscopeprg = cscope_cmd
+    set cscopetagorder=0
+    " set cst
+    set nocscopeverbose
+    " add any database in current directory
+    if filereadable('cscope.out')
+        cs add cscope.out
+    " else add database pointed to by environment
+    elseif $CSCOPE_DB != ''
+        cs add $CSCOPE_DB
+    endif
+    set cscopeverbose
+
+    " put the cscope output in the quickfix window
+    set cscopequickfix=s-,c-,d-,i-,t-,e-
+
+    " map g<C-]> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
+    " map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
+    " map g<C-/> :cs find s <C-R>=expand("<cword>")<CR><CR>
+endif
+" }}}
+
+set tags+=./tags;$HOME   " recursively search up dir stack for tags file
+function! GenCtags()
+    let s:cmd = ' -R --fields=+iaS --extra=+q'
+    if exists('g:Tlist_Ctags_Cmd')
+        execute ':!'.g:Tlist_Ctags_Cmd.s:cmd
+    else
+        execute ':! ctags'.s:cmd
+    endif
+endfun
+" }}}
+
+" Some final stuff {{{
+syntax on
+" }}}
