@@ -24,9 +24,9 @@ let mapleader = ','
 
 " Set colour usage
 set t_Co=256
-if exists('&termguicolors')
-    set termguicolors
-endif
+"if exists('&termguicolors')
+"    set termguicolors
+"endif
 
 " Encoding
 setglobal termencoding=utf-8 fileencodings=
@@ -87,7 +87,7 @@ runtime plugin/_autodoc.vim
 
 " Edit and auto-update this config file and plugins {{{
 augroup VimReload
-autocmd!
+    autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
 Nmap <silent> <leader>ve [Edit .vimrc] :next $MYVIMRC<CR>
@@ -173,7 +173,7 @@ nnoremap <Plug>ShiftLine :call ShiftLine()<CR>
 set title           "Show filename in titlebar of window
 set titleold=
 set title titlestring=
-set nomore          "Don't page long listings
+"set nomore          "Don't page long listings
 set cpoptions-=a    "Don't set # after a :read
 set autowrite       "Save buffer automatically when changing files
 set autoread        "Always reload buffer when external changes detected
@@ -452,52 +452,9 @@ catch /^Vim\%((\a\+)\)\=:E185/
     echom "Colourscheme not found.  Perhaps plugins have not been installed?  Try running :PlugInstall"
 endtry
 
-" Comments
-highlight Comment term=bold cterm=italic ctermfg=white gui=italic guifg=white
-
-"" Make naughty characters visible...
-"" (uBB is right double angle, uB7 is middle dot)
-"set lcs=tab:»·,trail:␣,nbsp:˷
-"highlight InvisibleSpaces ctermfg=Black ctermbg=Black
-"call matchadd('InvisibleSpaces', '\S\@<=\s\+\%#\ze\s*$')
-"
-"augroup VisibleNaughtiness
-"    autocmd!
-"    autocmd BufEnter  *       set list
-"    autocmd BufEnter  *       set list
-"    autocmd BufEnter  *.txt   set nolist
-"    autocmd BufEnter  *.vp*   set nolist
-"    autocmd BufEnter  *       if !&modifiable
-"    autocmd BufEnter  *           set nolist
-"    autocmd BufEnter  *       endif
-"augroup END
-
-" Highlighting
-set hlsearch        "Highlight all matches
-"highlight clear Search
-"highlight       Search    ctermfg=White  ctermbg=Black  cterm=bold
-"highlight    IncSearch    ctermfg=White  ctermbg=Red    cterm=bold
-
-" Set background
-set background=dark
-
-" Cursor configuration
-if has("nvim")
-    " set guicursor=n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor
-else
-    let &t_SI = "\<Esc>[5 q"
-    if exists("&t_SR")
-        let &t_SR = "\<Esc>[3 q"
-    endif
-    let &t_EI = "\<Esc>[2 q"
-endif
-
-"" Set a hotkey for toggling paste mode
-"nnoremap <F2> :set invpaste paste?<CR>
-"set pastetoggle=<F2>
-"set showmode
-
 " }}}
+
+" Tags stuff {{{
 
 " CScope {{{
 if has('cscope')
@@ -523,7 +480,6 @@ if has('cscope')
 endif
 " }}}
 
-" Tags stuff {{{
 set tags+=./tags;$HOME   " recursively search up dir stack for tags file
 function! GenCtags()
     let s:cmd = ' -R --fields=+iaS --extra=+q'
@@ -576,16 +532,23 @@ let g:ale_sign_style_warning = 's>'
 
 "highlight ALEWarning guifg=Yellow
 let g:ale_set_highlights = 1
-highlight ALEWarning ctermfg=Red ctermbg=White
-highlight ALEStyleWarning guifg=Red guibg=grey
-
-"hi! ALEError cterm=underline gui=underline guisp=Red 
-""hi! link ALEWarning WarningMsg
-"hi! link ALEInfo MoreMsg
+autocmd ColorScheme * highlight NonText ctermbg=None
+"highlight ALEInfoSign ctermfg=Red ctermbg=White
+"highlight ALEErrorSign ctermfg=Red ctermbg=White
+"highlight ALEWarningSign ctermfg=Red ctermbg=White
+"highlight ALEStyleWarning guifg=Red guibg=grey
 "
-"let g:ale_set_highlights = 1
-"highlight ALEWarning ctermbg=DarkMagenta
-"highlight ALEWarning guibg=DarkMagenta
+"highlight SpellBad term=reverse ctermbg=1
+"
+
+augroup ColorSchemeALE
+    autocmd ColorScheme * highlight ALEError cterm=underline gui=underline guisp=Red 
+    autocmd ColorScheme * highlight link ALEWarning WarningMsg
+    autocmd ColorScheme * highlight link ALEInfo MoreMsg
+    autocmd ColorScheme * highlight ALEWarningSign ctermfg=Yellow ctermbg=236
+    autocmd ColorScheme * highlight ALEErrorSign ctermfg=Red ctermbg=236
+    autocmd ColorScheme * highlight ALEInfoSign ctermfg=White ctermbg=236
+augroup end
 
 let g:ale_virtualtext_cursor = 1
 let g:ale_virtualtext_prefix = '» '
@@ -611,8 +574,8 @@ nmap <silent> <leader>a} <Plug>(ale_next_wrap)
 "let g:airline#extensions#tmuxline#enabled = 0
 "let g:airline#extensions#tabline#enabled = 0
 "let g:airline_powerline_fonts = 1
-let g:airline_left_sep=''
-let g:airline_right_sep=''
+"let g:airline_left_sep=''
+"let g:airline_right_sep=''
 "
 "call airline#parts#define_function('winnum', 'WindowNumber')
 "function! MyPlugin(...)
@@ -893,11 +856,12 @@ Nmap <Leader>r [Cycle line numbering] :call Cycle_numbering()<CR>
 "}}}
 
 " Some final stuff {{{
-syntax on
-
 " Needed to make sure that tmux pane highlighting works
-autocmd ColorScheme * highlight Normal ctermbg=None
-autocmd ColorScheme * highlight NonText ctermbg=None
+augroup ColorSchemeTmux
+    autocmd ColorScheme * highlight Normal ctermbg=None
+    autocmd ColorScheme * highlight NonText ctermbg=None
+augroup end
 
+syntax on
 " }}}
 
