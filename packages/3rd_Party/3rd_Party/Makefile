@@ -17,7 +17,7 @@ N_CORES=4
 ##################
 ## set versions ##
 ##################
-VERSION-node=8.4.0
+VERSION-node=8.10.0
 VERSION-gcc=7.3.0
 VERSION-cmake=3.11.2
 VERSION-mpich=3.2
@@ -48,6 +48,7 @@ all: $(generic_libs)
 ####################
 PLATFORM-node=linux-x64
 node-download:
+	@rm -rf node.js
 	@wget http://nodejs.org/download/release/v${VERSION-node}/node-v${VERSION-node}-${PLATFORM-node}.tar.gz
 node-config:
 node-build:
