@@ -77,6 +77,10 @@ export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
 # Add my_code binary directory to the PATH
 export PATH=${GBP_HOME}/my_code/bin:$PATH
 
+# Configure Node.js
+export NODEJS_HOME=${GBP_HOME}/3rd_Party/node.js
+export PATH=$PATH:$NODEJS_HOME/bin
+
 # Configure Perl
 export PERL_LOCAL_LIB_ROOT=${GBP_HOME}/.perl5
 export PATH=${PERL_LOCAL_LIB_ROOT}/bin:$PATH

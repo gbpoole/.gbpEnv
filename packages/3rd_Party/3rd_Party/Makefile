@@ -17,6 +17,7 @@ N_CORES=4
 ##################
 ## set versions ##
 ##################
+VERSION-node=8.4.0
 VERSION-gcc=7.3.0
 VERSION-cmake=3.11.2
 VERSION-mpich=3.2
@@ -29,7 +30,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libgit2 antibody zsh fzy fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
+generic_libs = node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
 
 ############################
 ## Generic library target ##
@@ -41,6 +42,20 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
+
+####################
+## node from HEAD ##
+####################
+PLATFORM-node=linux-x64
+node-download:
+	@wget http://nodejs.org/download/release/v${VERSION-node}/node-v${VERSION-node}-${PLATFORM-node}.tar.gz
+node-config:
+node-build:
+node-install:
+	@$(ECHO) Uncompressing ...;tar xzf node-v${VERSION-node}-${PLATFORM-node}.tar.gz ;$(ECHO) Done.
+	@cd ${GBP_HOME}/3rd_Party;ln -s node-v${VERSION-node}-${PLATFORM-node} node.js
+node-clean:
+	@rm -rf build-node node-v${VERSION-node}-${PLATFORM-node}.tar.gz
 
 ###################
 ## fzf from HEAD ##

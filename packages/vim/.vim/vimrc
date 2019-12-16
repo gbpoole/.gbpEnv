@@ -498,6 +498,8 @@ let g:gutentags_ctags_tagfile = ".tags"
 let g:gutentags_enabled = 1
 let g:gutentags_ctags_extra_args = ['--c++-kinds=+p', '--c-kinds=-p', '--fields=+iaS', '--extra=+q']
 let g:gutentags_ctags_exclude = ['build']
+
+let g:gutentags_cache_dir=$GBP_HOME . '/.cache/tags/'
 " }}}
 
 " jedi {{{
