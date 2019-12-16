@@ -478,7 +478,7 @@ let g:goyo_width = 82
 
 " {{{ CoC
 
-let g:coc_config_home = $GBP_HOME . '.vim'
+let g:coc_config_home = $GBP_HOME . '/.vim'
 
 " The following was taken from the CoC website:
 " https://github.com/neoclide/coc.nvim
