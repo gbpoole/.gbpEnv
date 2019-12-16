@@ -50,13 +50,8 @@ let hostname = substitute(system('hostname'), '\n', '', '')
 
 " System and OS dependencies {{{
 if os == "Darwin"
-    let Tlist_Ctags_Cmd="/usr/local/bin/ctags"
-    let cscope_cmd="/usr/local/bin/cscope"
-    "let g:python3_host_prog = '/usr/local/Caskroom/miniconda/base/envs/nvim/bin/python'
-    "let g:cmake_opts = '-DHDF5_ROOT=/usr/local -DMPI_C_COMPILER=/usr/local/bin/mpicc'
 else
     let g:cmake_opts = ''
-    let cscope_cmd="/usr/bin/cscope"
 end
 " }}}
 
@@ -258,9 +253,6 @@ call plug#begin()
     Plug 'airblade/vim-gitgutter'
     Plug 'rhysd/git-messenger.vim'
 
-    " Tags
-    Plug 'ludovicchabant/vim-gutentags'
-
     " Linting
     Plug 'w0rp/ale'
 
@@ -277,26 +269,16 @@ call plug#begin()
     Plug 'davidhalter/jedi-vim', { 'for': 'python' }
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 
-    " Completion
-    Plug 'ncm2/ncm2'
-    Plug 'roxma/nvim-yarp'  " ncm2 requires nvim-yarp
-    Plug 'ncm2/float-preview.nvim'
-
-    " some completion sources
-    Plug 'ncm2/ncm2-bufword'
-    augroup plug_ncm2
-        autocmd FileType * if expand('<amatch>') != 'tex' | call plug#load('ncm2/ncm2-bufword') | execute 'autocmd! plug_ncm2' | endif
-    augroup END
-    Plug 'ncm2/ncm2-tmux'
-    Plug 'ncm2/ncm2-path'
-    Plug 'ncm2/ncm2-jedi'
-    Plug 'ncm2/ncm2-ultisnips'
-    Plug 'ncm2/ncm2-pyclang'
-    Plug 'ncm2/ncm2-tagprefix'
-    Plug 'ncm2/ncm2-github'
-
     " CoC for LSP support
-    Plug 'neoclide/coc.nvim', {'tag': '*', 'branch': 'release'}
+    Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+    Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
+    "Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+    "Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+    "Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+    "Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
+    "Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'} " mru and stuff
+    Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'} " color highlighting
 
     "Plug 'autozimu/LanguageClient-neovim', {
     "    \ 'branch': 'next',
@@ -494,18 +476,13 @@ let g:gitgutter_sign_modified_removed = '┃'
 let g:goyo_width = 82
 " }}}
 
-" {{{ gutentags
-let g:gutentags_resolve_symlinks = 0
-let g:gutentags_project_root = [".git",".project.json"]
-let g:gutentags_ctags_tagfile = ".tags"
-let g:gutentags_enabled = 1
-let g:gutentags_ctags_extra_args = ['--c++-kinds=+p', '--c-kinds=-p', '--fields=+iaS', '--extra=+q']
-let g:gutentags_ctags_exclude = ['build']
-
-let g:gutentags_cache_dir=$GBP_HOME . '/.cache/tags/'
-" }}}
-
 " {{{ CoC
+
+let g:coc_config_home = $GBP_HOME . '.vim'
+
+" The following was taken from the CoC website:
+" https://github.com/neoclide/coc.nvim
+
 " if hidden is not set, TextEdit might fail.
 set hidden
 
@@ -634,7 +611,65 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
-" }}}
+
+" The following was taken from here:
+" https://github.com/rstacruz/vim-coc-settings/blob/master/after/plugin/coc.vim
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" gd - go to definition of word under cursor
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+
+" gi - go to implementation
+nmap <silent> gi <Plug>(coc-implementation)
+
+" gr - find references
+nmap <silent> gr <Plug>(coc-references)
+
+" gh - get hint on whatever's under the cursor
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> gh :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+nnoremap <silent> <leader>co  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>cs  :<C-u>CocList -I symbols<cr>
+
+" List errors
+nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<cr>
+
+" list commands available in tsserver (and others)
+nnoremap <silent> <leader>cc  :<C-u>CocList commands<cr>
+
+" restart when tsserver gets wonky
+nnoremap <silent> <leader>cR  :<C-u>CocRestart<CR>
+
+" view all errors
+nnoremap <silent> <leader>cl  :<C-u>CocList locationlist<CR>
+
+" manage extensions
+nnoremap <silent> <leader>cx  :<C-u>CocList extensions<cr>
+
+" rename the current word in the cursor
+nmap <leader>cr  <Plug>(coc-rename)
+nmap <leader>cf  <Plug>(coc-format-selected)
+vmap <leader>cf  <Plug>(coc-format-selected)
+
+" run code actions
+vmap <leader>ca  <Plug>(coc-codeaction-selected)
+nmap <leader>ca  <Plug>(coc-codeaction-selected)
+
+"}}}
 
 " jedi {{{
 
@@ -678,50 +713,6 @@ set matchpairs+=<:>,«:»,｢:｣
 if !exists('g:loaded_matchit')
   runtime macros/matchit.vim
 endif
-" }}}
-
-" ncm2 {{{
-" " enable for all buffers except terminals
-augroup ncm2
-    autocmd BufEnter * if &buftype !=# 'terminal' | call ncm2#enable_for_buffer()
-augroup end
-
-" note that must keep noinsert in completeopt, the others is optional
-set completeopt=noinsert,menuone,noselect
-
-" supress the annoying 'match x of y', 'The only match' and 'Pattern not
-" found' messages
-set shortmess+=c
-
-" CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-inoremap <c-c> <ESC>
-
-" When the <Enter> key is pressed while the popup menu is visible, it only
-" hides the menu. Use this mapping to close the menu and also start a new
-" line.
-inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-
-" Use <TAB> to select the popup menu:
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-" if we are using manual completion
-inoremap <silent> <c-space> <c-r>=ncm2#manual_trigger()<cr>
-" }}}
-
-" ncm2-pyclang {{{
-if (hostname =~ "farnarkle") || (hostname =~ "swin.edu.au")
-    let g:ncm2_pyclang#library_path = "/apps/skylake/software/compiler/gcc/6.4.0/clang/5.0.1/lib/libclang.so.5.0"
-else
-    let g:ncm2_pyclang#library_path = "/usr/local/opt/llvm/lib"
-endif
-
-autocmd FileType c,cpp nnoremap <buffer> gd :<C-u>call ncm2_pyclang#goto_declaration()<CR>
-
-" show the preview window
-" let g:cm_completeopt="menu,menuone,noinsert,noselect,preview"
-" automatically close the preview window after completion
-" au CompleteDone * pclose
 " }}}
 
 " nerd_commenter {{{
@@ -772,7 +763,6 @@ let g:UltiSnipsJumpBackwardTrigger = '<C-j>'
 let g:ultisnips_python_style = 'numpy'
 let g:AutoPairsMapCR=0
 inoremap <silent> <Plug>(MyCR) <CR><C-R>=AutoPairsReturn()<CR>
-inoremap <silent> <expr> <CR> ncm2_ultisnips#expand_or("\<Plug>(MyCR)", 'im')
 " }}}
 
 " }}}
@@ -978,43 +968,6 @@ function! Cycle_numbering() abort
 endfunction
 Nmap <Leader>r [Cycle line numbering] :call Cycle_numbering()<CR>
 "}}}
-" }}}
-
-" Tag stuff {{{
-
-" CScope {{{
-if has('cscope')
-    let &cscopeprg = cscope_cmd
-    set cscopetagorder=0
-    " set cst
-    set nocscopeverbose
-    " add any database in current directory
-    if filereadable('cscope.out')
-        cs add cscope.out
-    " else add database pointed to by environment
-    elseif $CSCOPE_DB != ''
-        cs add $CSCOPE_DB
-    endif
-    set cscopeverbose
-
-    " put the cscope output in the quickfix window
-    set cscopequickfix=s-,c-,d-,i-,t-,e-
-
-    " map g<C-]> :cs find 3 <C-R>=expand("<cword>")<CR><CR>
-    " map g<C-\> :cs find 0 <C-R>=expand("<cword>")<CR><CR>
-    " map g<C-/> :cs find s <C-R>=expand("<cword>")<CR><CR>
-endif
-" }}}
-
-set tags+=./tags;$HOME   " recursively search up dir stack for tags file
-function! GenCtags()
-    let s:cmd = ' -R --fields=+iaS --extra=+q'
-    if exists('g:Tlist_Ctags_Cmd')
-        execute ':!'.g:Tlist_Ctags_Cmd.s:cmd
-    else
-        execute ':! ctags'.s:cmd
-    endif
-endfun
 " }}}
 
 " Some final stuff {{{

@@ -30,7 +30,7 @@ VERSION-fftw3=3.3.8
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
+generic_libs = ccls node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
 
 ############################
 ## Generic library target ##
@@ -99,6 +99,19 @@ neovim-install:
 	@cd neovim; make install
 neovim-clean:
 	@rm -rf neovim
+
+##########
+## ccls ##
+##########
+ccls-download:
+	@git clone https://github.com/MaskRay/ccls
+ccls-config:
+ccls-build:
+	@cd ccls; mkdir build ; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=~/3rd_Party/ ..
+ccls-install:
+	@cd ccls/build; make install
+ccls-clean:
+	@rm -rf ccls
 
 #############
 ## libgit2 ##
