@@ -77,10 +77,6 @@ export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
 # Add my_code binary directory to the PATH
 export PATH=${GBP_HOME}/my_code/bin:$PATH
 
-# Configure Node.js
-export NODEJS_HOME=${GBP_HOME}/3rd_Party/node.js
-export PATH=$PATH:$NODEJS_HOME/bin
-
 # Configure Perl
 export PERL_LOCAL_LIB_ROOT=${GBP_HOME}/.perl5
 export PATH=${PERL_LOCAL_LIB_ROOT}/bin:$PATH
@@ -128,6 +124,19 @@ else
     fi
 fi
 
+# Set the verion of Node.js that we will use
+export GBP_NODE_VERSION=12.13.1
+if [ -f ${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64/bin/node ]; then
+    export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
+    export PATH=$NODEJS_HOME/bin:$PATH
+fi
+
+# Configure Luarocks (Lua package installer)
+if command -v luarocks &> /dev/null; then
+    eval `luarocks path`
+fi
+
+# Configure Fuzzy Finder (fzf)
 if [ -n "$ZSH_VERSION" ]; then
     [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 else

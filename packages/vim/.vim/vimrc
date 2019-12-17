@@ -17,7 +17,7 @@ let g:secure_modelines_modelines = 15
 " }}}
 
 " Change leader mapping {{{
-let mapleader = ','
+let mapleader = ' '
 " }}}
 
 " Terminal colours & encoding {{{
@@ -130,7 +130,7 @@ set visualbell t_vb=                 " Turn off visual beep
 set laststatus=2                     " Always display a status line
 set cmdheight=1                      " Command line height
 set hlsearch                         " Highlight searches
-set history=500                      " Store a ton of history (default is 20)
+" set history=500                      " Store a ton of history (default is 20)
 set hidden                           " Don't unload a buffer when abandoning it
 "set clipboard=unnamed                " To work in tmux
 set spelllang=en_au                  " Australian spelling
@@ -163,6 +163,8 @@ if has('persistent_undo')
     set undolevels=1000                     " Save a lot of back-history...
     set undofile                            " Actually switch on persistent undo
 endif
+
+syntax on
 
 "" Disabled options
 ""set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
@@ -280,10 +282,8 @@ call plug#begin()
     Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'} " mru and stuff
     Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'} " color highlighting
 
-    "Plug 'autozimu/LanguageClient-neovim', {
-    "    \ 'branch': 'next',
-    "    \ 'do': 'bash install.sh',
-    "    \ }
+    " Automatic detection of indenting
+    Plug 'tpope/vim-sleuth'
 call plug#end()
 " }}}
 
@@ -780,7 +780,7 @@ endtry
 
 " ALE Highlighting {{{
 augroup ColorSchemeALE
-    autocmd ColorScheme * highlight ALEError cterm=underline gui=underline guisp=Red 
+    autocmd ColorScheme * highlight ALEError cterm=underline gui=underline guisp=Red
     autocmd ColorScheme * highlight link ALEWarning WarningMsg
     autocmd ColorScheme * highlight link ALEInfo MoreMsg
     autocmd ColorScheme * highlight ALEWarningSign ctermfg=Yellow ctermbg=236
@@ -817,7 +817,7 @@ augroup VimReload
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup END
 Nmap <silent> <leader>ve [Edit .vimrc] :next $MYVIMRC<CR>
-Nmap <silent> <leader>vr [Edit .vimrc] :source $MYVIMRC<CR>
+Nmap <silent> <leader>vr [Source .vimrc] :source $MYVIMRC<CR>
 " }}}
 
 " Prefer vertical orientation when using :diffsplit {{{
@@ -968,8 +968,4 @@ function! Cycle_numbering() abort
 endfunction
 Nmap <Leader>r [Cycle line numbering] :call Cycle_numbering()<CR>
 "}}}
-" }}}
-
-" Some final stuff {{{
-syntax on
 " }}}

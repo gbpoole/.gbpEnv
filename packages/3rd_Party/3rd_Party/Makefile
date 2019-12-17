@@ -17,7 +17,8 @@ N_CORES=4
 ##################
 ## set versions ##
 ##################
-VERSION-node=8.10.0
+VERSION-luarocks=3.2.1
+VERSION-node=${GBP_NODE_VERSION}
 VERSION-gcc=7.3.0
 VERSION-cmake=3.11.2
 VERSION-mpich=3.2
@@ -27,10 +28,17 @@ VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
 VERSION-fftw3=3.3.8
 
+####################
+# Language Servers #
+####################
+lsp_list = luarocks dockerls bashls digestif
+.PHONY: lsps
+lsps: ${lsp_list}
+
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = ccls node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
+generic_libs = ccls node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -42,6 +50,58 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
+
+##################################################################
+## dockerls from HEAD                                           ##
+## https://github.com/rcjsuen/dockerfile-language-server-nodejs ##
+##################################################################
+dockerls-download:
+dockerls-config:
+dockerls-build:
+dockerls-install:
+	@npm install -g dockerfile-language-server-nodejs
+dockerls-clean:
+
+###########################################################
+## bashls from HEAD                                      ##
+## https://github.com/mads-hartmann/bash-language-server ##
+###########################################################
+bashls-download:
+bashls-config:
+bashls-build:
+bashls-install:
+	@npm install -g bash-language-server
+bashls-clean:
+
+##################################
+## luarocks from HEAD           ##
+## (likely needed for digestif) ##
+## https://luarocks.org/        ##
+##################################
+luarocks-download: antibody
+	@wget https://luarocks.github.io/luarocks/releases/luarocks-${VERSION-luarocks}.tar.gz
+	@$(ECHO) Uncompressing ...;tar xzf luarocks-${VERSION-luarocks}.tar.gz ;$(ECHO) Done.
+luarocks-config:
+	@cd luarocks-${VERSION-luarocks};./configure --prefix=${GBP_HOME}/3rd_Party/ 
+luarocks-build:
+	@cd luarocks-${VERSION-luarocks};make -j ${N_CORES}
+luarocks-install:
+	@cd luarocks-${VERSION-luarocks};make install
+luarocks-clean:
+	@rm -rf luarocks-${VERSION-luarocks}
+
+########################################
+## digestif from HEAD                 ##
+## https://github.com/astoff/digestif ##
+########################################
+digestif-download:
+digestif-config:
+digestif-build:
+digestif-install:
+	@luarocks install digestif
+digestif-clean:
+
+### END OF LSP SERVERS ##
 
 ####################
 ## node from HEAD ##
