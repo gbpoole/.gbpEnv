@@ -31,14 +31,14 @@ VERSION-fftw3=3.3.8
 ####################
 # Language Servers #
 ####################
-lsp_list = luarocks dockerls bashls digestif
+lsp_list = luarocks dockerls bashls digestif ccls
 .PHONY: lsps
 lsps: ${lsp_list}
 
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = ccls node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
+generic_libs = node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -62,6 +62,20 @@ dockerls-install:
 	@npm install -g dockerfile-language-server-nodejs
 dockerls-clean:
 
+######################################
+## ccls from HEAD                   ##
+##  https://github.com/MaskRay/ccls ##
+######################################
+ccls-download:
+	@git clone https://github.com/MaskRay/ccls
+ccls-config:
+ccls-build:
+	@cd ccls; mkdir build ; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=~/3rd_Party/ ..
+ccls-install:
+	@cd ccls/build; make install
+ccls-clean:
+	@rm -rf ccls
+ 
 ###########################################################
 ## bashls from HEAD                                      ##
 ## https://github.com/mads-hartmann/bash-language-server ##
@@ -159,19 +173,6 @@ neovim-install:
 	@cd neovim; make install
 neovim-clean:
 	@rm -rf neovim
-
-##########
-## ccls ##
-##########
-ccls-download:
-	@git clone https://github.com/MaskRay/ccls
-ccls-config:
-ccls-build:
-	@cd ccls; mkdir build ; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=~/3rd_Party/ ..
-ccls-install:
-	@cd ccls/build; make install
-ccls-clean:
-	@rm -rf ccls
 
 #############
 ## libgit2 ##
