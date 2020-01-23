@@ -1,26 +1,28 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
-# --------------
-# Validate input
-if [ $# -eq 1 ]; then
-    REMOTE_HOST=$1
-else
-    echo 'Syntax:' $0 'remote_host'
-    return 2
-fi
-# --------------
-
-# Get the local directory set up
-MNT_DIR=${GBP_HOME}/mnt
-LOCAL_DIR=${MNT_DIR}/${REMOTE_HOST}
-if [ ! -d "${MNT_DIR}" ]; then
-    mkdir ${MNT_DIR}
-fi
-if [ -d "${LOCAL_DIR}" ]; then
-    rm -rf ${LOCAL_DIR}
-fi
-mkdir ${LOCAL_DIR}
-
-# Perform mount
-sshfs -o allow_other,defer_permissions,noappledouble,follow_symlinks gpoole@${REMOTE_HOST}: ${LOCAL_DIR}
+sshfs.mount () {
+    # --------------
+    # Validate input
+    if [ $# -eq 1 ]; then
+        REMOTE_HOST=$1
+    else
+        echo 'Syntax:' $0 'remote_host'
+        return 2
+    fi
+    # --------------
+    
+    # Get the local directory set up
+    MNT_DIR=${GBP_HOME}/mnt
+    LOCAL_DIR=${MNT_DIR}/${REMOTE_HOST}
+    if [ ! -d "${MNT_DIR}" ]; then
+        mkdir ${MNT_DIR}
+    fi
+    if [ -d "${LOCAL_DIR}" ]; then
+        rm -rf ${LOCAL_DIR}
+    fi
+    mkdir ${LOCAL_DIR}
+    
+    # Perform mount
+    sshfs -o allow_other,defer_permissions,noappledouble,follow_symlinks gpoole@${REMOTE_HOST}: ${LOCAL_DIR}
+}

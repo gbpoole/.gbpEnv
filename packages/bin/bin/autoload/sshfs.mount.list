@@ -1,23 +1,25 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
-# --------------
-# Validate input
-if [ ! $# -eq 0 ]; then
-    echo 'Syntax:' $0 
-    return 2
-fi
-# --------------
-
-# Set-up some paths
-MNT_DIR=${GBP_HOME}/mnt/
-
-# Unmount all mounted remote hosts
-MNT_LIST=`ls ${MNT_DIR}`
-if [ -n "${MNT_LIST}" ]; then
-    for remote_host in ${MNT_LIST}; do
-        echo $remote_host:t
-    done
-else
-    echo "No remote hosts mounted."
-fi
+sshfs.mount.list () {
+    # --------------
+    # Validate input
+    if [ ! $# -eq 0 ]; then
+        echo 'Syntax:' $0 
+        return 2
+    fi
+    # --------------
+    
+    # Set-up some paths
+    MNT_DIR=${GBP_HOME}/mnt/
+    
+    # Unmount all mounted remote hosts
+    MNT_LIST=`ls ${MNT_DIR}`
+    if [ -n "${MNT_LIST}" ]; then
+        for remote_host in ${MNT_LIST}; do
+            echo $remote_host:t
+        done
+    else
+        echo "No remote hosts mounted."
+    fi
+}

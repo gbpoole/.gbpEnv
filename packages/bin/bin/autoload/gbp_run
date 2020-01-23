@@ -2,114 +2,120 @@
 # vim:filetype=sh
 
 # Report the script's syntax
-usage () {
-    echo "Usage: "$(basename $0)" -n <n_cores_per_node> -N <n_nodes> [-s -h -p -k -g -f <filename>] COMMAND"
+gbp.run.usage () {
+    echo "Usage: "$(basename $0)" -n <n_cores_per_node> -N <n_nodes> [-s -h -p -k -g -f <filename> -P <project>] COMMAND"
 }
 
-# Set defaults
-keep=false
-run_script=true
-print_script=false
-use_gpu=false
-filename_script=$(mktemp gbp_run.XXXXXX.sh)
-N_NODES=1
-N_CORES_PER_NODE=1
-WALLCLOCK="00:01:00"
-MEM="1G"
-
-# Parse options
-n_required=2
-n_required_found=0
-while getopts ":n:N:f:t:m:shpkg" opt; do
-  case $opt in
-    n)
-        N_CORES_PER_NODE=$OPTARG
-        let n_required_found=n_required_found+1
-        ;;
-    N)
-        N_NODES=$OPTARG
-        let n_required_found=n_required_found+1
-        ;;
-    t)
-        WALLCLOCK=$OPTARG
-        ;;
-    m)
-        MEM=$OPTARG
-        ;;
-    h)
-        usage
-        return 0
-        ;;
-    f)
-        filename_script=$OPTARG
-        keep=true
-        ;;
-    s)
-        run_script=false
-        ;;
-    p)
-        print_script=true
-        ;;
-    k)
-        keep=true
-        ;;
-    g)
-        use_gpu=true
-        ;;
-    \?)
-        echo "Invalid option: -$OPTARG" >&2
-        return 1
-        ;;
-    :)
-        echo "Option -$OPTARG requires an argument." >&2
-        return 1
-        ;;
-  esac
-done
-
-# Check that all required options have been specified
-let n_required_missing=n_required-n_required_found
-if [[ $n_required_missing -ne 0 ]]; then
-    if [[ $n_required_missing -eq 1 ]]; then
-        plural_text=" is "
-    else
-        plural_text="s are "
-    fi
-    echo $n_required_missing" required option"$plural_text"missing."
-    echo
-    usage
-    return 1
-fi
-
-# Parse the command string to be run
-COMMAND="${@:$OPTIND}"
-if [[ -z "$COMMAND" ]]; then
-    echo "Command not defined."
-    return 1
-fi
-
-# Create batch script
-gbp_run.make_script
-
-# Optionally print script to screen and run script
-if [[ "$print_script" = "true" ]]; then 
-    echo "======== SCRIPT CONTENT =========="
-    cat $filename_script
-    echo "=================================="
-    if [[ "$run_script" != "false" ]]; then
-        gbp_user_validate "Submit script"
-        if [[ $? -ne 0 ]] ; then
-            gbp_run.submit $filename_script
+gbp_run () {
+    # Set defaults
+    keep=false
+    run_script=true
+    print_script=false
+    use_gpu=false
+    filename_script=$(mktemp gbp_run.XXXXXX.sh)
+    gbp_prj=""
+    N_NODES=1
+    N_CORES_PER_NODE=1
+    WALLCLOCK="00:01:00"
+    MEM="1G"
+    
+    # Parse options
+    n_required=2
+    n_required_found=0
+    while getopts ":n:N:f:P:t:m:shpkg" opt; do
+      case $opt in
+        n)
+            N_CORES_PER_NODE=$OPTARG
+            let n_required_found=n_required_found+1
+            ;;
+        N)
+            N_NODES=$OPTARG
+            let n_required_found=n_required_found+1
+            ;;
+        t)
+            WALLCLOCK=$OPTARG
+            ;;
+        m)
+            MEM=$OPTARG
+            ;;
+        h)
+            gbp.run.usage
             return 0
+            ;;
+        f)
+            filename_script=$OPTARG
+            keep=true
+            ;;
+        P)
+            gbp_prj=$OPTARG
+            ;;
+        s)
+            run_script=false
+            ;;
+        p)
+            print_script=true
+            ;;
+        k)
+            keep=true
+            ;;
+        g)
+            use_gpu=true
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            return 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            return 1
+            ;;
+      esac
+    done
+    
+    # Check that all required options have been specified
+    let n_required_missing=n_required-n_required_found
+    if [[ $n_required_missing -ne 0 ]]; then
+        if [[ $n_required_missing -eq 1 ]]; then
+            plural_text=" is "
+        else
+            plural_text="s are "
+        fi
+        echo $n_required_missing" required option"$plural_text"missing."
+        echo
+        gbp.run.usage
+        return 1
+    fi
+    
+    # Parse the command string to be run
+    COMMAND="${@:$OPTIND}"
+    if [[ -z "$COMMAND" ]]; then
+        echo "Command not defined."
+        return 1
+    fi
+    
+    # Create batch script
+    gbp_run.make_script
+    
+    # Optionally print script to screen and run script
+    if [[ "$print_script" = "true" ]]; then 
+        echo "======== SCRIPT CONTENT =========="
+        cat $filename_script
+        echo "=================================="
+        if [[ "$run_script" != "false" ]]; then
+            gbp_user_validate "Submit script"
+            if [[ $? -ne 0 ]] ; then
+                gbp_run.submit $filename_script
+                return 0
+            fi
+        fi
+    else
+        if [[ "$run_script" = "true" ]]; then
+            gbp_run.submit $filename_script
         fi
     fi
-else
-    if [[ "$run_script" = "true" ]]; then
-        gbp_run.submit $filename_script
+    
+    # Optionally remove script
+    if [[ "$keep" = "false" ]]; then
+        rm ${filename_script}
     fi
-fi
-
-# Optionally remove script
-if [[ "$keep" = "false" ]]; then
-    rm ${filename_script}
-fi
+}

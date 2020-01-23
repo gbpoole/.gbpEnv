@@ -75,6 +75,10 @@ else
     endtry
     let g:airline_theme='molokai'
 
+    " Needed to make sure that tmux pane highlighting works
+    autocmd ColorScheme * highlight Normal ctermbg=None
+    autocmd ColorScheme * highlight NonText ctermbg=None
+
 endif
 " --- End Vundle Stuff ---
 
@@ -157,4 +161,8 @@ else
   " always set autoindenting on
   set autoindent
 endif 
+
+" Avoid copying line numbers with mouse selections
+"   see: https://stackoverflow.com/questions/5728259/how-to-clear-the-line-number-in-vim-when-copying
+se mouse+=a
 

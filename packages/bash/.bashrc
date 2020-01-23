@@ -94,7 +94,8 @@ if [[ -d "$my_autoload_path" ]]; then
         # autoload is not available under bash.  Do this instead.
         else
             func_filename=`basename $func`
-            alias $func_filename=". $func"
+            . $func
+            export -f $func_filename
         fi
     done
 fi
@@ -112,6 +113,7 @@ if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
 fi
 
 # Set the prompt (if setprompt is defined; generally not if we're not in zsh)
+# 'setprompt' is set as an alias in .alias.bash
 if [ -n "$ZSH_VERSION" ]; then
     if [ ! `alias | grep "setprompt" | wc -l` = 0 ]; then
         setprompt

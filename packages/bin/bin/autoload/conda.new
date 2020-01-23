@@ -1,48 +1,50 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
-# Check that an anaconda path has been defined
-if [ -z ${GBP_CONDA_PATH+x} ];then
-    echo 'GBP_CONDA_PATH has not been defined.'
-    return 3
-elif [ ! -d $GBP_CONDA_PATH ]; then
-    echo 'GBP_CONDA_PATH ('$GBP_CONDA_PATH') does not exist.'
-    return 3
-fi
-
-# Accept an environment and an optional python version as parameters
-MY_NEWENV_VERSION_DEFAULT="3.7"
-if [ $# -eq 1 ]; then
-    MY_NEWENV_NAME=$1
-    MY_NEWENV_VERSION=${MY_NEWENV_VERSION_DEFAULT}
-elif [ $# -eq 2 ]; then
-    MY_NEWENV_NAME=$1
-    MY_NEWENV_VERSION_IN=$2
-    re='^[0-9]+([.][0-9]+)?$'
-    if ! [[ ${MY_NEWENV_VERSION_IN} =~ $re ]] ; then
-        echo "Invalid Python version {$MY_NEWENV_VERSION_IN}"
+conda.new () {
+    # Check that an anaconda path has been defined
+    if [ -z ${GBP_CONDA_PATH+x} ];then
+        echo 'GBP_CONDA_PATH has not been defined.'
+        return 3
+    elif [ ! -d $GBP_CONDA_PATH ]; then
+        echo 'GBP_CONDA_PATH ('$GBP_CONDA_PATH') does not exist.'
+        return 3
+    fi
+    
+    # Accept an environment and an optional python version as parameters
+    MY_NEWENV_VERSION_DEFAULT="3.7"
+    if [ $# -eq 1 ]; then
+        MY_NEWENV_NAME=$1
+        MY_NEWENV_VERSION=${MY_NEWENV_VERSION_DEFAULT}
+    elif [ $# -eq 2 ]; then
+        MY_NEWENV_NAME=$1
+        MY_NEWENV_VERSION_IN=$2
+        re='^[0-9]+([.][0-9]+)?$'
+        if ! [[ ${MY_NEWENV_VERSION_IN} =~ $re ]] ; then
+            echo "Invalid Python version {$MY_NEWENV_VERSION_IN}"
+            return 1
+        else
+            MY_NEWENV_VERSION=$MY_NEWENV_VERSION_IN
+        fi
+    else
+        echo 'Syntax: '$0 ' new_env_name <optional: python_version>'
+        echo '------- '
+        echo
+        return 2
+    fi
+    
+    # Create environment
+    gbp_user_validate "Proceed with creating Conda environment with name {"${MY_NEWENV_NAME}"} with version {"${MY_NEWENV_VERSION}"}:"
+    if [ $? -eq 0 ] ; then
         return 1
     else
-        MY_NEWENV_VERSION=$MY_NEWENV_VERSION_IN
+        conda create -n ${MY_NEWENV_NAME} python=${MY_NEWENV_VERSION} anaconda
     fi
-else
-    echo 'Syntax: '$0 ' new_env_name <optional: python_version>'
-    echo '------- '
-    echo
-    return 2
-fi
-
-# Create environment
-gbp_user_validate "Proceed with creating Conda environment with name {"${MY_NEWENV_NAME}"} with version {"${MY_NEWENV_VERSION}"}:"
-if [ $? -eq 0 ] ; then
-    return 1
-else
-    conda create -n ${MY_NEWENV_NAME} python=${MY_NEWENV_VERSION} anaconda
-fi
-
-# Switch to it
-if [ $? -eq 0 ]; then
-    conda.load ${MY_NEWENV_NAME}
-fi
-
-return
+    
+    # Switch to it
+    if [ $? -eq 0 ]; then
+        conda.load ${MY_NEWENV_NAME}
+    fi
+    
+    return
+}
