@@ -17,6 +17,8 @@ N_CORES=4
 ##################
 ## set versions ##
 ##################
+VERSION-luarocks=3.2.1
+VERSION-node=${GBP_NODE_VERSION}
 VERSION-gcc=7.3.0
 VERSION-cmake=3.11.2
 VERSION-mpich=3.2
@@ -26,10 +28,17 @@ VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
 VERSION-fftw3=3.3.8
 
+####################
+# Language Servers #
+####################
+lsp_list = luarocks dockerls bashls digestif ccls
+.PHONY: lsps
+lsps: ${lsp_list}
+
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 
+generic_libs = libsixel imgcat node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -41,6 +50,98 @@ $(generic_libs): % : %-download %-config %-build %-install %-clean
 # Use this target to make all libraries #
 #########################################
 all: $(generic_libs)
+
+##################################################################
+## dockerls from HEAD                                           ##
+## https://github.com/rcjsuen/dockerfile-language-server-nodejs ##
+##################################################################
+dockerls-download:
+dockerls-config:
+dockerls-build:
+dockerls-install:
+	@npm install -g dockerfile-language-server-nodejs
+dockerls-clean:
+
+######################################
+## ccls from HEAD                   ##
+##  https://github.com/MaskRay/ccls ##
+######################################
+ccls-download:
+	@git clone --recursive https://github.com/MaskRay/ccls
+ccls-config:
+ccls-build:
+	@cd ccls; mkdir build ; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=~/3rd_Party/ ..
+ccls-install:
+	@cd ccls/build; make install
+ccls-clean:
+	@rm -rf ccls
+ 
+###########################################################
+## bashls from HEAD                                      ##
+## https://github.com/mads-hartmann/bash-language-server ##
+###########################################################
+bashls-download:
+bashls-config:
+bashls-build:
+bashls-install:
+	@npm install -g bash-language-server
+bashls-clean:
+
+##################################
+## luarocks from HEAD           ##
+## (likely needed for digestif) ##
+## https://luarocks.org/        ##
+##################################
+luarocks-download: antibody
+	@wget https://luarocks.github.io/luarocks/releases/luarocks-${VERSION-luarocks}.tar.gz
+	@$(ECHO) Uncompressing ...;tar xzf luarocks-${VERSION-luarocks}.tar.gz ;$(ECHO) Done.
+luarocks-config:
+	@cd luarocks-${VERSION-luarocks};./configure --prefix=${GBP_HOME}/3rd_Party/ 
+luarocks-build:
+	@cd luarocks-${VERSION-luarocks};make -j ${N_CORES}
+luarocks-install:
+	@cd luarocks-${VERSION-luarocks};make install
+luarocks-clean:
+	@rm -rf luarocks-${VERSION-luarocks}
+
+########################################
+## digestif from HEAD                 ##
+## https://github.com/astoff/digestif ##
+########################################
+digestif-download:
+digestif-config:
+digestif-build:
+digestif-install:
+	@luarocks install digestif
+digestif-clean:
+
+### END OF LSP SERVERS ##
+
+####################
+## node from HEAD ##
+####################
+PLATFORM-node=linux-x64
+node-download:
+	@rm -rf node.js
+	@wget http://nodejs.org/download/release/v${VERSION-node}/node-v${VERSION-node}-${PLATFORM-node}.tar.gz
+node-config:
+node-build:
+node-install:
+	@$(ECHO) Uncompressing ...;tar xzf node-v${VERSION-node}-${PLATFORM-node}.tar.gz ;$(ECHO) Done.
+	@cd ${GBP_HOME}/3rd_Party;ln -s node-v${VERSION-node}-${PLATFORM-node} node.js
+node-clean:
+	@rm -rf build-node node-v${VERSION-node}-${PLATFORM-node}.tar.gz
+
+###################
+## fzf from HEAD ##
+###################
+fzf-download:
+	@git clone --depth 1 https://github.com/junegunn/fzf.git ${GBP_HOME}/.fzf
+fzf-config:
+fzf-build:
+fzf-install:
+	@cd ${GBP_HOME}/.fzf;./install
+fzf-clean:
 
 ###################
 ## fzy from HEAD ##
@@ -100,6 +201,36 @@ antibody-install:
 	@mv -f antibody ${GBP_HOME}/3rd_Party/bin/
 antibody-clean:
 	@rm -rf antibody_install
+
+########################
+## libsixel from HEAD ##
+########################
+libsixel-download: 
+	@git clone https://github.com/saitoha/libsixel
+libsixel-config:
+	@cd libsixel;autoconf
+	@cd libsixel;./configure --prefix=${GBP_HOME}/3rd_Party/
+libsixel-build:
+	@cd libsixel;make -j ${N_CORES}
+libsixel-install:
+	@cd libsixel;make install 
+libsixel-clean:
+	@rm -rf libsixel
+
+######################
+## imgcat from HEAD ##
+######################
+imgcat-download: 
+	@git clone https://github.com/eddieantonio/imgcat
+imgcat-config:
+	@cd imgcat;autoconf
+	@cd imgcat;./configure 
+imgcat-build:
+	@cd imgcat;make -j ${N_CORES}
+imgcat-install:
+	@cd imgcat;make install PREFIX=${GBP_HOME}/3rd_Party/ 
+imgcat-clean:
+	@rm -rf imgcat
 
 ###################
 ## zsh from HEAD ##

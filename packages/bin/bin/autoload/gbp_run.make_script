@@ -10,6 +10,7 @@ gbp_run.make_script(){
         # Generate script
         echo "#!/bin/bash" > ${filename_script}
         echo "#SBATCH -N "$N_NODES" -n "$N_CORES_PER_NODE >> ${filename_script}
+        echo "#SBATCH -A oz007" >> ${filename_script}
         echo "#SBATCH -J "$JOB_NAME >> ${filename_script}
         echo "#SBATCH -e "$JOB_NAME".err" >> ${filename_script}
         echo "#SBATCH -o "$JOB_NAME".out" >> ${filename_script}

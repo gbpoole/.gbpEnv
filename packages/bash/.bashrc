@@ -107,6 +107,9 @@ if type conda.load > /dev/null 2>&1; then
    conda.load default
 fi
 
+# Set the filename for the global Matplotlib config
+export MATPLOTLIBRC=${GBP_HOME}/.config/matplotlib/matplotlibrc
+
 # Added by travis gem
 if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
     source ${GBP_HOME}/.travis/travis.sh
@@ -122,4 +125,23 @@ else
     if [ `type -t setprompt` ]; then
         setprompt
     fi
+fi
+
+# Set the verion of Node.js that we will use
+export GBP_NODE_VERSION=12.13.1
+if [ -f ${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64/bin/node ]; then
+    export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
+    export PATH=$NODEJS_HOME/bin:$PATH
+fi
+
+# Configure Luarocks (Lua package installer)
+if command -v luarocks &> /dev/null; then
+    eval `luarocks path`
+fi
+
+# Configure Fuzzy Finder (fzf)
+if [ -n "$ZSH_VERSION" ]; then
+    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+else
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 fi

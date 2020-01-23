@@ -47,7 +47,7 @@ conda.load () {
       # Set-up for nodes on the Swinburne 'OzStar' cluster
       if [[ $GBP_HOSTNAME = farnarkle* ]] ; then
         source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
-      elif [[ $GBP_HOSTNAME = john* ]] ; then
+      elif [[ $GBP_HOSTNAME = john* ]] || [[ $GBP_HOSTNAME = bryan* ]] ; then
         source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
       # Set-up for nodes on the Swinburne 'g2' cluster
       elif [ $GBP_HOSTNAME = 'g2.hpc.swin.edu.au' ] || [[ $GBP_HOSTNAME = sstar* ]] ; then
@@ -59,7 +59,7 @@ conda.load () {
         source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
       # Unknown host.  Let the user know.
       else
-        echo "Unknown hostname:" $GBP_HOSTNAME
+        echo "Unknown hostname (" $GBP_HOSTNAME") in conda.load"
         return 1
       fi
       if [ "$CONDA_DEFAULT_ENV" = "$MY_ENV" ]; then

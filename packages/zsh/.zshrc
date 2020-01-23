@@ -67,3 +67,5 @@ autoload -Uz compinit
 if [ $ZSH_PROFILE_MODE -eq 1 ]; then
     zprof
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
