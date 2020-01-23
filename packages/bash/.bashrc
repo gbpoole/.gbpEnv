@@ -107,6 +107,9 @@ if type conda.load > /dev/null 2>&1; then
    conda.load default
 fi
 
+# Set the filename for the global Matplotlib config
+export MATPLOTLIBRC=${GBP_HOME}/.config/matplotlib/matplotlibrc
+
 # Added by travis gem
 if [ -f ${GBP_HOME}/.travis/travis.sh ]; then
     source ${GBP_HOME}/.travis/travis.sh

@@ -38,7 +38,7 @@ lsps: ${lsp_list}
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
+generic_libs = libsixel imgcat node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -67,7 +67,7 @@ dockerls-clean:
 ##  https://github.com/MaskRay/ccls ##
 ######################################
 ccls-download:
-	@git clone https://github.com/MaskRay/ccls
+	@git clone --recursive https://github.com/MaskRay/ccls
 ccls-config:
 ccls-build:
 	@cd ccls; mkdir build ; cd build ; cmake -DCMAKE_INSTALL_PREFIX:PATH=~/3rd_Party/ ..
@@ -201,6 +201,36 @@ antibody-install:
 	@mv -f antibody ${GBP_HOME}/3rd_Party/bin/
 antibody-clean:
 	@rm -rf antibody_install
+
+########################
+## libsixel from HEAD ##
+########################
+libsixel-download: 
+	@git clone https://github.com/saitoha/libsixel
+libsixel-config:
+	@cd libsixel;autoconf
+	@cd libsixel;./configure --prefix=${GBP_HOME}/3rd_Party/
+libsixel-build:
+	@cd libsixel;make -j ${N_CORES}
+libsixel-install:
+	@cd libsixel;make install 
+libsixel-clean:
+	@rm -rf libsixel
+
+######################
+## imgcat from HEAD ##
+######################
+imgcat-download: 
+	@git clone https://github.com/eddieantonio/imgcat
+imgcat-config:
+	@cd imgcat;autoconf
+	@cd imgcat;./configure 
+imgcat-build:
+	@cd imgcat;make -j ${N_CORES}
+imgcat-install:
+	@cd imgcat;make install PREFIX=${GBP_HOME}/3rd_Party/ 
+imgcat-clean:
+	@rm -rf imgcat
 
 ###################
 ## zsh from HEAD ##

@@ -17,7 +17,7 @@ let g:secure_modelines_modelines = 15
 " }}}
 
 " Change leader mapping {{{
-let mapleader = ' '
+"let mapleader = ' '
 " }}}
 
 " Terminal colours & encoding {{{
