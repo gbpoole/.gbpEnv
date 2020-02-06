@@ -38,7 +38,7 @@ lsps: ${lsp_list}
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libsixel imgcat node libgit2 antibody zsh fzy neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
+generic_libs = libsixel imgcat node libgit2 antibody zsh fzy fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##

@@ -1,0 +1,10 @@
+# These files shall be ignored by all repos on this machine
+
+# ccls stuff
+.ccls-root
+.ccls
+.ccls-cache
+
+# ctags stuff
+.tags
+

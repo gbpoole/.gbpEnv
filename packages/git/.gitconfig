@@ -1,15 +1,16 @@
 [user]
-    name = Gregory Poole
-    email = gbpoole@gmail.com
+	name = Gregory Poole
+	email = gbpoole@gmail.com
 [color "status"]
-    added     = green
-    changed   = red bold
-    untracked = magenta bold
+	added     = green
+	changed   = red bold
+	untracked = magenta bold
 [alias]
-    lg    = log  --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-    df    = diff --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' 
-    Find  = !sh -c 'git log --pretty=\"format:%Cgreen%H %Cblue%s%Creset\" --name-status --grep=$1' -
+	lg    = log  --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	df    = diff --color --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' 
+	Find  = !sh -c 'git log --pretty=\"format:%Cgreen%H %Cblue%s%Creset\" --name-status --grep=$1' -
 [color]
-    ui = auto
+	ui = auto
 [core]
-    editor = vim
+	editor = vim
+	excludesfile = /Users/gpoole/.config/git/gitignore_global

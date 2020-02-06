@@ -71,39 +71,35 @@
           }
         }
       }
-    }
-  },
-  "languageserver": {
-    "clangd": {
-      "command": "clangd",
-      "args": ["--background-index"],
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-      "filetypes": ["c", "cpp", "objc", "objcpp"]
-    }
-  },
-  "languageserver": {
+    },
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cpp", "cuda", "objc", "objcpp", "cxx"],
+      "rootPatterns": [".git", ".ccls-root", "compile_commands.json"],
+      "compilationDatabaseDirectory": "build",
+      "trace.server": "verbose",
+      "initializationOptions": {
+         "cache": {
+           "directory": ".ccls-cache"
+         }
+       }
+    },
     "dockerfile": {
       "command": "docker-langserver",
       "filetypes": ["dockerfile"],
       "args": ["--stdio"]
-    }
-  },
-  "languageserver": {
+    },
     "bash": {
       "command": "bash-language-server",
       "args": ["start"],
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
-    }
-  },
-  "languageserver": {
+    },
     "efm": {
       "command": "efm-langserver",
       "args": ["-c", "/home/gpoole/.vim/efmls.yaml"],
       "filetypes": ["vim", "eruby", "markdown"]
-    }
-  },
-  "languageserver": {
+    },
     "digestif": {
       "command": "digestif",
       "filetypes": ["tex", "plaintex", "context"]
