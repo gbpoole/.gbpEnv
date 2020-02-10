@@ -271,14 +271,17 @@ call plug#begin()
     Plug 'davidhalter/jedi-vim', { 'for': 'python' }
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
 
+    " Smooth scrolling
+    Plug 'yuttie/comfortable-motion.vim'
+
     " CoC for LSP support
     Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
     Plug 'neoclide/coc-snippets', {'do': 'yarn install --frozen-lockfile'}
-    "Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
-    "Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
-    "Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
-    "Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
-    "Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-tslint', {'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc-css', {'do': 'yarn install --frozen-lockfile'}
     Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'} " mru and stuff
     Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'} " color highlighting
 
@@ -491,6 +494,10 @@ set shortmess+=c
 
 " always show signcolumns
 set signcolumn=yes
+
+" Set icons
+let g:coc_status_error_sign = ''
+let g:coc_status_warning_sign = ''
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -755,10 +762,16 @@ let g:AutoPairsMapCR=0
 inoremap <silent> <Plug>(MyCR) <CR><C-R>=AutoPairsReturn()<CR>
 " }}}
 
+" comfortable-motion {{{
+let g:comfortable_motion_no_default_key_mappings = 1
+let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
+nnoremap <silent> <S-Down> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+nnoremap <silent> <S-Up> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+" }}}
+
 " }}}
 "}}}
 
-" ### AESTHETICS ### {{{
 " Set color scheme(s) {{{
 try
     colorscheme molokai
@@ -766,38 +779,6 @@ try
 catch /^Vim\%((\a\+)\)\=:E185/
     echom "Colourscheme not found.  Perhaps plugins have not been installed?  Try running :PlugInstall"
 endtry
-" }}}
-
-" ALE Highlighting {{{
-augroup ColorSchemeALE
-    autocmd ColorScheme * highlight ALEError cterm=underline gui=underline guisp=Red
-    autocmd ColorScheme * highlight link ALEWarning WarningMsg
-    autocmd ColorScheme * highlight link ALEInfo MoreMsg
-    autocmd ColorScheme * highlight ALEWarningSign ctermfg=Yellow ctermbg=236
-    autocmd ColorScheme * highlight ALEErrorSign ctermfg=Red ctermbg=236
-    autocmd ColorScheme * highlight ALEInfoSign ctermfg=White ctermbg=236
-augroup end
-" }}}
-
-" Cursor line number Highlighting {{{
-augroup ColorSchemeCursorLineNumber
-    autocmd ColorScheme * highlight CursorLineNr ctermfg=208 ctermbg=236
-augroup end
-" }}}
-
-" Fold Highlighting {{{
-augroup ColorSchemeFolded
-    autocmd ColorScheme * highlight Folded ctermfg=67 ctermbg=236
-    autocmd ColorScheme * highlight FoldColumn ctermfg=67 ctermbg=236
-augroup end
-" }}}
-
-" Needed to make sure that tmux pane highlighting works {{{
-augroup ColorSchemeTmux
-    autocmd ColorScheme * highlight Normal ctermbg=None
-    autocmd ColorScheme * highlight NonText ctermbg=None
-augroup end
-" }}}
 " }}}
 
 " Custom features {{{

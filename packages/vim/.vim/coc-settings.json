@@ -1,4 +1,7 @@
 {
+  "coc.preferences.diagnostic.errorSign"  : "",
+  "coc.preferences.diagnostic.warningSign": "",
+  "coc.preferences.diagnostic.infoSign": "",
   "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
   "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
   "typescript.preferences.noSemicolons": true,
