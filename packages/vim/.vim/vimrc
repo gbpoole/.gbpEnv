@@ -285,6 +285,9 @@ call plug#begin()
     Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'} " mru and stuff
     Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'} " color highlighting
 
+    " Save session information 
+    Plug 'tpope/vim-obsession'
+
     " Automatic detection of indenting
     Plug 'tpope/vim-sleuth'
 call plug#end()

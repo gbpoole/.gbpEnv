@@ -98,11 +98,6 @@
       "filetypes": ["sh"],
       "ignoredRootPaths": ["~"]
     },
-    "efm": {
-      "command": "efm-langserver",
-      "args": ["-c", "/home/gpoole/.vim/efmls.yaml"],
-      "filetypes": ["vim", "eruby", "markdown"]
-    },
     "digestif": {
       "command": "digestif",
       "filetypes": ["tex", "plaintex", "context"]
