@@ -6,6 +6,5 @@ changeps1: false
 create_default_packages:
   - pip
   - neovim
-  - pyls
   - python-language-server
 report_errors: true
