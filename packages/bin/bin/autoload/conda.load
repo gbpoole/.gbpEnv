@@ -44,6 +44,8 @@ conda.load () {
     export GBP_HOSTNAME=$(hostname)
     if [ -n $GBP_HOSTNAME ]; then
     
+      _OLD_CONDA_ENV="${CONDA_DEFAULT_ENV}"
+
       # Set-up for nodes on the Swinburne 'OzStar' cluster
       if [[ $GBP_HOSTNAME = farnarkle* ]] ; then
         source $GBP_CONDA_PATH/bin/activate $MY_ENV >> /dev/null 2>&1
@@ -62,6 +64,13 @@ conda.load () {
         echo "Unknown hostname (" $GBP_HOSTNAME") in conda.load"
         return 1
       fi
+
+      # Add the new environment to the path and remove the old
+      if [[ $_OLD_CONDA_ENV ]]; then
+        del_path -f -q $GBP_CONDA_PATH/envs/$/bin
+      fi
+      add2path -f -q $GBP_CONDA_PATH/envs/$MY_ENV/bin
+
       if [ "$CONDA_DEFAULT_ENV" = "$MY_ENV" ]; then
         echo "Anaconda environment set to '$MY_ENV'."
       else

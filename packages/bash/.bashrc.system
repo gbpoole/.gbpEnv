@@ -44,20 +44,20 @@ if [ -n $GBP_HOSTNAME ]; then
     fi
 
     # Add LLVM/Clang to the path
-    export PATH=/usr/local/opt/llvm/bin:$PATH
+    add2path -q /usr/local/opt/llvm/bin
 
     # Add MacTex to the path
-    export PATH=/usr/local/texlive/latest/bin/x86_64-darwin:$PATH
+    add2path -q /usr/local/texlive/latest/bin/x86_64-darwin
 
     # Add mySQL to the path
-	export MYSQL_PATH=/usr/local/Cellar/mysql/5.7.19  
-	export PATH=$PATH:$MYSQL_PATH/bin
+    export MYSQL_PATH=/usr/local/Cellar/mysql/5.7.19  
+    add2path -b -q $MYSQL_PATH/bin
 
     # Set paths for Homebrew.  Add the Homebrew direcory and 
     # place the Homebrew bin directory before system directory.
     # This ensures that the Homebrew installs override all others.
-    export PATH="/usr/local/bin:$PATH"
-    export PATH="/usr/local/sbin:$PATH"
+    add2path -q /usr/local/bin
+    add2path -q /usr/local/sbin
 
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 
@@ -97,7 +97,8 @@ go_LDG.proxy () { ligo-proxy-init albert.einstein; }
 go_LDG () { gsissh -YC $pcdev1 ; }
 
 # Add '3rd_Party' and 'my_code' directories to paths
-export PATH="${GBP_HOME}/my_code/bin:${GBP_HOME}/3rd_Party/bin:$PATH"
+add2path -q ${GBP_HOME}/my_code/bin
+add2path -q ${GBP_HOME}/3rd_Party/bin
 export LD_LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:${LD_LIBRARY_PATH}"
 export INCLUDE="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${INCLUDE}"
 export CPATH="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${CPATH}"
@@ -108,7 +109,7 @@ export PKG_CONFIG_PATH=${GBP_HOME}/3rd_Party/lib/pkgconfig:${PKG_CONFIG_PATH}
 export LD_LIBRARY_PATH="${GBP_HOME}/3rd_Party/lib64:${LD_LIBRARY_PATH}"
 
 # Add ~/bin to PATH
-export PATH="${GBP_HOME}/bin:$PATH"
+add2path -q ${GBP_HOME}/bin
 
 # Set-up Anaconda
 if [ -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then

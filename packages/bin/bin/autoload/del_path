@@ -1,0 +1,24 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+del_path() {
+    local usage="\
+Usage: del_path [-q] DIR
+  -q Quiet mode"
+
+    local qecho=echo
+    while true; do case "$1" in
+        -q)     qecho=':';          shift;;
+        *)      break;;
+    esac; done
+    # Bad params always produce message and error code
+    [[ -z $1 ]] && { echo 1>&2 "$usage"; return 1; }
+
+    _dir="$1"
+
+    PATH="${PATH#$_dir:}"        # remove if at start
+    PATH="${PATH%:$_dir}"        # remove if at end
+    PATH="${PATH//:$_dir:/:}"    # remove if in middle
+
+    unset _dir
+}

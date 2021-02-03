@@ -1,0 +1,42 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+# I got this code from here: https://unix.stackexchange.com/questions/26047/how-to-correctly-add-a-path-to-path
+add2path() {
+    local usage="\
+Usage: add2path [-f] [-b] [-n] [-q] DIR
+  -f Force dir to be readded even if already in path
+  -b Add dir to the end of the path (otherwise, it's added to the front by default).
+  -n Nonexistent dirs do not return error status
+  -q Quiet mode"
+
+    local tofront=false toback=false errcode=1 qecho=echo
+    while true; do case "$1" in
+        -f)     tofront=true;       shift;;
+        -b)     toback=true;        shift;;
+        -n)     errcode=0;          shift;;
+        -q)     qecho=':';          shift;;
+        *)      break;;
+    esac; done
+    # Bad params always produce message and error code
+    [[ -z $1 ]] && { echo 1>&2 "$usage"; return 1; }
+
+
+    [[ -d $1 ]] || { $qecho 1>&2 "$1 is not a directory."; return $errcode; }
+
+    _path_in="$1"
+    _dir="$(cd $_path_in && pwd -P)"
+    if [[ :$PATH: =~ :$_dir: ]]; then
+        $tofront || { $qecho 1>&2 "$_dir already in path."; return 0; }
+        PATH="${PATH#$_dir:}"        # remove if at start
+        PATH="${PATH%:$_dir}"        # remove if at end
+        PATH="${PATH//:$_dir:/:}"    # remove if in middle
+    fi
+    if [ $toback = true ]; then
+        PATH="$PATH:$_dir"
+    else
+        PATH="$_dir:$PATH"
+    fi
+    unset _dir
+    unset _path_in
+}

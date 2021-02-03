@@ -6,6 +6,8 @@
 # load the theme system
 autoload -U promptinit && promptinit
 
+autoload -Uz vcs_info
+
 # -----------------------------------------------
 # for dynamic named directories
 setopt prompt_subst
