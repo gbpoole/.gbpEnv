@@ -24,6 +24,24 @@ if [ ! -f "${GBP_HOME}/.bashrc.system" ]; then
     fi
 fi
 
+# Set autoloaded functions
+my_autoload_path=${GBP_HOME}/bin/autoload
+fpath=($my_autoload_path $fpath)
+if [[ -d "$my_autoload_path" ]]; then
+    for func in $my_autoload_path/*; do
+        # zsh does things this way
+        if [ -n "$ZSH_VERSION" ]; then
+            autoload -Uz ${func:t}
+        # autoload is not available under bash.  Do this instead.
+        else
+            func_filename=`basename $func`
+            . $func
+            export -f $func_filename
+        fi
+    done
+fi
+unset my_autoload_path
+
 # Make sure the REMOTEHOST variable is set
 if [ -z $REMOTEHOST ]; then
    export REMOTEHOST=$HOST
@@ -35,7 +53,7 @@ if [ -z $DISPLAY ]  && [ -n $REMOTEHOST ]; then
 fi
 
 # Make sure /usr/local/bin is in the PATH
-export PATH=$PATH:/usr/local/bin
+add2path -q /usr/local/bin
 
 # Source the gbpDocker environment
 # variable file (if present)
@@ -69,13 +87,13 @@ if [ ! -f "${EDITOR}" ]; then
 fi
 
 # Add scripts to the executable to the PATH
-export PATH=${GBP_HOME}/bin/scripts/:$PATH
+add2path -q ${GBP_HOME}/bin/scripts
 
 # Add 3rd_Party binary directory to the PATH
-export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
+add2path -q ${GBP_HOME}/3rd_Party/bin
 
 # Add my_code binary directory to the PATH
-export PATH=${GBP_HOME}/my_code/bin:$PATH
+add2path -q ${GBP_HOME}/my_code/bin
 
 # Configure Perl
 export PERL_LOCAL_LIB_ROOT=${GBP_HOME}/.perl5
@@ -83,23 +101,6 @@ export PATH=${PERL_LOCAL_LIB_ROOT}/bin:$PATH
 export PERL5LIB=${PERL_LOCAL_LIB_ROOT}/lib/perl5:$PERL5LIB
 export PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
 export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
-
-# Set autoloaded functions
-my_autoload_path=${GBP_HOME}/bin/autoload
-fpath=($my_autoload_path $fpath)
-if [[ -d "$my_autoload_path" ]]; then
-    for func in $my_autoload_path/*; do
-        if [ -n "$ZSH_VERSION" ]; then
-            autoload -Uz ${func:t}
-        # autoload is not available under bash.  Do this instead.
-        else
-            func_filename=`basename $func`
-            . $func
-            export -f $func_filename
-        fi
-    done
-fi
-unset my_autoload_path
 
 # Set 'default' Anaconda environment
 # This needs to be after the autoload functions are loaded
@@ -131,7 +132,7 @@ fi
 export GBP_NODE_VERSION=12.13.1
 if [ -f ${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64/bin/node ]; then
     export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
-    export PATH=$NODEJS_HOME/bin:$PATH
+    add2path -q $NODEJS_HOME/bin
 fi
 
 # Configure Luarocks (Lua package installer)
