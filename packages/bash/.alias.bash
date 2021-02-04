@@ -30,7 +30,6 @@ elif [ ! -n "$ZSH_VERSION" ]; then
     if [ "$pmt_usr" = "gpoole" ] || [ "$pmt_usr" = "gbpoole" ]; then
         alias setprompt='export PS1="${pmt_colour}[${pmt_hst}: \W] > ${pmt_reset}"'
     else
-        echo TEST $pmt_usr
         alias setprompt='export PS1="${pmt_colour}[${usr_colour}${pmt_usr}${pmt_colour}@${pmt_hst}: \W] > ${pmt_reset}"'
     fi
 fi
