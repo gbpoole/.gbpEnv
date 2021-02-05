@@ -194,10 +194,10 @@ antibody_version = $(shell curl -s https://raw.githubusercontent.com/getantibody
 antibody-download:
 	@curl -s -L -o /tmp/antibody.tar.gz \
 		https://github.com/getantibody/antibody/releases/download/$(antibody_version)/antibody_$(shell uname -s)_$(shell uname -m).tar.gz
-antibody-config:
-antibody-build:
+antibody-config: antibody-download
+antibody-build: antibody-config
 	@$(ECHO) Uncompressing ...;tar xzf /tmp/antibody.tar.gz;$(ECHO) Done.
-antibody-install:
+antibody-install: antibody-build
 	@mv -f antibody ${GBP_HOME}/3rd_Party/bin/
 antibody-clean:
 	@rm -rf antibody_install
