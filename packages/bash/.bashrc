@@ -87,13 +87,13 @@ if [ ! -f "${EDITOR}" ]; then
 fi
 
 # Add scripts to the executable to the PATH
-add2path -q ${GBP_HOME}/bin/scripts
+add2path -q -f ${GBP_HOME}/bin/scripts
 
 # Add 3rd_Party binary directory to the PATH
-add2path -q ${GBP_HOME}/3rd_Party/bin
+add2path -q -f ${GBP_HOME}/3rd_Party/bin
 
 # Add my_code binary directory to the PATH
-add2path -q ${GBP_HOME}/my_code/bin
+add2path -q -f ${GBP_HOME}/my_code/bin
 
 # Configure Perl
 export PERL_LOCAL_LIB_ROOT=${GBP_HOME}/.perl5

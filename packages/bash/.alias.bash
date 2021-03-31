@@ -90,6 +90,7 @@ alias r='ranger'
 # 'nvim' or 'vim'->'vi'
 if hash nvim 2>/dev/null; then
    alias vi='nvim'
+   alias vim='nvim'
 elif hash vim 2>/dev/null; then
    alias vi='vim'
 fi
