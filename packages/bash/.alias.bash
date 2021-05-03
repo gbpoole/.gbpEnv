@@ -44,16 +44,8 @@ export GREP_COLOR='0;33'
 alias grep='grep --color=auto'
 
 # pagers
-if [ -e $GBP_HOME/3rd_Party/bin/vimpager ]; then
-   export GBP_PAGER="$GBP_HOME/3rd_Party/bin/vimpager -N"
-else
-   export GBP_PAGER=$(which more)
-fi
-if [ -e $GBP_HOME/3rd_Party/bin/vimcat ]; then
-   export GBP_CAT=$GBP_HOME/3rd_Party/bin/vimcat
-else
-   export GBP_CAT=$(which cat)
-fi
+export GBP_CAT="gbp_cat"     # Autoloaded function
+export GBP_PAGER="gbp_pager" # Autoloaded function
 alias more=$GBP_PAGER
 alias cat=$GBP_CAT
 
@@ -87,7 +79,7 @@ fi
 # 'r'->'ranger'
 alias r='ranger'
 
-# 'nvim' or 'vim'->'vi'
+# 'vi'->nvim' or 'vim'
 if hash nvim 2>/dev/null; then
    alias vi='nvim'
    alias vim='nvim'
@@ -194,19 +186,6 @@ alias T=' | tail '
 alias H=' | head '
 alias W=' | wc -l '
 alias S=' | sort '
-
-#function handle-multi-arguments(){
-#	if [ ! "$#" -gt 1 ] ; then
-#	  echo "Usage: $0 file1 file2 ..." >&2
-#	  return -1
-#	fi
-#	for file in $@; do
-#		if [ -f $file ] ; then
-#			echo -n $file
-#		fi
-#	done
-#	echo 'Done!'
-#}
 
 # macOS specific
 #

@@ -1,0 +1,93 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+gbp_pager() {
+
+    # If this is running through a pipe, then just pass it through to gbp_cat
+    if [ ! -t 1 ]; then
+        gbp_cat "$@"
+        return $?
+    fi
+
+    # Have less?
+    if [ ! command -v less &> /dev/null ]; then
+        if [ ! command -v pygmentize &> /dev/null ]; then
+           gbp_pager_cmd_pre(){
+               more -R "$@"
+           }
+           gbp_pager_cmd_post(){
+               : # Do nothing
+           }
+        else
+           gbp_pager_cmd_pre(){
+               pygmentize -g -O style=molokai "$@"
+           }
+           gbp_pager_cmd_post(){
+               more -R "$@"
+           }
+        fi
+    # Have pygmentize?
+    else
+        if [ ! command -v pygmentize &> /dev/null ]; then
+           gbp_pager_cmd_pre(){
+               less "$@"
+           }
+           gbp_pager_cmd_post(){
+               : # Do nothing
+           }
+        else
+           gbp_pager_cmd_pre(){
+               pygmentize -g -O style=molokai "$@"
+           }
+           gbp_pager_cmd_post(){
+               less -R "$@"
+           }
+        fi
+    fi
+
+    # Page the input
+    if [[ -p /dev/stdin ]]; then
+        gbp_pager_cmd_pre < /dev/stdin | gbp_pager_cmd_post
+    else
+        # Process each file
+        declare -i n_files=0
+        for file_i in "$@"; do
+
+            # Check if item is a file
+            if [[ ! -f $file_i ]]; then
+                echo "Not a file:{$file_i}."
+                continue
+            fi
+
+            # Give user a chance to abort
+            if [ $n_files -gt 0 ]; then
+                gbp_user_cancel_timeout "View {"$file_i"}?" 5 "q"
+                if [ $? -eq 1 ] ; then
+                   printf "Abort\n"
+                   break
+                fi
+            fi
+
+            # Page the file
+            printf "Viewing {"$file_i"}..."
+            gbp_pager_cmd_pre "$file_i" | gbp_pager_cmd_post
+            printf "Done\n"
+
+            n_files=$n_files+1
+        done
+        unset file_i
+
+        # Say something if no valid input was given
+        if [[ n_files -lt 1 ]]; then
+          echo "No valid input given."
+          return 1
+        fi
+    fi
+
+    unset n_files
+    unset gbp_pager_cmd_pre
+    unset gbp_pager_cmd_post
+
+    return 0
+}
+

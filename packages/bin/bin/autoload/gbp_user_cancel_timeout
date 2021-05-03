@@ -1,0 +1,64 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+gbp_user_cancel_timeout(){
+
+    # Parse parameters
+    if [ $# -lt 1 ];then
+        local message=""
+        local wait_time_in_s=5
+        local key_to_wait_for="q"
+    elif [ $# -lt 2 ];then
+        local message="$1"
+        local wait_time_in_s=5
+        local key_to_wait_for="q"
+    elif [ $# -lt 3 ];then
+        local message="$1"
+        local wait_time_in_s=$2
+        local key_to_wait_for="q"
+    elif [ $# -lt 4 ];then
+        local message="$1"
+        local wait_time_in_s=$2
+        local key_to_wait_for=$3
+    else
+        printf "Error calling gbp_user_cancel_timeout()\n"
+        exit -1
+    fi
+
+    # Create a lower-case version of the key to be pressed
+    local key_to_wait_for_lower=$(echo "$key_to_wait_for" | tr '[:upper:]' '[:lower:]')
+
+    # Start Timeout Loop
+    declare -i result=0 # default result if nothing happens
+    for (( i=$wait_time_in_s ; i>0; i--)); do
+        # Print message.  Use a variable so that we have it's length later when we want to clear the line.
+        line="\r${message} (q to abort; any key or wait ${i} seconds to continue)."
+        printf "$line"
+
+        # Poll for key
+        key=$(bash -c 'IFS="";read -s -t 1 -N 1 tmp;echo $tmp')
+
+        # Process result of key poll 
+        key_lower=$(echo "$key" | tr '[:upper:]' '[:lower:]')
+        if [ "$key_lower" = "$key_to_wait_for_lower" ]; then
+          result=1
+          break
+        elif [ ${#key} -gt 0 ]; then
+          break
+        fi
+    done
+
+    # Clear line
+    printf "\r%-${#line}s\r" 
+
+    # Clean-up
+    unset line
+    unset message
+    unset wait_time_in_s
+    unset key
+    unset key_lower
+    unset key_to_wait_for
+    unset key_to_wait_for_lower
+    return $result
+}
+

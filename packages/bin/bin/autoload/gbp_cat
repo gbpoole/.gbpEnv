@@ -1,0 +1,38 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+gbp_cat() {
+
+    # If this is running through a pipe, then just pass it through to cat
+    if [ ! -t 1 ]; then
+        gbp_cat_cmd(){
+            cat "$@"
+        }
+    else 
+        # Set system dependant behavior
+        if [ ! command -v pygmentize &> /dev/null ]; then
+           gbp_cat_cmd(){
+               cat "$@"
+           }
+        else
+           gbp_cat_cmd(){
+               pygmentize -g -O style=molokai "$@"
+           }
+        fi
+    fi
+
+    # Actually process the inputs
+    if [[ -p /dev/stdin ]]; then
+        gbp_cat_cmd < /dev/stdin
+    else
+        for file_i in "$@"; do
+            gbp_cat_cmd "$file_i"
+            # If the previous command was aborted, abort
+            if [ $? -ne 0 ]; then
+                return 1
+            fi
+        done
+    fi
+
+    return 0
+}

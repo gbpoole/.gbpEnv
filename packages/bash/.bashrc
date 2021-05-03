@@ -77,9 +77,6 @@ if [[ ! $GBP_OS = 'Mac' ]]; then
     fi
 fi
 
-# Create some aliases
-source ${GBP_HOME}/.alias.bash
-
 # Set default editor
 export EDITOR=`which vim`
 if [ ! -f "${EDITOR}" ]; then
@@ -107,6 +104,10 @@ export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 if type conda.load > /dev/null 2>&1; then
    conda.load default
 fi
+
+# Create some aliases
+# (make sure this happens after conda is sorted; we need pygmentize at this point)
+source ${GBP_HOME}/.alias.bash
 
 # Set the filename for the global Matplotlib config
 export MATPLOTLIBRC=${GBP_HOME}/.config/matplotlib/matplotlibrc

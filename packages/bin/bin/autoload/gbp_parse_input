@@ -1,0 +1,16 @@
+# vim:syntax=sh
+# vim:filesystem=sh
+
+gbp_parse_input(){
+    local filter_mode=0
+    if [[ -p /dev/stdin ]]; then
+        input="$(cat -)"
+        filter_mode=1
+    else
+        input=()
+        for input_i in "$@"; do
+            input+=("$input_i")
+        done
+    fi
+    return $input
+}
