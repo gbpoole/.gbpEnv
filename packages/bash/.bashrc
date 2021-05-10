@@ -158,10 +158,15 @@ if command -v luarocks &> /dev/null; then
     eval `luarocks path`
 fi
 
-echo test18
 # Configure Fuzzy Finder (fzf)
+echo test18" :"${GBP_HOME}
 if [ -n "$ZSH_VERSION" ]; then
+    echo test18a
     [ -f ${GBP_HOME}/.fzf.zsh ] && source ${GBP_HOME}/.fzf.zsh
+    echo test18b
 else
+    echo test18c
     [ -f ${GBP_HOME}/.fzf.bash ] && source ${GBP_HOME}/.fzf.bash
+    echo test18d
 fi
+echo test19
