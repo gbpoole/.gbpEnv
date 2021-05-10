@@ -39,7 +39,7 @@ TEST_LIST=$(notdir $(wildcard .test/tests/*))
 ${TEST_LIST}:
 	.test/tests/$@
 tests: ${TEST_LIST}
-	@$(ECHO) processed ${TEST_LIST}
+	@$(ECHO) tests processed 
 
 # Generate coverage information for bash configuration
 BASH_CONFIG_LIST = .bashrc .bashrc.system

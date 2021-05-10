@@ -12,7 +12,7 @@ conda.load () {
     fi
     
     # Accept an environment as a parameter or set to default
-    export MY_ENV_DEFAULT="python3.6"
+    export MY_ENV_DEFAULT="default"
     if [ $# -eq 0 ]; then
         export MY_ENV=$MY_ENV_DEFAULT
     elif [ $# -eq 1 ]; then

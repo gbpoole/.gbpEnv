@@ -99,14 +99,13 @@ export PERL5LIB=${PERL_LOCAL_LIB_ROOT}/lib/perl5:$PERL5LIB
 export PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
 export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 
-# Set 'default' Anaconda environment
-# This needs to be after the autoload functions are loaded
-if type conda.load > /dev/null 2>&1; then
-   conda.load default
-fi
+## Set 'default' Anaconda environment
+## This needs to be after the autoload functions are loaded
+#if type conda.load > /dev/null 2>&1; then
+#   conda.load default
+#fi
 
-# Create some aliases
-# (make sure this happens after conda is sorted; we need pygmentize at this point)
+# Create aliases
 source ${GBP_HOME}/.alias.bash
 
 # Set the filename for the global Matplotlib config
@@ -143,7 +142,7 @@ fi
 
 # Configure Fuzzy Finder (fzf)
 if [ -n "$ZSH_VERSION" ]; then
-    [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+    [ -f ${GBP_HOME}/.fzf.zsh ] && source ${GBP_HOME}/.fzf.zsh
 else
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+    [ -f ${GBP_HOME}/.fzf.bash ] && source ${GBP_HOME}/.fzf.bash
 fi

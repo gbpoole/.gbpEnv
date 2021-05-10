@@ -1,4 +1,4 @@
-#!/usr/bin/zsh -
+#!/Users/gpoole/3rd_Party/bin/zsh -
 # vim:syntax=zsh
 # vim:filetype=zsh
 
@@ -48,10 +48,10 @@ if [ -z "$ITERM_PROFILE" ]; then
     if [[ -s $PWD/.bashrc ]]; then
         source $PWD/.bashrc
     else
-        source ~/.bashrc
+        source ${GBP_HOME}/.bashrc
     fi
 else
-    source ~/.bashrc
+    source ${GBP_HOME}/.bashrc
 fi
 
 # https://gist.github.com/ctechols/ca1035271ad134841284
@@ -68,4 +68,4 @@ if [ $ZSH_PROFILE_MODE -eq 1 ]; then
     zprof
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ${GBP_HOME}/.fzf.zsh ] && source ${GBP_HOME}/.fzf.zsh
