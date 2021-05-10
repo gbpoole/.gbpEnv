@@ -18,12 +18,14 @@ Usage: add2path [-f] [-b] [-n] [-q] DIR
         -q)     qecho=':';          shift;;
         *)      break;;
     esac; done
+
     # Bad params always produce message and error code
     [[ -z $1 ]] && { echo 1>&2 "$usage"; return 1; }
 
-
+    # Return an error if the path does not exist
     [[ -d $1 ]] || { $qecho 1>&2 "$1 is not a directory."; return $errcode; }
 
+    # Make requested changes to PATH
     _path_in="$1"
     _dir="$(cd $_path_in && pwd -P)"
     if [[ :$PATH: =~ :$_dir: ]]; then
