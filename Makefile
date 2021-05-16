@@ -1,7 +1,6 @@
-#########################################
-# Use this makefile to install software #
-# that may be missing on your system.   #
-#########################################
+#########################################################################
+# Use this makefile to install gbpEnv.  See README.md for instructions. #
+#########################################################################
 
 # Set the default target to 'help', which displays a list of supported targets
 .PHONY: default static_dirs devenv_libs
