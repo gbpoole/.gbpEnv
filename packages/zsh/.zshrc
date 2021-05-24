@@ -1,4 +1,4 @@
-#!/Users/gpoole/3rd_Party/bin/zsh -
+#!/usr/bin/env zsh
 # vim:syntax=zsh
 # vim:filetype=zsh
 

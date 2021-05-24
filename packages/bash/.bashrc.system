@@ -157,15 +157,28 @@ if [ -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
             fi
         done
     fi
-    export PATH="$GBP_CONDA_SCRIPTS_PATH:$PATH"
+    add2path -q $GBP_CONDA_SCRIPTS_PATH
     if [ -n "$ZSH_VERSION" ]; then
         setopt nomatch
     fi
 fi
 
-# Eliminate duplicates in paths
-if [ -n "$ZSH_VERSION" ]; then
-   typeset -aU cdpath fpath path
-else
-   typeset -a cdpath fpath path
+# macOS specific
+if [ $GBP_OS = 'Mac' ]; then
+
+    # /etc/zprofile is loaded and invokes
+    # /usr/libexec/path_helper that might slow down start-up.
+    # Better enter directly the content of /etc/paths.d here
+
+    # /etc/paths.d/40-XQuartz
+    add2path -b -q /opt/X11/bin
+
+    # /etc/paths.d/MacGPG2
+    add2path -b -q /usr/local/MacGPG2/bin
+
+    # GNU Core Utils
+    # brew info coreutils
+    # Add this to the end to prevent the following error when
+    # calling 'stty -g' in the autoloaded functions
+    add2path -b -q /usr/local/opt/coreutils/libexec/gnubin
 fi
