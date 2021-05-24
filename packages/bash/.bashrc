@@ -129,7 +129,7 @@ else
 fi
 
 # Set the verion of Node.js that we will use
-export GBP_NODE_VERSION=12.13.1
+export GBP_NODE_VERSION=14.17.0
 if [ -f ${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64/bin/node ]; then
     export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
     add2path -q $NODEJS_HOME/bin
