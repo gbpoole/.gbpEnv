@@ -147,6 +147,13 @@ else
     [ -f ${GBP_HOME}/.fzf.bash ] && source ${GBP_HOME}/.fzf.bash
 fi
 
+# Eliminate duplicates in paths
+if [ -n "$ZSH_VERSION" ]; then
+   typeset -aU cdpath fpath path
+else
+   typeset -a cdpath fpath path
+fi
+
 # The "-f test" above sets $? to 1 if .fzf.X is not installed.  This breaks the
 # CI tests.  To deal with this, true sets $? to zero and leads to a '0' return.
 # This is safe to do because 'set -e' is set above and if we get to here, then the
