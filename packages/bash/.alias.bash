@@ -187,28 +187,8 @@ alias H=' | head '
 alias W=' | wc -l '
 alias S=' | sort '
 
-# macOS specific
-#
-# Check if running on macOS, otherwise stop here
-[[ ! "$(uname -s)" == "Darwin" ]] && return
-
-# /etc/zprofile is loaded and invokes
-# /usr/libexec/path_helper that might slow down start-up.
-# Better enter directly the content of /etc/paths.d here
-
-# /etc/paths.d/40-XQuartz
-export PATH=$PATH:/opt/X11/bin
-
-# /etc/paths.d/MacGPG2
-export PATH=$PATH:/usr/local/MacGPG2/bin
-
-#
-# GNU Core Utils
-# brew info coreutils
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
 # scutil
-#
 alias sys.get.computername='scutil --get ComputerName'
 alias sys.get.localhostname='scutil --get LocalHostName'
 alias sys.get.hostname='scutil --get HostName'

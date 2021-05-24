@@ -180,5 +180,5 @@ if [ $GBP_OS = 'Mac' ]; then
     # brew info coreutils
     # Add this to the end to prevent the following error when
     # calling 'stty -g' in the autoloaded functions
-    add2path -b -q /usr/local/opt/coreutils/libexec/gnubin
+    #add2path -b -q /usr/local/opt/coreutils/libexec/gnubin
 fi
