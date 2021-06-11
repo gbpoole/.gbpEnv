@@ -101,9 +101,9 @@ export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 
 ## Set 'default' Anaconda environment
 ## This needs to be after the autoload functions are loaded
-#if type conda.load > /dev/null 2>&1; then
-#   conda.load default
-#fi
+if type conda.load > /dev/null 2>&1; then
+  conda.load default
+fi
 
 # Create aliases
 source ${GBP_HOME}/.alias.bash
@@ -145,6 +145,11 @@ if [ -n "$ZSH_VERSION" ]; then
     [ -f ${GBP_HOME}/.fzf.zsh ] && source ${GBP_HOME}/.fzf.zsh
 else
     [ -f ${GBP_HOME}/.fzf.bash ] && source ${GBP_HOME}/.fzf.bash
+fi
+
+# Source the Rust environment (if there is one)
+if [ -e "$GBP_HOME/.cargo/env" ]; then
+   . "$GBP_HOME/.cargo/env"
 fi
 
 # Eliminate duplicates in paths
