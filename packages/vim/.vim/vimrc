@@ -147,8 +147,6 @@ set expandtab tabstop=4 shiftwidth=4 " Tab spacing
 set incsearch                        " Highlight matches as you type
 set showmatch                        " Show matching paren
 " set infercase                        " Adjust completions to match case
-" set ignorecase                       " case insensitive search
-" set smartcase                        " case sensitive when uc present
 set gdefault                         " g flag on sed subs automatically
 set directory=$GBP_HOME/.cache/vim/
 set backupdir=$GBP_HOME/.cache/vim/bkp
@@ -169,7 +167,6 @@ syntax on
 
 "" Disabled options
 ""set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
-""set wildignorecase                          "Case-insensitive completions
 ""set complete-=t                             " I don't use tags, so no need to search for them
 ""set updatecount=50                          "Save buffer every X chars typed
 ""set timeout timeoutlen=300 ttimeoutlen=300  " Keycodes and maps timeout in 3/10 sec...
@@ -814,8 +811,20 @@ inoremap <silent> <Plug>(MyCR) <CR><C-R>=AutoPairsReturn()<CR>
 " comfortable-motion {{{
 let g:comfortable_motion_no_default_key_mappings = 1
 let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
-nnoremap <silent> <S-Down> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
-nnoremap <silent> <S-Up> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+
+nnoremap <silent> <C-j> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+nnoremap <silent> <C-k> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+" }}}
+
+" turn off arrow keys {{{
+nnoremap <left>  <nop>
+nnoremap <right> <nop>
+nnoremap <down>  <nop>
+nnoremap <up>    <nop>
+vnoremap <left>  <nop>
+vnoremap <right> <nop>
+vnoremap <down>  <nop>
+vnoremap <up>    <nop>
 " }}}
 
 " }}}
@@ -828,11 +837,14 @@ try
 catch /^Vim\%((\a\+)\)\=:E185/
     echom "Colourscheme not found.  Perhaps plugins have not been installed?  Try running :PlugInstall"
 endtry
+
+" Change visual highlighting colour
+hi Visual cterm=bold ctermbg=Grey ctermfg=NONE
 " }}}
 
 " Assorted Leader Commands {{{
-  nnoremap <leader><esc> :bd
-  nnoremap <silent> Y 0vg_y " Make sure yank-line does not include the <CR>
+  nnoremap <leader><esc> :bd<CR>
+  nnoremap <silent> <ctrl>Y 0vg_y " Make sure yank-line does not include the <CR>
 " }}}
 
 " Custom features {{{
@@ -840,13 +852,19 @@ endtry
 augroup  imReload
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $GBP_HOME/.vim/vimrc source $MYVIMRC
 augroup END
 nmap <silent> <leader>ve :next $MYVIMRC<CR>
 nmap <silent> <leader>vr :source $MYVIMRC<CR>
 " }}
 
-" Remap <ctrl-r> to 'Redo' {{{
+" Remap U to <ctrl-r> (Redo) {{{
 nnoremap U <C-R>
+" }}}
+
+" Move and auto-format selected text in visual mode {{{
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 " }}}
 
 " Prefer vertical orientation when using :diffsplit {{{
@@ -860,9 +878,6 @@ autocmd BufReadPost *  if line("'\"") > 1 && line("'\"") <= line("$")
 " }}}
 
 " Smarter search behaviour {{{
-set incsearch       "Lookahead as search pattern is specified
-"set ignorecase      "Ignore case in all searches...
-"set smartcase       "...unless uppercase letters used
 
 " Absolute direction for n and N...
 nnoremap  <silent><expr> n  'Nn'[v:searchforward] . ":call HLNext()\<CR>"
@@ -960,19 +975,4 @@ endfunction
 call InitBackupDir()
 " }}}
 
-" Cycle through relativenumber + number, number (only), and no numbering. {{{
-function! Cycle_numbering() abort
-  if exists('+relativenumber')
-    execute {
-          \ '00': 'set relativenumber   | set number',
-          \ '01': 'set norelativenumber | set number',
-          \ '10': 'set norelativenumber | set nonumber',
-          \ '11': 'set norelativenumber | set number' }[&number . &relativenumber]
-  else
-    " No relative numbering, just toggle numbers on and off.
-    set number!<CR>
-  endif
-endfunction
-Nmap <Leader>r [Cycle line numbering] :call Cycle_numbering()<CR>
-"}}}
 " }}}
