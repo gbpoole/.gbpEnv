@@ -258,6 +258,12 @@ call plug#begin()
     Plug 'airblade/vim-gitgutter'
     Plug 'rhysd/git-messenger.vim'
 
+    " Nerdtree stuff
+    Plug 'preservim/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'PhilRunninger/nerdtree-buffer-ops'
+
     " Fuzzy searching (fzf etc.)
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
     Plug 'mileszs/ack.vim'
@@ -360,6 +366,18 @@ nmap <silent> <leader>a] <Plug>(ale_next)
 " OR map keys to use wrapping.
 nmap <silent> <leader>a{ <Plug>(ale_previous_wrap)
 nmap <silent> <leader>a} <Plug>(ale_next_wrap)
+" }}}
+
+" NERDTree {{{
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
 " }}}
 
 " airline {{{
