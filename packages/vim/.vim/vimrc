@@ -56,27 +56,29 @@ end
 " }}}
 
 " Determine file type {{{
-filetype plugin indent on
-
-augroup FiletypeInference
-    autocmd!
-    autocmd BufNewFile,BufRead  *.t      setfiletype perl
-    autocmd BufNewFile,BufRead  *.pod    setfiletype pod
-    autocmd BufNewFile,BufRead  *.itn    setfiletype itn
-    autocmd BufNewFile,BufRead  *        call s:infer_filetype()
-augroup END
-
-function! s:infer_filetype ()
-    for line in getline(1,20)
-        if line =~ '^\s*use\s*v\?5\.\S\+\s*;\s*$'
-            setfiletype perl
-            return
-        elseif line =~ '^\s*use\s*v\?6\s*;\s*$'
-            setfiletype perl6
-            return
-        endif
-    endfor
-endfunction
+if has('filetype')
+    filetype plugin indent on
+else
+    augroup FiletypeInference
+        autocmd!
+        autocmd BufNewFile,BufRead  *.t      setfiletype perl
+        autocmd BufNewFile,BufRead  *.pod    setfiletype pod
+        autocmd BufNewFile,BufRead  *.itn    setfiletype itn
+        autocmd BufNewFile,BufRead  *        call s:infer_filetype()
+    augroup END
+    
+    function! s:infer_filetype ()
+        for line in getline(1,20)
+            if line =~ '^\s*use\s*v\?5\.\S\+\s*;\s*$'
+                setfiletype perl
+                return
+            elseif line =~ '^\s*use\s*v\?6\s*;\s*$'
+                setfiletype perl6
+                return
+            endif
+        endfor
+    endfunction
+endif
 " }}}
 
 " Enable marker folding for vimrc {{{
@@ -125,7 +127,7 @@ set wildmenu wildmode=longest:full,full
 set wildmenu                         " show list instead of just completing
 set noshowmode                       " Suppress mode change messages
 set updatetime=2000                  " idleness" is 2 sec
-set scrolloff=8                      " Scroll when X lines from top/bottom
+set scrolloff=20                      " Scroll when X lines from top/bottom
 set visualbell t_vb=                 " Turn off visual beep
 set laststatus=2                     " Always display a status line
 set cmdheight=1                      " Command line height
@@ -163,12 +165,14 @@ if has('persistent_undo')
     set undofile                            " Actually switch on persistent undo
 endif
 
-syntax on
+if has('syntax')
+    syntax on
+endif
 
 "" Disabled options
 ""set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
 ""set complete-=t                             " I don't use tags, so no need to search for them
-""set updatecount=50                          "Save buffer every X chars typed
+""set updatecount=50                          " Save buffer every X chars typed
 ""set timeout timeoutlen=300 ttimeoutlen=300  " Keycodes and maps timeout in 3/10 sec...
 ""set cursorline                              " highlight current line
 ""set shellcmdflag=-ic                        " Use an interactive shell to allow use of command line aliases
@@ -180,11 +184,11 @@ syntax on
 "
 "" Set suffixes that are ignored with multiple match
 "set suffixes=.bak,~,.o,.info,.swp,.obj
-"
+
 if has("nvim") && exists("+pumblend")
     set pumblend=20  " opacity for popupmenu
 endif
-"
+
 "if exists('&inccommand')
 "  set inccommand=nosplit " Live substitution
 "endif
@@ -220,6 +224,9 @@ call plug#begin()
     "   treesitter
     "   undotree
     "   fugitive
+    "   neovim/nvim-lspconfig
+    "   lsp-saga (glepnir/lspsaga.nvim)
+    "   nvim-treesitter/nvim-treesitter
 
     " Healthy defaults
     Plug 'tpope/vim-sensible'
@@ -378,6 +385,7 @@ nnoremap <C-f> :NERDTreeFind<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
     \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
 " }}}
 
 " airline {{{
