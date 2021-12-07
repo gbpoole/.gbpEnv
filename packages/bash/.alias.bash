@@ -69,6 +69,8 @@ alias glg='git lg | head'
 # Make sure the pip in the current environment is always used
 alias pip='python -m pip'
 
+alias py='python'
+
 # Substitute for a few improved applications, if present
 
 # 'top'->'htop'
@@ -88,9 +90,9 @@ elif hash vim 2>/dev/null; then
 fi
 
 # Override the XCode install of gcc
-if [ "$GBP_OS" = 'Mac' ]; then
-   alias gcc='gcc-7'
-fi
+#if [ "$GBP_OS" = 'Mac' ]; then
+#   alias gcc='gcc-7'
+#fi
 
 # Slurm stuff
 alias squeue='squeue -o "%.18i %.9P %.8j %.8u %.6D %.6C %.11M %.11l %.8T %R"'
