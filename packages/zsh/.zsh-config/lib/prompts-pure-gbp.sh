@@ -80,12 +80,20 @@ export PURE_PROMPT_PRESYMBOL="╰"
 export PURE_PROMPT_SYMBOL=""
 
 # Set colours
-zstyle :prompt:pure:prompt:success color green
-zstyle :prompt:pure:prompt:error color red
-zstyle :prompt:pure:path color blue
-zstyle :prompt:pure:git:branch color yellow
-zstyle :prompt:pure:virtualenv color green
-zstyle :prompt:pure:execution_time color red
+# Defaults are as follows:
+# zstyle :prompt:pure:prompt:error         red
+# zstyle :prompt:pure:prompt:success       green
+# zstyle :prompt:pure:execution_time       red
+# zstyle :prompt:pure:git:status           226
+# zstyle :prompt:pure:git:branch           208
+# zstyle :prompt:pure:git:branch:cached    172
+# zstyle :prompt:pure:user                 81
+# zstyle :prompt:pure:user:root            198
+# zstyle :prompt:pure:host                 75
+# zstyle :prompt:pure:conda                35
+# zstyle :prompt:pure:pyenv                47
+# zstyle :prompt:pure:prompt:preprompt     218
+# zstyle :prompt:pure:path                 218
 
 # or use pre_cmd, see man zshcontrib
 vcs_info_wrapper() {
