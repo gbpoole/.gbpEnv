@@ -111,6 +111,7 @@ export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 add2path -q -f ${GBP_HOME}/.pyenv/shims
 export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
 export PYENV_DEFAULT_ENV='default'
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if type pyenv > /dev/null 2>&1; then
    eval "$(pyenv init -)"
    if ! pyenv activate ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
