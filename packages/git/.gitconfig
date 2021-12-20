@@ -14,3 +14,5 @@
 [core]
 	editor = vim
 	excludesfile = /Users/gpoole/.config/git/gitignore_global
+[init]
+	defaultBranch = master

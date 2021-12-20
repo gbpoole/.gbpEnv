@@ -69,6 +69,8 @@ alias glg='git lg | head'
 # Make sure the pip in the current environment is always used
 alias pip='python -m pip'
 
+alias py='python'
+
 # Substitute for a few improved applications, if present
 
 # 'top'->'htop'
@@ -88,9 +90,9 @@ elif hash vim 2>/dev/null; then
 fi
 
 # Override the XCode install of gcc
-if [ "$GBP_OS" = 'Mac' ]; then
-   alias gcc='gcc-7'
-fi
+#if [ "$GBP_OS" = 'Mac' ]; then
+#   alias gcc='gcc-7'
+#fi
 
 # Slurm stuff
 alias squeue='squeue -o "%.18i %.9P %.8j %.8u %.6D %.6C %.11M %.11l %.8T %R"'
@@ -187,28 +189,8 @@ alias H=' | head '
 alias W=' | wc -l '
 alias S=' | sort '
 
-# macOS specific
-#
-# Check if running on macOS, otherwise stop here
-[[ ! "$(uname -s)" == "Darwin" ]] && return
-
-# /etc/zprofile is loaded and invokes
-# /usr/libexec/path_helper that might slow down start-up.
-# Better enter directly the content of /etc/paths.d here
-
-# /etc/paths.d/40-XQuartz
-export PATH=$PATH:/opt/X11/bin
-
-# /etc/paths.d/MacGPG2
-export PATH=$PATH:/usr/local/MacGPG2/bin
-
-#
-# GNU Core Utils
-# brew info coreutils
-export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
 
 # scutil
-#
 alias sys.get.computername='scutil --get ComputerName'
 alias sys.get.localhostname='scutil --get LocalHostName'
 alias sys.get.hostname='scutil --get HostName'

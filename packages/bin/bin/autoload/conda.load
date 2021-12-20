@@ -71,9 +71,9 @@ conda.load () {
       fi
       add2path -f -q $GBP_CONDA_PATH/envs/$MY_ENV/bin
 
-      if [ "$CONDA_DEFAULT_ENV" = "$MY_ENV" ]; then
-        echo "Anaconda environment set to '$MY_ENV'."
-      else
+      # Don't report a result on success because this is sourced
+      # from .bashrc and any output breaks tests
+      if [ ! "$CONDA_DEFAULT_ENV" = "$MY_ENV" ]; then
         echo "Anaconda environment could not be set to '$MY_ENV'."
         return 1
       fi

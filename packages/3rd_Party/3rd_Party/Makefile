@@ -38,7 +38,7 @@ lsps: ${lsp_list}
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = libsixel imgcat node libgit2 antibody zsh fzy fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
+generic_libs = pyenv poetry rust libsixel imgcat node libgit2 antibody zsh fzy ag ripgrep fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -117,6 +117,37 @@ digestif-clean:
 
 ### END OF LSP SERVERS ##
 
+###########
+## Pyenv ##
+###########
+pyenv-download:
+pyenv-config:
+pyenv-build:
+pyenv-install:
+	@git clone https://github.com/pyenv/pyenv.git ${GBP_HOME}/.pyenv
+	@git clone https://github.com/pyenv/pyenv-virtualenv.git ${GBP_HOME}/.pyenv/plugins/pyenv-virtualenv
+pyenv-clean:
+
+############
+## Poetry ##
+############
+poetry-download:
+poetry-config:
+poetry-build:
+poetry-install:
+	@POETRY_HOME=${GBP_HOME} curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python3 -
+poetry-clean:
+
+####################
+## Rust from HEAD ##
+####################
+rust-download:
+rust-config:
+rust-build:
+rust-install:
+	@curl https://sh.rustup.rs -sSf | sh
+rust-clean:
+
 ####################
 ## node from HEAD ##
 ####################
@@ -142,6 +173,31 @@ fzf-build:
 fzf-install:
 	@cd ${GBP_HOME}/.fzf;./install
 fzf-clean:
+
+#######################
+## Ripgrep from HEAD ##
+#######################
+ripgrep-download:
+	@git clone https://github.com/BurntSushi/ripgrep ripgrep
+ripgrep-config:
+ripgrep-build:
+	@cd ripgrep;cargo build --release
+ripgrep-install:
+ripgrep-clean:
+#	@rm -rf ripgrep
+
+###############################
+## Silver Searcher from HEAD ##
+###############################
+ag-download:
+	@git clone https://github.com/ggreer/the_silver_searcher ag
+ag-config:
+ag-build:
+	@cd ag;./build.sh
+ag-install:
+	@cd ag;sudo make install
+ag-clean:
+	@rm -rf ag
 
 ###################
 ## fzy from HEAD ##

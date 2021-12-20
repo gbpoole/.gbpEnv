@@ -1,4 +1,1 @@
-packages/ssh/.ssh/known_hosts
-packages/ssh/.ssh/id_rsa
-packages/ssh/.ssh/id_rsa.pub
 .tags

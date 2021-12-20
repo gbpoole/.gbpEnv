@@ -1,4 +1,4 @@
-#!/Users/gpoole/3rd_Party/bin/zsh -
+#!/usr/bin/env zsh
 # vim:syntax=zsh
 # vim:filetype=zsh
 
@@ -69,3 +69,5 @@ if [ $ZSH_PROFILE_MODE -eq 1 ]; then
 fi
 
 [ -f ${GBP_HOME}/.fzf.zsh ] && source ${GBP_HOME}/.fzf.zsh
+
+export PATH="$HOME/.poetry/bin:$PATH"

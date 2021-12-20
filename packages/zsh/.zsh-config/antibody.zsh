@@ -16,6 +16,8 @@ if [[ -x ${ANTIBODY} ]]; then
     alias antibody.list=${ANTIBODY}' list'
     alias antibody.update=${ANTIBODY}' update'
     alias antibody.home=${ANTIBODY}' home'
+    alias antibody.clean='rm -rf `antibody.home`'
+    alias antibody.reset='antibody.clean && antibody.install'
 
     function antibody.install(){
         echo 'Installing plugins ... '

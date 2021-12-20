@@ -19,7 +19,7 @@ export INSTALL_PATH=$HOME
 - Clone the repo (n.b.: you may need to make sure that your ssh keys are in order before executing these lines):
 ```bash
 cd $REPO_INSTALL_PATH
-git clone git@github.com:gbpoole/.gbpEnv.git
+git clone https://github.com/gbpoole/.gbpEnv.git
 ```
 - Make sure that any old or default config files are moved out of the way:
 ```bash

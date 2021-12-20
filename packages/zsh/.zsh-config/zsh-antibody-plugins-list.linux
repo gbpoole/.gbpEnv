@@ -6,9 +6,4 @@ aperezdc/zsh-fzy
 mafredri/zsh-async
 djui/alias-tips
 supercrabtree/k
-#bhilburn/powerlevel9k
-#romkatv/powerlevel10k
-#romkatv/gitstatus
-gbpoole/pure
-mafredri/zsh-async
-#sindresorhus/pure
+gbpoole/gbp-zsh-prompt

@@ -17,7 +17,7 @@ let g:secure_modelines_modelines = 15
 " }}}
 
 " Change leader mapping {{{
-"let mapleader = ' '
+let mapleader = ' '
 " }}}
 
 " Terminal colours & encoding {{{
@@ -56,27 +56,29 @@ end
 " }}}
 
 " Determine file type {{{
-filetype plugin indent on
-
-augroup FiletypeInference
-    autocmd!
-    autocmd BufNewFile,BufRead  *.t      setfiletype perl
-    autocmd BufNewFile,BufRead  *.pod    setfiletype pod
-    autocmd BufNewFile,BufRead  *.itn    setfiletype itn
-    autocmd BufNewFile,BufRead  *        call s:infer_filetype()
-augroup END
-
-function! s:infer_filetype ()
-    for line in getline(1,20)
-        if line =~ '^\s*use\s*v\?5\.\S\+\s*;\s*$'
-            setfiletype perl
-            return
-        elseif line =~ '^\s*use\s*v\?6\s*;\s*$'
-            setfiletype perl6
-            return
-        endif
-    endfor
-endfunction
+if has('filetype')
+    filetype plugin indent on
+else
+    augroup FiletypeInference
+        autocmd!
+        autocmd BufNewFile,BufRead  *.t      setfiletype perl
+        autocmd BufNewFile,BufRead  *.pod    setfiletype pod
+        autocmd BufNewFile,BufRead  *.itn    setfiletype itn
+        autocmd BufNewFile,BufRead  *        call s:infer_filetype()
+    augroup END
+    
+    function! s:infer_filetype ()
+        for line in getline(1,20)
+            if line =~ '^\s*use\s*v\?5\.\S\+\s*;\s*$'
+                setfiletype perl
+                return
+            elseif line =~ '^\s*use\s*v\?6\s*;\s*$'
+                setfiletype perl6
+                return
+            endif
+        endfor
+    endfunction
+endif
 " }}}
 
 " Enable marker folding for vimrc {{{
@@ -100,6 +102,7 @@ set title titlestring=
 "set nomore          "Don't page long listings
 set cpoptions-=a    "Don't set # after a :read
 set autowrite       "Save buffer automatically when changing files
+set noswapfile
 set autoread        "Always reload buffer when external changes detected
 "           +--Disable hlsearch while loading viminfo
 "           | +--Remember marks for last 500 files
@@ -122,17 +125,16 @@ set wildmode=list:longest,full       " Show list of completions
                                      "   then iterate full completions
 set wildmenu wildmode=longest:full,full
 set wildmenu                         " show list instead of just completing
-set infercase                        " Adjust completions to match case
 set noshowmode                       " Suppress mode change messages
 set updatetime=2000                  " idleness" is 2 sec
-set scrolloff=2                      " Scroll when X lines from top/bottom
+set scrolloff=20                      " Scroll when X lines from top/bottom
 set visualbell t_vb=                 " Turn off visual beep
 set laststatus=2                     " Always display a status line
 set cmdheight=1                      " Command line height
 set hlsearch                         " Highlight searches
 " set history=500                      " Store a ton of history (default is 20)
 set hidden                           " Don't unload a buffer when abandoning it
-"set clipboard=unnamed                " To work in tmux
+set clipboard=unnamed                " To work in tmux
 set spelllang=en_au                  " Australian spelling
 set secure                           " Secure mode for reading vimrc, exrc files etc. in current dir
 set exrc                             " Allow the use of folder dependent settings
@@ -146,8 +148,7 @@ set formatoptions+=l                 " Dont mess with the wrapping of existing l
 set expandtab tabstop=4 shiftwidth=4 " Tab spacing
 set incsearch                        " Highlight matches as you type
 set showmatch                        " Show matching paren
-set ignorecase                       " case insensitive search
-set smartcase                        " case sensitive when uc present
+" set infercase                        " Adjust completions to match case
 set gdefault                         " g flag on sed subs automatically
 set directory=$GBP_HOME/.cache/vim/
 set backupdir=$GBP_HOME/.cache/vim/bkp
@@ -164,13 +165,14 @@ if has('persistent_undo')
     set undofile                            " Actually switch on persistent undo
 endif
 
-syntax on
+if has('syntax')
+    syntax on
+endif
 
 "" Disabled options
 ""set titlestring=%t%(\ %M%)%(\ (%{expand(\"%:~:.:h\")})%)%(\ %a%)
-""set wildignorecase                          "Case-insensitive completions
 ""set complete-=t                             " I don't use tags, so no need to search for them
-""set updatecount=50                          "Save buffer every X chars typed
+""set updatecount=50                          " Save buffer every X chars typed
 ""set timeout timeoutlen=300 ttimeoutlen=300  " Keycodes and maps timeout in 3/10 sec...
 ""set cursorline                              " highlight current line
 ""set shellcmdflag=-ic                        " Use an interactive shell to allow use of command line aliases
@@ -182,11 +184,11 @@ syntax on
 "
 "" Set suffixes that are ignored with multiple match
 "set suffixes=.bak,~,.o,.info,.swp,.obj
-"
-"if has("nvim") && exists("+pumblend")
-"    set pumblend=20  " opacity for popupmenu
-"endif
-"
+
+if has("nvim") && exists("+pumblend")
+    set pumblend=20  " opacity for popupmenu
+endif
+
 "if exists('&inccommand')
 "  set inccommand=nosplit " Live substitution
 "endif
@@ -217,6 +219,15 @@ endif
 
 call plug#begin()
 
+    " TODO: Checkout these plugins:
+    "   telescope
+    "   treesitter
+    "   undotree
+    "   fugitive
+    "   neovim/nvim-lspconfig
+    "   lsp-saga (glepnir/lspsaga.nvim)
+    "   nvim-treesitter/nvim-treesitter
+
     " Healthy defaults
     Plug 'tpope/vim-sensible'
 
@@ -237,30 +248,41 @@ call plug#begin()
 
     " Motion
     Plug 'tpope/vim-rsi'
-    Plug 'justinmk/vim-sneak'
     Plug 'tpope/vim-surround'
-
-    " Snipits
-    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+    " Plug 'justinmk/vim-sneak'
 
     " Editing
     Plug 'jiangmiao/auto-pairs'
     Plug 'scrooloose/nerdcommenter'
 
+    " Snipits
+    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
     " IDE-like things
     Plug 'chrisbra/vim-diff-enhanced'
     Plug 'tpope/vim-vinegar'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
     Plug 'majutsushi/tagbar'
     Plug 'airblade/vim-gitgutter'
     Plug 'rhysd/git-messenger.vim'
 
+    " Nerdtree stuff
+    Plug 'preservim/nerdtree'
+    Plug 'Xuyuanp/nerdtree-git-plugin'
+    Plug 'ryanoasis/vim-devicons'
+    Plug 'PhilRunninger/nerdtree-buffer-ops'
+
+    " Fuzzy searching (fzf etc.)
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } | Plug 'junegunn/fzf.vim'
+    Plug 'mileszs/ack.vim'
+
     " Linting
     Plug 'w0rp/ale'
 
+    " Grammar checkers, etc.
+    " Plug 'reedes/vim-wordy', { 'for': ['markdown', 'tex', 'latex'] }
+    " Plug 'davidbeckingsale/writegood.vim', { 'for': ['tex', 'markdown', 'latex'] }
+
     " Zen-mode
-    Plug 'reedes/vim-wordy', { 'for': ['markdown', 'tex', 'latex'] }
-    Plug 'davidbeckingsale/writegood.vim', { 'for': ['tex', 'markdown', 'latex'] }
     Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 
     " File-sepcific stuff
@@ -285,7 +307,7 @@ call plug#begin()
     Plug 'neoclide/coc-lists', {'do': 'yarn install --frozen-lockfile'} " mru and stuff
     Plug 'neoclide/coc-highlight', {'do': 'yarn install --frozen-lockfile'} " color highlighting
 
-    " Save session information 
+    " Save session information
     Plug 'tpope/vim-obsession'
 
     " Automatic detection of indenting
@@ -353,6 +375,19 @@ nmap <silent> <leader>a{ <Plug>(ale_previous_wrap)
 nmap <silent> <leader>a} <Plug>(ale_next_wrap)
 " }}}
 
+" NERDTree {{{
+nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" Start NERDTree when Vim starts with a directory argument.
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists('s:std_in') |
+    \ execute 'NERDTree' argv()[0] | wincmd p | enew | execute 'cd '.argv()[0] | endif
+
+" }}}
+
 " airline {{{
 "let g:airline#extensions#tmuxline#enabled = 0
 "let g:airline#extensions#tabline#enabled = 0
@@ -373,9 +408,42 @@ nmap <silent> <leader>a} <Plug>(ale_next_wrap)
 let g:float_preview#docked = 0
 " }}}
 
-" fzf {{{
-" Advanced customization using autoload functions
+" fzf etc. {{{
+"" Advanced customization using autoload functions
 inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+
+" Use Ripgrep
+if executable('rg')
+  " Options include:
+  " --vimgrep -> Needed to parse the rg response properly for ack.vim
+  " --type-not sql -> Avoid huge sql file dumps as it slows down the search
+  " --smart-case -> Search case insensitive if all lowercase pattern, Search case sensitively otherwise
+  let g:ackprg = 'rg --vimgrep --type-not sql --smart-case'
+" Use Silver Searcher
+elseif executable('ag')
+  let g:ackprg = 'ag --nogroup --nocolor --column'
+else
+  " Grep will sometimes skip displaying the file name if you
+  " search in a singe file. Set grep
+  " program to always generate a file-name.
+  set grepprg=grep\ -nHRI\ $*\ .
+endif
+
+" Auto close the Quickfix list after pressing '<enter>' on a list item
+let g:ack_autoclose = 1
+
+" Any empty ack search will search for the work the cursor is on
+let g:ack_use_cword_for_empty_search = 1
+
+" Don't jump to first match
+cnoreabbrev Ack Ack!
+
+" Maps <leader>/ so we're ready to type the search keyword
+nnoremap <Leader>/ :Ack!<Space>
+
+" Navigate quickfix list with ease
+nnoremap <silent> [q :cprevious<CR>
+nnoremap <silent> ]q :cnext<CR>
 
 " This is the default extra key bindings
 let g:fzf_action = {
@@ -388,7 +456,7 @@ let g:fzf_action = {
 " - window (nvim only)
 let g:fzf_layout = { 'up': '~40%' }
 
-" Customize fzf colors to match your color scheme
+" Customize fzf colors to match my color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
@@ -448,8 +516,8 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 function! s:find_git_root()
   return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
 endfunction
-" command! -bang FZFProjectFiles call fzf#vim#files(s:find_git_root(), fzf#vim#with_preview(), <bang>0)
-command! -bang FZFProjectFiles call fzf#vim#files(s:find_git_root(), <bang>0)
+command! -bang FZFProjectFiles call fzf#vim#files(s:find_git_root(), fzf#vim#with_preview(), <bang>0)
+" command! -bang FZFProjectFiles call fzf#vim#files(s:find_git_root(), <bang>0)
 nnoremap <leader>fp :FZFProjectFiles<CR>
 " }}}
 
@@ -489,7 +557,8 @@ set nowritebackup
 " Better display for messages
 set cmdheight=2
 
-" You will have bad experience for diagnostic messages when it's default 4000.
+" Long update times (default is 4000ms) leads to noticable delays and a bad
+" experience for diagnostic messages
 set updatetime=300
 
 " don't give |ins-completion-menu| messages.
@@ -724,9 +793,7 @@ let g:NERDSpaceDelims = 1
 let g:NERDAltDelims_c = 1
 map <leader><leader> <plug>NERDCommenterToggle
 nnoremap <leader>cp yy:<C-u>call NERDComment('n', 'comment')<CR>p
-nnoremap <leader>cP yy:<C-u>call NERDComment('n', 'comment')<CR>P
 vnoremap <leader>cp ygv:<C-u>call NERDComment('x', 'comment')<CR>`>p
-vnoremap <leader>cP ygv:<C-u>call NERDComment('x', 'comment')<CR>`<P
 " }}}
 
 " polyglot {{{
@@ -734,21 +801,23 @@ vnoremap <leader>cP ygv:<C-u>call NERDComment('x', 'comment')<CR>`<P
 " }}}
 
 " sneak {{{
-let g:sneak#streak = 1
-"replace 'f' with 1-char Sneak
-nmap f <Plug>Sneak_f
-xmap f <Plug>Sneak_f
-omap f <Plug>Sneak_f
-nmap F <Plug>Sneak_F
-xmap F <Plug>Sneak_F
-omap F <Plug>Sneak_F
-"replace 't' with 1-char Sneak
-nmap t <Plug>Sneak_t
-xmap t <Plug>Sneak_t
-omap t <Plug>Sneak_t
-nmap T <Plug>Sneak_T
-xmap T <Plug>Sneak_T
-omap T <Plug>Sneak_T
+"let g:sneak#label = 1
+"let g:sneak#label = 1
+"let g:sneak#s_next = 1
+"
+""replace 'f' and 't' with 1-char Sneak
+"nmap f <Plug>Sneak_f
+"xmap f <Plug>Sneak_f
+"omap f <Plug>Sneak_f
+"nmap F <Plug>Sneak_F
+"xmap F <Plug>Sneak_F
+"omap F <Plug>Sneak_F
+"nmap t <Plug>Sneak_t
+"xmap t <Plug>Sneak_t
+"omap t <Plug>Sneak_t
+"nmap T <Plug>Sneak_T
+"xmap T <Plug>Sneak_T
+"omap T <Plug>Sneak_T
 " }}}
 
 " tagbar {{{
@@ -768,8 +837,20 @@ inoremap <silent> <Plug>(MyCR) <CR><C-R>=AutoPairsReturn()<CR>
 " comfortable-motion {{{
 let g:comfortable_motion_no_default_key_mappings = 1
 let g:comfortable_motion_impulse_multiplier = 1  " Feel free to increase/decrease this value.
-nnoremap <silent> <S-Down> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
-nnoremap <silent> <S-Up> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+
+nnoremap <silent> <C-j> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+nnoremap <silent> <C-k> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+" }}}
+
+" turn off arrow keys {{{
+nnoremap <left>  <nop>
+nnoremap <right> <nop>
+nnoremap <down>  <nop>
+nnoremap <up>    <nop>
+vnoremap <left>  <nop>
+vnoremap <right> <nop>
+vnoremap <down>  <nop>
+vnoremap <up>    <nop>
 " }}}
 
 " }}}
@@ -782,16 +863,34 @@ try
 catch /^Vim\%((\a\+)\)\=:E185/
     echom "Colourscheme not found.  Perhaps plugins have not been installed?  Try running :PlugInstall"
 endtry
+
+" Change visual highlighting colour
+hi Visual cterm=bold ctermbg=Grey ctermfg=NONE
+" }}}
+
+" Assorted Leader Commands {{{
+  nnoremap <leader><esc> :bd<CR>
+  nnoremap <silent> <ctrl>Y 0vg_y " Make sure yank-line does not include the <CR>
 " }}}
 
 " Custom features {{{
 " Edit and auto-update this config file and plugins {{{
-augroup VimReload
+augroup  imReload
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $GBP_HOME/.vim/vimrc source $MYVIMRC
 augroup END
-Nmap <silent> <leader>ve [Edit .vimrc] :next $MYVIMRC<CR>
-Nmap <silent> <leader>vr [Source .vimrc] :source $MYVIMRC<CR>
+nmap <silent> <leader>ve :next $MYVIMRC<CR>
+nmap <silent> <leader>vr :source $MYVIMRC<CR>
+" }}
+
+" Remap U to <ctrl-r> (Redo) {{{
+nnoremap U <C-R>
+" }}}
+
+" Move and auto-format selected text in visual mode {{{
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
 " }}}
 
 " Prefer vertical orientation when using :diffsplit {{{
@@ -805,16 +904,13 @@ autocmd BufReadPost *  if line("'\"") > 1 && line("'\"") <= line("$")
 " }}}
 
 " Smarter search behaviour {{{
-set incsearch       "Lookahead as search pattern is specified
-"set ignorecase      "Ignore case in all searches...
-"set smartcase       "...unless uppercase letters used
 
 " Absolute direction for n and N...
 nnoremap  <silent><expr> n  'Nn'[v:searchforward] . ":call HLNext()\<CR>"
 nnoremap  <silent><expr> N  'nN'[v:searchforward] . ":call HLNext()\<CR>"
 
 "Delete in normal mode to switch off highlighting till next search and clear messages...
-"Nmap <silent> <BS> [Cancel highlighting]  :call HLNextOff() <BAR> :nohlsearch <BAR> :call VG_Show_CursorColumn('off')<CR>::HierClear<CR>
+Nmap <silent> <BS> [Cancel highlighting]  :call HLNextOff() <BAR> :nohlsearch <CR>
 
 "Double-delete to remove trailing whitespace...
 function! TrimTrailingWS ()
@@ -869,28 +965,6 @@ nmap <silent>  >>  <Plug>ShiftLine
 nnoremap <Plug>ShiftLine :call ShiftLine()<CR>
 " }}}
 
-" Use ripgrep if possible {{{
-"    ... if not then ack, and fall back to grep if all else fails
-if executable('rg')
-    set grepprg=set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case\ --trim
-elseif executable('ack')
-    set grepprg=ack\ -s\ -H\ --nocolor\ --nogroup\ --column
-    set grepformat=%f:%l:%c:%m,%f:%l:%m
-else
-    " Grep will sometimes skip displaying the file name if you
-    " search in a singe file. Set grep
-    " program to always generate a file-name.
-    set grepprg=grep\ -nHRI\ $*\ .
-endif
-nnoremap <leader>* :silent grep! "<C-r><C-w>"<CR>:copen<CR>:redraw!<CR>
-command! -nargs=+ -complete=file -bar Grep silent grep! <args>|copen|redraw!
-nnoremap <leader>/ :Grep
-" }}}
-
-" Back up the current file{{{
-Nmap BB [Back up current file]  :!bak -q %<CR><CR>:echomsg "Backed up" expand('%')<CR>
-" }}}
-
 " Automatically create tmp directories {{{
 function! InitBackupDir()
   if exists('*mkdir')
@@ -927,19 +1001,4 @@ endfunction
 call InitBackupDir()
 " }}}
 
-" Cycle through relativenumber + number, number (only), and no numbering. {{{
-function! Cycle_numbering() abort
-  if exists('+relativenumber')
-    execute {
-          \ '00': 'set relativenumber   | set number',
-          \ '01': 'set norelativenumber | set number',
-          \ '10': 'set norelativenumber | set nonumber',
-          \ '11': 'set norelativenumber | set number' }[&number . &relativenumber]
-  else
-    " No relative numbering, just toggle numbers on and off.
-    set number!<CR>
-  endif
-endfunction
-Nmap <Leader>r [Cycle line numbering] :call Cycle_numbering()<CR>
-"}}}
 " }}}

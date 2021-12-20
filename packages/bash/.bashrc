@@ -99,11 +99,36 @@ export PERL5LIB=${PERL_LOCAL_LIB_ROOT}/lib/perl5:$PERL5LIB
 export PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
 export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 
+## Configure Python - Start ##
+
 ## Set 'default' Anaconda environment
 ## This needs to be after the autoload functions are loaded
 #if type conda.load > /dev/null 2>&1; then
-#   conda.load default
+#  conda.load default
 #fi
+
+# Init pyenv
+add2path -q -f ${GBP_HOME}/.pyenv/shims
+export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
+export PYENV_DEFAULT_ENV='default'
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+if type pyenv > /dev/null 2>&1; then
+   eval "$(pyenv init -)"
+   if ! pyenv activate ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
+      echo 'Default pyenv environment {'$PYENV_DEFAULT_ENV'} could not be activated.'
+   fi
+fi
+
+# pip should only run if there is a virtualenv currently activated
+export PIP_REQUIRE_VIRTUALENV=true
+
+# cache pip-installed packages to avoid re-downloading
+export PIP_DOWNLOAD_CACHE=$GBP_HOME/.pip/cache
+
+# Add path for Poetry
+add2path -q -f ${GBP_HOME}/.local/bin/
+
+## Configure Python - End ##
 
 # Create aliases
 source ${GBP_HOME}/.alias.bash
@@ -132,7 +157,7 @@ else
 fi
 
 # Set the verion of Node.js that we will use
-export GBP_NODE_VERSION=12.13.1
+export GBP_NODE_VERSION=14.17.0
 if [ -f ${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64/bin/node ]; then
     export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
     add2path -q $NODEJS_HOME/bin
@@ -148,6 +173,18 @@ if [ -n "$ZSH_VERSION" ]; then
     [ -f ${GBP_HOME}/.fzf.zsh ] && source ${GBP_HOME}/.fzf.zsh
 else
     [ -f ${GBP_HOME}/.fzf.bash ] && source ${GBP_HOME}/.fzf.bash
+fi
+
+# Source the Rust environment (if there is one)
+if [ -e "$GBP_HOME/.cargo/env" ]; then
+   . "$GBP_HOME/.cargo/env"
+fi
+
+# Eliminate duplicates in paths
+if [ -n "$ZSH_VERSION" ]; then
+   typeset -aU cdpath fpath path
+else
+   typeset -a cdpath fpath path
 fi
 
 # The "-f test" above sets $? to 1 if .fzf.X is not installed.  This breaks the
