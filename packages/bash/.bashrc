@@ -108,6 +108,9 @@ export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 # Create aliases
 source ${GBP_HOME}/.alias.bash
 
+# Rust set-up
+. "$HOME/.cargo/env"
+
 # Set the filename for the global Matplotlib config
 export MATPLOTLIBRC=${GBP_HOME}/.config/matplotlib/matplotlibrc
 
