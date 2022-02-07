@@ -108,6 +108,7 @@ export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 #fi
 
 # Init pyenv
+add2path -q -f ${GBP_HOME}/.pyenv/bin
 add2path -q -f ${GBP_HOME}/.pyenv/shims
 export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
 export PYENV_DEFAULT_ENV='default'
