@@ -134,6 +134,9 @@ add2path -q -f ${GBP_HOME}/.local/bin/
 # Create aliases
 source ${GBP_HOME}/.alias.bash
 
+# Rust set-up
+. "$HOME/.cargo/env"
+
 # Set the filename for the global Matplotlib config
 export MATPLOTLIBRC=${GBP_HOME}/.config/matplotlib/matplotlibrc
 
