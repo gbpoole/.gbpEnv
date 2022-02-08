@@ -64,6 +64,84 @@ fi
 # Set all system-specific stuff
 source ${GBP_HOME}/.bashrc.system
 
+# LIGO Data Grid configuration
+pcdev1=gregory.poole@ldas-pcdev1.ligo.caltech.edu
+GLOBUS_LOCATION=/opt/ldg
+export GLOBUS_LOCATION
+if [ -f ${GLOBUS_LOCATION}/etc/globus-user-env.sh ] ; then
+	. ${GLOBUS_LOCATION}/etc/globus-user-env.sh
+fi
+go_LDG.proxy () { ligo-proxy-init albert.einstein; }
+go_LDG () { gsissh -YC $pcdev1 ; }
+
+# Add '3rd_Party' and 'my_code' directories to paths
+add2path -q ${GBP_HOME}/my_code/bin
+add2path -q ${GBP_HOME}/3rd_Party/bin
+export LD_LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:${LD_LIBRARY_PATH}"
+export INCLUDE="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${INCLUDE}"
+export CPATH="${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:${CPATH}"
+export PKG_CONFIG_PATH=${GBP_HOME}/3rd_Party/lib/pkgconfig:${PKG_CONFIG_PATH}
+
+# If using a custom-installed gcc, then 3rd party libraries will end-up in the following 
+# path ... prepend it to make sure it is preferred over a system install
+export LD_LIBRARY_PATH="${GBP_HOME}/3rd_Party/lib64:${LD_LIBRARY_PATH}"
+
+# Add ~/bin to PATH
+add2path -q ${GBP_HOME}/bin
+
+# Set-up Anaconda
+GBP_USE_CONDA=false
+if [ ${GBP_USE_CONDA} -a -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
+    source ${GBP_CONDA_PATH}/etc/profile.d/conda.sh
+
+    # Set-up some scripts so that Tox can find all the versions of 
+    # python we have installed under Anaconda.  This assumes that there is
+    # a conda environment named pythonX.Y for every X.Y version of python
+    # we may want to run tox against.
+    #
+    # To create a new conda environment for python version X.Y, run this:
+    #    conda create --name pythonX.Y python=X.Y
+    #
+    # Also, you might have to install the Anaconda version of virtualenv like this:
+    #    conda install virtualenv
+    #
+    # See here for more info and for directions for how to do this under windows:
+    #    https://deparkes.co.uk/2018/06/04/use-tox-with-anaconda/
+    if [ -n "$ZSH_VERSION" ]; then
+        unsetopt nomatch
+    fi
+    GBP_CONDA_SCRIPTS_PATH=$GBP_HOME/bin/anaconda
+    if [ ! -d $GBP_CONDA_SCRIPTS_PATH ];then
+        mkdir $GBP_CONDA_SCRIPTS_PATH
+    fi
+    if [ -d $GBP_CONDA_PATH/envs ]; then
+        export GBP_CONDA_ENVS_PATH=$GBP_CONDA_PATH/envs
+        GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
+    fi
+    if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
+        export GBP_CONDA_ENVS_PATH=${GBP_HOME}/.conda/envs
+        GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
+    fi
+    if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
+        unset GBP_CONDA_ENVS_PATH
+    else
+        # For some reason, I need to redo the find because it doesn't iterate over items if I use $GBP_CONDA_ENVS_PATH_LIST
+        for path_i in `find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?"`; do
+            version_i=`basename $path_i`
+            exec_i=$GBP_CONDA_SCRIPTS_PATH/$version_i
+            if [ ! -x $exec_i ]; then
+                echo "#!/bin/bash" > $exec_i
+                echo $path_i '"$@"' >> $exec_i
+                chmod uo+x $exec_i
+            fi
+        done
+    fi
+    add2path -q $GBP_CONDA_SCRIPTS_PATH
+    if [ -n "$ZSH_VERSION" ]; then
+        setopt nomatch
+    fi
+fi
+
 # Run all remote interactive shells in tmux
 if [[ ! $GBP_OS = 'Mac' ]]; then
     TMUX_CMD="tmux"
@@ -101,21 +179,29 @@ export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 
 ## Configure Python - Start ##
 
-## Set 'default' Anaconda environment
-## This needs to be after the autoload functions are loaded
-#if type conda.load > /dev/null 2>&1; then
-#  conda.load default
-#fi
+# Set 'default' Anaconda environment
+# This needs to be after the autoload functions are loaded
+if [ ${GBP_USE_CONDA} -a type conda.load > /dev/null 2>&1 ]; then
+  conda.load default
+fi
 
 # Init pyenv
+add2path -q -f ${GBP_HOME}/.pyenv/bin
 add2path -q -f ${GBP_HOME}/.pyenv/shims
 export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
 export PYENV_DEFAULT_ENV='default'
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if type pyenv > /dev/null 2>&1; then
    eval "$(pyenv init -)"
+   eval "$(pyenv virtualenv-init -)"
    if ! pyenv activate ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
-      echo 'Default pyenv environment {'$PYENV_DEFAULT_ENV'} could not be activated.'
+
+      # This could be a cold start and we need to create the default environment still
+      if ! pyenv virtualenv ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
+         echo 'Default pyenv environment {'$PYENV_DEFAULT_ENV'} could not be activated or created.'
+      elif ! pyenv activate ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
+         echo 'Default pyenv environment {'$PYENV_DEFAULT_ENV'} was created but could not be activated.'
+      fi
    fi
 fi
 
@@ -156,12 +242,13 @@ else
     fi
 fi
 
-# Set the verion of Node.js that we will use
+# Set the verion of Node.js that we will use and add it to the path
+# n.b.: If you change this, then node needs to be updated - not just here - but
+#       on any other extand install of .gbpEnv that will pull this change.
+# TODO: Find a better way to manage this
 export GBP_NODE_VERSION=14.17.0
-if [ -f ${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64/bin/node ]; then
-    export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
-    add2path -q $NODEJS_HOME/bin
-fi
+export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
+add2path -q $NODEJS_HOME/bin
 
 # Configure Luarocks (Lua package installer)
 if command -v luarocks &> /dev/null; then
