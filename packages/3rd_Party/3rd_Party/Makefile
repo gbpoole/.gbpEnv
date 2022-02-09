@@ -24,6 +24,7 @@ VERSION-cmake=3.11.2
 VERSION-mpich=3.2
 VERSION-gsl=2.4
 VERSION-gd=2.2.5
+VERSION-openssl=1.1.1k
 VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
 VERSION-fftw3=3.3.8
@@ -38,7 +39,7 @@ lsps: ${lsp_list}
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = pyenv poetry rust libsixel imgcat node libgit2 antibody zsh fzy ag ripgrep fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
+generic_libs = pyenv poetry rust openssl libsixel imgcat node libgit2 antibody zsh fzy ag ripgrep fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -76,6 +77,20 @@ ccls-install:
 ccls-clean:
 	@rm -rf ccls
  
+#############
+## openssl ##
+#############
+openssl-download:
+	@wget https://ftp.openssl.org/source/openssl-${VERSION-openssl}.tar.gz
+openssl-config:
+	@cd  openssl-${VERSION-openssl}; ./config --prefix=${GBP_HOME}/3rd_Party/
+openssl-build:
+	@cd  openssl-${VERSION-openssl}; make
+openssl-install:
+	@cd  openssl-${VERSION-openssl}; make install
+openssl-clean:
+	@cd  openssl-${VERSION-openssl}; make clean
+
 ###########################################################
 ## bashls from HEAD                                      ##
 ## https://github.com/mads-hartmann/bash-language-server ##
