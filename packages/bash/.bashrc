@@ -117,92 +117,84 @@ if [ ${GBP_USE_CONDA} -a -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
     if [ -d $GBP_CONDA_PATH/envs ]; then
         export GBP_CONDA_ENVS_PATH=$GBP_CONDA_PATH/envs
         GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
-    fi
-    if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
-        export GBP_CONDA_ENVS_PATH=${GBP_HOME}/.conda/envs
-        GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
-    fi
-    if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
-        unset GBP_CONDA_ENVS_PATH
-    else
-        # For some reason, I need to redo the find because it doesn't iterate over items if I use $GBP_CONDA_ENVS_PATH_LIST
-        for path_i in `find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?"`; do
-            version_i=`basename $path_i`
-            exec_i=$GBP_CONDA_SCRIPTS_PATH/$version_i
-            if [ ! -x $exec_i ]; then
-                echo "#!/bin/bash" > $exec_i
-                echo $path_i '"$@"' >> $exec_i
-                chmod uo+x $exec_i
-            fi
-        done
-    fi
-    add2path -q $GBP_CONDA_SCRIPTS_PATH
-    if [ -n "$ZSH_VERSION" ]; then
-        setopt nomatch
-    fi
-fi
+        fi
+      if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
+          export GBP_CONDA_ENVS_PATH=${GBP_HOME}/.conda/envs
+          GBP_CONDA_ENVS_PATH_LIST=`find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?" 2> /dev/null`
+      fi
+      if [ -z "$GBP_CONDA_ENVS_PATH_LIST" ]; then
+          unset GBP_CONDA_ENVS_PATH
+      else
+          # For some reason, I need to redo the find because it doesn't iterate over items if I use $GBP_CONDA_ENVS_PATH_LIST
+          for path_i in `find $GBP_CONDA_ENVS_PATH/python?.?/bin -name "python?.?"`; do
+              version_i=`basename $path_i`
+              exec_i=$GBP_CONDA_SCRIPTS_PATH/$version_i
+              if [ ! -x $exec_i ]; then
+                  echo "#!/bin/bash" > $exec_i
+                  echo $path_i '"$@"' >> $exec_i
+                  chmod uo+x $exec_i
+              fi
+          done
+      fi
+      add2path -q $GBP_CONDA_SCRIPTS_PATH
+      if [ -n "$ZSH_VERSION" ]; then
+          setopt nomatch
+      fi
+  fi
 
 # Run all remote interactive shells in tmux
-if [[ ! $GBP_OS = 'Mac' ]]; then
-    TMUX_CMD="tmux"
-    TMUX_DEFAULT_SESSION="default"
-    if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-        if tmux has-session -t $TMUX_DEFAULT_SESSION 2>/dev/null; then
-            ${TMUX_CMD} -2 attach-session -t $TMUX_DEFAULT_SESSION
-        else
-            ${TMUX_CMD} -2 new-session -s $TMUX_DEFAULT_SESSION
-        fi
-    fi
-fi
+  if [[ ! $GBP_OS = 'Mac' ]]; then
+      TMUX_CMD="tmux"
+      TMUX_DEFAULT_SESSION="default"
+      if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+          if tmux has-session -t $TMUX_DEFAULT_SESSION 2>/dev/null; then
+              ${TMUX_CMD} -2 attach-session -t $TMUX_DEFAULT_SESSION
+          else
+              ${TMUX_CMD} -2 new-session -s $TMUX_DEFAULT_SESSION
+          fi
+      fi
+  fi
 
 # Set default editor
-export EDITOR=`which vim`
-if [ ! -f "${EDITOR}" ]; then
-    export EDITOR=`which vi`
-fi
+  export EDITOR=`which vim`
+  if [ ! -f "${EDITOR}" ]; then
+      export EDITOR=`which vi`
+  fi
 
 # Add scripts to the executable to the PATH
-add2path -q -f ${GBP_HOME}/bin/scripts
+  add2path -q -f ${GBP_HOME}/bin/scripts
 
 # Add 3rd_Party binary directory to the PATH
-add2path -q -f ${GBP_HOME}/3rd_Party/bin
+  add2path -q -f ${GBP_HOME}/3rd_Party/bin
 
 # Add my_code binary directory to the PATH
-add2path -q -f ${GBP_HOME}/my_code/bin
+  add2path -q -f ${GBP_HOME}/my_code/bin
 
 # Configure Perl
-export PERL_LOCAL_LIB_ROOT=${GBP_HOME}/.perl5
-export PATH=${PERL_LOCAL_LIB_ROOT}/bin:$PATH
-export PERL5LIB=${PERL_LOCAL_LIB_ROOT}/lib/perl5:$PERL5LIB
-export PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
-export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
+  export PERL_LOCAL_LIB_ROOT=${GBP_HOME}/.perl5
+  export PATH=${PERL_LOCAL_LIB_ROOT}/bin:$PATH
+  export PERL5LIB=${PERL_LOCAL_LIB_ROOT}/lib/perl5:$PERL5LIB
+  export PERL_MB_OPT="--install_base \"${PERL_LOCAL_LIB_ROOT}\""
+  export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 
 ## Configure Python - Start ##
 
 # Set 'default' Anaconda environment
 # This needs to be after the autoload functions are loaded
-if [ ${GBP_USE_CONDA} -a type conda.load > /dev/null 2>&1 ]; then
-  conda.load default
-fi
+  if [ ${GBP_USE_CONDA} -a type conda.load > /dev/null 2>&1 ]; then
+    conda.load default
+  fi
 
 # Init pyenv
-add2path -q -f ${GBP_HOME}/.pyenv/bin
-add2path -q -f ${GBP_HOME}/.pyenv/shims
-export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
-export PYENV_DEFAULT_ENV='default'
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-if type pyenv > /dev/null 2>&1; then
-   eval "$(pyenv init -)"
-   eval "$(pyenv virtualenv-init -)"
-   if ! pyenv activate ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
-
-      # This could be a cold start and we need to create the default environment still
-      if ! pyenv virtualenv ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
-         echo 'Default pyenv environment {'$PYENV_DEFAULT_ENV'} could not be activated or created.'
-      elif ! pyenv activate ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
-         echo 'Default pyenv environment {'$PYENV_DEFAULT_ENV'} was created but could not be activated.'
-      fi
-   fi
+# n.b.: Make sure `python global default` is set and that
+#       a `default` environment has been created, if using pyenv.
+  add2path -q -f ${GBP_HOME}/.pyenv/bin
+  add2path -q -f ${GBP_HOME}/.pyenv/shims
+  export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
+  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+  if type pyenv > /dev/null 2>&1; then
+     eval "$(pyenv init -)"
+     eval "$(pyenv virtualenv-init -)"
 fi
 
 # pip should only run if there is a virtualenv currently activated
