@@ -57,11 +57,11 @@ fi
 # https://gist.github.com/ctechols/ca1035271ad134841284
 # https://carlosbecker.com/posts/speeding-up-zsh
 autoload -Uz compinit
-#if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ${$GBP_HOME}/.zcompdump) ]; then
+if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ${GBP_HOME}/.zcompdump) ]; then
     compinit
-#else
-#    compinit -C
-#fi
+else
+   compinit -C
+fi
 
 # Report profiling (if activated)
 if [ $ZSH_PROFILE_MODE -eq 1 ]; then

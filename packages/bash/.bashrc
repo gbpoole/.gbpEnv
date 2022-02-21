@@ -108,16 +108,15 @@ export PERL_MM_OPT="INSTALL_BASE=${PERL_LOCAL_LIB_ROOT}"
 #fi
 
 # Init pyenv
+# n.b.: Make sure `python global default` is set and that
+#       a `default` environment has been created, if using pyenv.
 add2path -q -f ${GBP_HOME}/.pyenv/bin
 add2path -q -f ${GBP_HOME}/.pyenv/shims
 export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
-export PYENV_DEFAULT_ENV='default'
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 if type pyenv > /dev/null 2>&1; then
    eval "$(pyenv init -)"
-   if ! pyenv activate ${PYENV_DEFAULT_ENV} > /dev/null 2>&1; then
-      echo 'Default pyenv environment {'$PYENV_DEFAULT_ENV'} could not be activated.'
-   fi
+   eval "$(pyenv virtualenv-init -)"
 fi
 
 # pip should only run if there is a virtualenv currently activated
