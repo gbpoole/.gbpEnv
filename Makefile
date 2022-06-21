@@ -13,14 +13,11 @@ MAKEFILE_DIR = $(dir $(MAKEFILE_PATH))
 # Location of the repository
 REPO_DIR = ${MAKEFILE_DIR}
 
-# Root into which we will install everything
-INSTALL_DIR = ${PWD}
+# Root into which we will install everything (parent dir of REPO_DIR)
+INSTALL_DIR = $(abspath ${REPO_DIR}/../)
 
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
-
-# The eventual location for the Stow executable
-STOW = ${INSTALL_DIR}/3rd_Party/bin/stow
 
 export PATH := ${REPO_DIR}/stow:$(PATH)
 
@@ -97,7 +94,8 @@ $(generic_libs): % : %-download %-config %-build %.install %-clean
 ###################
 ## Install stow  ##
 ###################
-stow-download: 
+stow-download:
+	echo ${INSTALL_DIR}
 	@cd ${REPO_DIR};git clone https://git.savannah.gnu.org/git/stow.git
 stow-config:
 	@cd ${REPO_DIR}/stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${INSTALL_DIR}/3rd_Party/ --with-pmdir=${INSTALL_DIR}/3rd_Party/perl
