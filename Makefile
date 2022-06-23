@@ -31,9 +31,9 @@ init: submodules-init static_dirs stow packages-install 3rd_Party_required
 static_dirs:
 	@cp -r ${REPO_DIR}/static_dirs/* ${INSTALL_DIR}
 
-#####################################################
-## Create list of packages to be installed by Stow ##
-#####################################################
+###################################################
+## Create list of packages to be managed by Stow ##
+###################################################
 PACKAGE_LIST=$(notdir $(wildcard ${REPO_DIR}/packages/*))
 
 ##################################
@@ -95,7 +95,6 @@ $(generic_libs): % : %-download %-config %-build %.install %-clean
 ## Install stow  ##
 ###################
 stow-download:
-	echo ${INSTALL_DIR}
 	@cd ${REPO_DIR};git clone https://git.savannah.gnu.org/git/stow.git
 stow-config:
 	@cd ${REPO_DIR}/stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${INSTALL_DIR}/3rd_Party/ --with-pmdir=${INSTALL_DIR}/3rd_Party/perl
