@@ -95,6 +95,7 @@ $(generic_libs): % : %-download %-config %-build %.install %-clean
 ## Install stow  ##
 ###################
 stow-download:
+	@cd ${REPO_DIR};rm -rf stow
 	@cd ${REPO_DIR};git clone https://git.savannah.gnu.org/git/stow.git
 stow-config:
 	@cd ${REPO_DIR}/stow;aclocal;automake --add-missing;autoconf;./configure --prefix=${INSTALL_DIR}/3rd_Party/ --with-pmdir=${INSTALL_DIR}/3rd_Party/perl
