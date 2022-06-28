@@ -19,9 +19,16 @@ INSTALL_DIR = $(abspath ${REPO_DIR}/../)
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
 
-export PATH := ${REPO_DIR}/stow:$(PATH)
+# Set-up Stow executable
+export PATH := ${INSTALL_DIR}/3rd_Party/bin:$(PATH)
+STOW = $(shell which stow)
+check_stow:
+ifeq (${STOW},)
+	$(error No installation of 'Stow' detected.  Either install it with brew, apt-get, etc. or make it first by calling 'make stow')
+endif
 
-init: submodules-init static_dirs stow packages-install 3rd_Party_required
+# Init (default) builds the following targets
+init: check_stow submodules-init static_dirs packages-install 3rd_Party_required
 
 ######################################################
 ## These directories are installed directly because ##
@@ -50,9 +57,9 @@ submodules-update:
 .PHONY: $(addsuffix .install,$(PACKAGE_LIST)) packages-install
 $(addsuffix .install,$(PACKAGE_LIST)):
 	@$(ECHO) -n Installing $(basename $@)...
-	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d ${REPO_DIR}/packages $(basename $@)
+	@${STOW} -t ${INSTALL_DIR} -d ${REPO_DIR}/packages $(basename $@)
 	@$(ECHO) Done.
-packages-install: $(addsuffix .install,$(PACKAGE_LIST))
+packages-install: check_stow $(addsuffix .install,$(PACKAGE_LIST))
 
 ##################################
 ### Unnstall packages with Stow ##
@@ -60,9 +67,9 @@ packages-install: $(addsuffix .install,$(PACKAGE_LIST))
 .PHONY: $(addsuffix .uninstall,$(PACKAGE_LIST)) packages-uninstall
 $(addsuffix .uninstall,$(PACKAGE_LIST)):
 	@$(ECHO) -n Uninstalling $(basename $@)...
-	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d ${REPO_DIR}/packages -D $(basename $@)
+	@${STOW} -t ${INSTALL_DIR} -d ${REPO_DIR}/packages -D $(basename $@)
 	@$(ECHO) Done.
-packages-uninstall: $(addsuffix .uninstall,$(PACKAGE_LIST))
+packages-uninstall: check_stow $(addsuffix .uninstall,$(PACKAGE_LIST))
 
 ###################################
 ### Reinstall packages with Stow ##
@@ -70,9 +77,9 @@ packages-uninstall: $(addsuffix .uninstall,$(PACKAGE_LIST))
 .PHONY: $(addsuffix .reinstall,$(PACKAGE_LIST)) packages-reinstall
 $(addsuffix .reinstall,$(PACKAGE_LIST)):
 	@$(ECHO) -n Reinstalling $(basename $@)...
-	@${INSTALL_DIR}/3rd_Party/bin/stow -t ${INSTALL_DIR} -d ${REPO_DIR}/packages -R $(basename $@)
+	@${STOW} -t ${INSTALL_DIR} -d ${REPO_DIR}/packages -R $(basename $@)
 	@$(ECHO) Done.
-packages-reinstall: $(addsuffix .reinstall,$(PACKAGE_LIST))
+packages-reinstall: check_stow $(addsuffix .reinstall,$(PACKAGE_LIST))
 
 ##########
 # Update #
