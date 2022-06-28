@@ -2,10 +2,11 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
-#-----------------------------------------------------
 # Add colors to ls command
-if [ -f "/usr/local/bin/gdircolors"  ] || [ -f "/usr/bin/gdircolors"  ]; then
-	eval $( gdircolors -b ${ZSHCONFIG}/lib/dircolors-custom )
+if command -v gdircolors &> /dev/null; then
+   eval $( gdircolors -b ${ZSHCONFIG}/scripts/dircolors-custom )
+elif command -v dircolors &> /dev/null; then
+   eval $( dircolors ${ZSHCONFIG}/scripts/dircolors-custom )
 else
-	eval $( dircolors ${ZSHCONFIG}/lib/dircolors-custom )
+   echo Neither 'gdircolors' nor 'dircolors' found.  Could not set colours for 'ls'.
 fi

@@ -1,2 +1,4 @@
 .tags
 .python-version
+stow
+*.zwc

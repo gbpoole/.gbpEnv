@@ -29,6 +29,10 @@ VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
 VERSION-fftw3=3.3.8
 
+# Set install directory
+MAKEFILE_PATH = $(abspath $(lastword $(MAKEFILE_LIST)))
+INSTALL_DIR = $(dir $(MAKEFILE_PATH))
+
 ####################
 # Language Servers #
 ####################
@@ -83,7 +87,7 @@ ccls-clean:
 openssl-download:
 	@wget https://ftp.openssl.org/source/openssl-${VERSION-openssl}.tar.gz
 openssl-config:
-	@cd  openssl-${VERSION-openssl}; ./config --prefix=${GBP_HOME}/3rd_Party/
+	@cd  openssl-${VERSION-openssl}; ./config --prefix=${INSTALL_DIR}/
 openssl-build:
 	@cd  openssl-${VERSION-openssl}; make
 openssl-install:
@@ -111,7 +115,7 @@ luarocks-download: antibody
 	@wget https://luarocks.github.io/luarocks/releases/luarocks-${VERSION-luarocks}.tar.gz
 	@$(ECHO) Uncompressing ...;tar xzf luarocks-${VERSION-luarocks}.tar.gz ;$(ECHO) Done.
 luarocks-config:
-	@cd luarocks-${VERSION-luarocks};./configure --prefix=${GBP_HOME}/3rd_Party/ 
+	@cd luarocks-${VERSION-luarocks};./configure --prefix=${INSTALL_DIR}/ 
 luarocks-build:
 	@cd luarocks-${VERSION-luarocks};make -j ${N_CORES}
 luarocks-install:
@@ -174,7 +178,7 @@ node-config:
 node-build:
 node-install:
 	@$(ECHO) Uncompressing ...;tar xzf node-v${VERSION-node}-${PLATFORM-node}.tar.gz ;$(ECHO) Done.
-	@cd ${GBP_HOME}/3rd_Party;ln -s node-v${VERSION-node}-${PLATFORM-node} node.js
+	@cd ${INSTALL_DIR};ln -s node-v${VERSION-node}-${PLATFORM-node} node.js
 node-clean:
 	@rm -rf build-node node-v${VERSION-node}-${PLATFORM-node}.tar.gz
 
@@ -223,7 +227,7 @@ fzy-config:
 fzy-build:
 	@cd fzy;make -j ${N_CORES}
 fzy-install:
-	@cd fzy;PREFIX=${GBP_HOME}/3rd_Party/ make install
+	@cd fzy;PREFIX=${INSTALL_DIR}/ make install
 fzy-clean:
 	@rm -rf fzy
 
@@ -239,7 +243,7 @@ neovim-download:
 neovim-config:
 	@cd neovim; rm -rf build/  # clear the CMake cache
 neovim-build:
-	@cd neovim; make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${GBP_HOME}/3rd_Party/"
+	@cd neovim; make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}/"
 neovim-install:
 	@cd neovim; make install
 neovim-clean:
@@ -269,7 +273,7 @@ antibody-config: antibody-download
 antibody-build: antibody-config
 	@$(ECHO) Uncompressing ...;tar xzf /tmp/antibody.tar.gz;$(ECHO) Done.
 antibody-install: antibody-build
-	@mv -f antibody ${GBP_HOME}/3rd_Party/bin/
+	@mv -f antibody ${INSTALL_DIR}/bin/
 antibody-clean:
 	@rm -rf antibody_install
 
@@ -280,7 +284,7 @@ libsixel-download:
 	@git clone https://github.com/saitoha/libsixel
 libsixel-config:
 	@cd libsixel;autoconf
-	@cd libsixel;./configure --prefix=${GBP_HOME}/3rd_Party/
+	@cd libsixel;./configure --prefix=${INSTALL_DIR}/
 libsixel-build:
 	@cd libsixel;make -j ${N_CORES}
 libsixel-install:
@@ -299,7 +303,7 @@ imgcat-config:
 imgcat-build:
 	@cd imgcat;make -j ${N_CORES}
 imgcat-install:
-	@cd imgcat;make install PREFIX=${GBP_HOME}/3rd_Party/ 
+	@cd imgcat;make install PREFIX=${INSTALL_DIR}/ 
 imgcat-clean:
 	@rm -rf imgcat
 
@@ -310,7 +314,7 @@ zsh-download: antibody
 	@git clone git://zsh.git.sf.net/gitroot/zsh/zsh
 zsh-config:
 	@cd zsh;autoreconf
-	@cd zsh;./configure --prefix=${GBP_HOME}/3rd_Party/ 
+	@cd zsh;./configure --prefix=${INSTALL_DIR}/ 
 zsh-build:
 	@cd zsh;make -j ${N_CORES}
 zsh-install:
@@ -330,7 +334,7 @@ gcc-download:
 	@cd gcc-${VERSION-gcc} ; $(ECHO) Downloading prerequisites... ; ./contrib/download_prerequisites;$(ECHO) Done.
 gcc-config:
 	@mkdir build-gcc
-	@cd build-gcc;../gcc-${VERSION-gcc}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-languages=c,c++ --disable-multilib
+	@cd build-gcc;../gcc-${VERSION-gcc}/configure --prefix=${INSTALL_DIR}/ --enable-languages=c,c++ --disable-multilib
 gcc-build:
 	@cd build-gcc;make -j ${N_CORES}
 gcc-install:
@@ -346,7 +350,7 @@ cmake-download:
 	@$(ECHO) Uncompressing ...;tar xzf cmake-${VERSION-cmake}.tar.gz;$(ECHO) Done.
 cmake-config:
 	@mkdir build-cmake
-	@cd build-cmake;../cmake-${VERSION-cmake}/bootstrap --prefix=${GBP_HOME}/3rd_Party
+	@cd build-cmake;../cmake-${VERSION-cmake}/bootstrap --prefix=${INSTALL_DIR}
 cmake-build:
 	@cd build-cmake;gmake 
 cmake-install:
@@ -363,7 +367,7 @@ mpich-download:
 mpich-config:
 	@mkdir build-mpich
 	@cd build-mpich ; ../mpich-${VERSION-mpich}/configure  \
-        	--prefix=${GBP_HOME}/3rd_Party                 \
+        	--prefix=${INSTALL_DIR}                 \
         	--enable-static=false                          \
         	--enable-alloca=true                           \
         	--disable-long-double                          \
@@ -387,7 +391,7 @@ gsl-download:
 	@tar xzf gsl-${VERSION-gsl}.tar.gz
 gsl-config:
 	@mkdir build-gsl
-	@cd build-gsl;../gsl-${VERSION-gsl}/configure --prefix=${GBP_HOME}/3rd_Party/
+	@cd build-gsl;../gsl-${VERSION-gsl}/configure --prefix=${INSTALL_DIR}/
 gsl-build:
 	@cd build-gsl;make -j ${N_CORES}
 gsl-install:
@@ -404,7 +408,7 @@ cfitsio-download:
 	@wget http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio${VERSION-cfitsio}.tar.gz
 	@tar xzf cfitsio${VERSION-cfitsio}.tar.gz
 cfitsio-config:
-	@cd cfitsio;../cfitsio/configure --prefix=${GBP_HOME}/3rd_Party/
+	@cd cfitsio;../cfitsio/configure --prefix=${INSTALL_DIR}/
 cfitsio-build:
 	@cd cfitsio;make -j ${N_CORES}
 cfitsio-install:
@@ -422,7 +426,7 @@ gd-download:
 	@tar xzf libgd-${VERSION-gd}.tar.gz
 gd-config:
 	@mkdir build-gd
-	@cd build-gd;../libgd-${VERSION-gd}/configure --prefix=${GBP_HOME}/3rd_Party/
+	@cd build-gd;../libgd-${VERSION-gd}/configure --prefix=${INSTALL_DIR}/
 gd-build:
 	@cd build-gd;make -j ${N_CORES}
 gd-install:
@@ -441,10 +445,10 @@ fftw2-config:
 	@mkdir build-fftw2-dp
 	@mkdir build-fftw2-sp-mpi
 	@mkdir build-fftw2-dp-mpi
-	@cd build-fftw2-sp;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${GBP_HOME}/3rd_Party/ --enable-float
-	@cd build-fftw2-dp;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${GBP_HOME}/3rd_Party/ 
-	@cd build-fftw2-sp-mpi;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi --enable-float
-	@cd build-fftw2-dp-mpi;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi
+	@cd build-fftw2-sp;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${INSTALL_DIR}/ --enable-float
+	@cd build-fftw2-dp;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${INSTALL_DIR}/ 
+	@cd build-fftw2-sp-mpi;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${INSTALL_DIR}/ --enable-mpi --enable-float
+	@cd build-fftw2-dp-mpi;../fftw-${VERSION-fftw2}/configure --enable-type-prefix --prefix=${INSTALL_DIR}/ --enable-mpi
 fftw2-build:
 	@cd build-fftw2-sp;make -j ${N_CORES}
 	@cd build-fftw2-dp;make -j ${N_CORES}
@@ -469,10 +473,10 @@ fftw3-config:
 	@mkdir build-fftw3-dp
 	@mkdir build-fftw3-sp-mpi
 	@mkdir build-fftw3-dp-mpi
-	@cd build-fftw3-sp;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-float
-	@cd build-fftw3-dp;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ 
-	@cd build-fftw3-sp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi --enable-float
-	@cd build-fftw3-dp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${GBP_HOME}/3rd_Party/ --enable-mpi
+	@cd build-fftw3-sp;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-float
+	@cd build-fftw3-dp;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ 
+	@cd build-fftw3-sp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-mpi --enable-float
+	@cd build-fftw3-dp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-mpi
 fftw3-build:
 	@cd build-fftw3-sp;make -j 4
 	@cd build-fftw3-dp;make -j 4

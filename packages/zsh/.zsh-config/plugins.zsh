@@ -19,7 +19,7 @@ if [[ $OSTYPE = (darwin)* ]]; then
 else
     local plugins_list=${ZSHCONFIG}/plugins-list.linux
 fi
-for plugin in $plugins_list; do
+for plugin in $(cat $plugins_list); do
    zpm load $plugin
 done
 
