@@ -25,17 +25,16 @@ fi
 unset my_zsh_fpath
 
 # Load the plugins before scripts
-source ${ZSHCONFIG}/antibody.zsh
-source ${ZSHCONFIG}/zsh-managed-plugins.zsh
+source ${ZSHCONFIG}/plugins.zsh
 
-# Load all scripts ${ZSHCONFIG}/lib/*.zsh
-my_zsh_lib=${ZSHCONFIG}/lib
-if [[ -d "$my_zsh_lib" ]]; then
-   for file in $my_zsh_lib/*.zsh; do
+# Source all *.zsh scripts in ${ZSHCONFIG}/scripts
+scripts_dir=${ZSHCONFIG}/scripts
+if [[ -d "$scripts_dir" ]]; then
+   for file in $scripts_dir/*.zsh; do
       source $file
    done
 fi
-unset my_zsh_lib
+unset scripts_dir
 
 #-----------------------------------------------------
 # set the PATH for macOS

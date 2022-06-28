@@ -1,0 +1,8 @@
+@github/zsh-users/zsh-autosuggestions
+@github/zsh-users/zsh-completions
+@github/zsh-users/zsh-syntax-highlighting
+@github/zsh-users/zsh-history-substring-search
+@github/aperezdc/zsh-fzy
+@github/mafredri/zsh-async
+@github/supercrabtree/k
+@github/gbpoole/gbp-zsh-prompt
