@@ -1,8 +1,9 @@
-@github/aperezdc/zsh-fzy
-@github/supercrabtree/k
-@github/mafredri/zsh-async
-@github/gbpoole/gbp-zsh-prompt
-@github/zsh-users/zsh-autosuggestions
-@github/zsh-users/zsh-completions
-@github/zsh-users/zsh-syntax-highlighting
-@github/zsh-users/zsh-history-substring-search
+aperezdc/zsh-fzy
+supercrabtree/k
+mafredri/zsh-async
+#gbpoole/gbp-zsh-prompt
+sindresorhus/pure
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
+zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-history-substring-search

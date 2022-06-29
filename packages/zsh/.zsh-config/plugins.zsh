@@ -2,26 +2,34 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
-# Install ZPM in the ZSHCONFIG directory
-local ZPM_DIR=${ZSHCONFIG}/zpm
-
-# Install ZPM if it hasn't been already
-if [[ ! -f ${ZPM_DIR}/zpm.zsh ]]; then
-  git clone --recursive https://github.com/zpm-zsh/zpm ${ZPM_DIR}
-fi
-
-# Source ZPM
-source ${ZPM_DIR}/zpm.zsh
-
 # Load plugins
 if [[ $OSTYPE = (darwin)* ]]; then
     local plugins_list=${ZSHCONFIG}/plugins-list.darwin
 else
     local plugins_list=${ZSHCONFIG}/plugins-list.linux
 fi
-for plugin in $(cat $plugins_list); do
-   zpm load $plugin
-done
+local plugins_list_zsh=${ZSHCONFIG}/plugins-list.zsh
+
+# The following code is a modified version of code found here: https://getantidote.github.io
+
+# Clone antidote if necessary and generate a static plugin file
+zhome=${ZSHCONFIG}
+if [[ ! $plugins_list_zsh -nt $plugins_list ]]; then
+  [[ -e $zhome/.antidote ]] \
+    || git clone --depth=1 https://github.com/mattmc3/antidote.git $zhome/antidote
+  [[ -e $plugins_list ]] || touch $plugins_list
+  (
+    source $zhome/antidote/antidote.zsh
+    antidote bundle <$plugins_list >$plugins_list_zsh
+  )
+fi
+
+# For commands like `antidote update`
+autoload -Uz $zhome/antidote/functions/antidote
+
+# source static plugins file
+source $plugins_list_zsh
+unset zhome
 
 unset plugins_list
-unset ZPM_DIR
+unset plugins_list_zsh
