@@ -19,6 +19,9 @@ INSTALL_DIR = $(abspath ${REPO_DIR}/../)
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
 
+# Makes sure Homebrew is in the path (obviously: not set yet if this is a fresh install!)
+export PATH := $(PATH):/opt/homebrew/bin
+
 # Set-up Stow executable
 export PATH := ${INSTALL_DIR}/3rd_Party/bin:$(PATH)
 STOW = $(shell which stow)

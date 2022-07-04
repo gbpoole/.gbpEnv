@@ -186,16 +186,28 @@ if [ ${GBP_USE_CONDA} -a -f ${GBP_CONDA_PATH}/etc/profile.d/conda.sh ]; then
   fi
 
 # Init pyenv
-# n.b.: Make sure `python global default` is set and that
-#       a `default` environment has been created, if using pyenv.
-  add2path -q -f ${GBP_HOME}/.pyenv/bin
-  add2path -q -f ${GBP_HOME}/.pyenv/shims
-  export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
-  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-  if type pyenv > /dev/null 2>&1; then
-     eval "$(pyenv init -)"
-     eval "$(pyenv virtualenv-init -)"
+GBP_PYENV_DEFAULT_VERSION=3.10.5
+GBP_PYENV_DEFAULT_ENV=default
+add2path -q -f ${GBP_HOME}/.pyenv/bin
+add2path -q -f ${GBP_HOME}/.pyenv/shims
+export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+if type pyenv > /dev/null 2>&1; then
+   eval "$(pyenv init -)"
+   eval "$(pyenv virtualenv-init -)"
+   # Note that the following check is broken if the ${GBP_PYENV_DEFAULT_ENV} environment is missing
+   # but 'pyenv global' is set to ${GBP_PYENV_DEFAULT_ENV}.  The 'pyenv activate' call returns
+   # '0' in that case, for some reason.
+   pyenv activate ${GBP_PYENV_DEFAULT_ENV} 2>/dev/null
+   rval=$?
+   if [[ $rval -ne 0 ]]; then
+      echo "Default Python environment ("${GBP_PYENV_DEFAULT_ENV}") not found ... initializing ..."
+      pyenv install ${GBP_PYENV_DEFAULT_VERSION}
+      pyenv virtualenv ${GBP_PYENV_DEFAULT_VERSION} ${GBP_PYENV_DEFAULT_ENV}
+      pyenv global default
+   fi
 fi
+unset rval
 
 # pip should only run if there is a virtualenv currently activated
 export PIP_REQUIRE_VIRTUALENV=true

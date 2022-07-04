@@ -30,15 +30,6 @@ fi
 # Add 3rd_Party/bin to path because it may be needed by antibody packages
 export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
 
-# Run initialisation script
-export ZSHCONFIG=${GBP_HOME}/.zsh-config
-export ZSH_INIT=${ZSHCONFIG}/_init.sh
-if [[ -s ${ZSH_INIT} ]]; then
-    source ${ZSH_INIT}
-else
-    echo "Could not find the zsh init script ${ZSH_INIT}"
-fi
-
 # Source the bash config
 #
 # If we are starting-up an iterm session, then the config
@@ -52,6 +43,15 @@ if [ -z "$ITERM_PROFILE" ]; then
     fi
 else
     source ${GBP_HOME}/.bashrc
+fi
+
+# Run initialisation script
+export ZSHCONFIG=${GBP_HOME}/.zsh-config
+export ZSH_INIT=${ZSHCONFIG}/_init.sh
+if [[ -s ${ZSH_INIT} ]]; then
+    source ${ZSH_INIT}
+else
+    echo "Could not find the zsh init script ${ZSH_INIT}"
 fi
 
 # https://gist.github.com/ctechols/ca1035271ad134841284

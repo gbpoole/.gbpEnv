@@ -58,6 +58,7 @@ if [ -n $GBP_HOSTNAME ]; then
     # This ensures that the Homebrew installs override all others.
     add2path -q /usr/local/bin
     add2path -q /usr/local/sbin
+    add2path -q /opt/homebrew/bin
 
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 

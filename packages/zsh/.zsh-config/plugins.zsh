@@ -15,7 +15,7 @@ local plugins_list_zsh=${ZSHCONFIG}/plugins-list.zsh
 # Clone antidote if necessary and generate a static plugin file
 zhome=${ZSHCONFIG}
 if [[ ! $plugins_list_zsh -nt $plugins_list ]]; then
-  [[ -e $zhome/.antidote ]] \
+  [[ -e $zhome/antidote ]] \
     || git clone --depth=1 https://github.com/mattmc3/antidote.git $zhome/antidote
   [[ -e $plugins_list ]] || touch $plugins_list
   (
