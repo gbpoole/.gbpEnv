@@ -37,6 +37,15 @@ ssh -t -Y -l SHARED_LOGIN IP_ADDRESS "cd INSTALL_PATH; bash --rcfile .bashrc"
 - When managing dot files with Stow, you have more fine-grained control over your install.  You can install different applications to different systems.
 - System branching can be handled by the repository and it's install, reducing complexity.
 
+Additional notes
+----------------
+- To configure Python, this system is set-up to work best when you do the following:
+	- Install `pyenv` as follows:
+```bash
+cd INSTALL_PATH/3rd_Party ; make pyenv
+```
+Then, exit and start a new shell.  A recent version of python will be installed and a default environment created.
+
 ___
 
 Contact info: [Personal Homepage][1] | [Email Me][2]

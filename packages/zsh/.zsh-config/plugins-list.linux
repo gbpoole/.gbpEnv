@@ -1,8 +1,7 @@
 aperezdc/zsh-fzy
 supercrabtree/k
 mafredri/zsh-async
-#gbpoole/gbp-zsh-prompt
-sindresorhus/pure
+gbpoole/gbpPrompt
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
 zsh-users/zsh-syntax-highlighting

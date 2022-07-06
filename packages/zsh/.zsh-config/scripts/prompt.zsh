@@ -5,6 +5,9 @@
 # Load the theme system
 autoload -U promptinit && promptinit
 
+# Activate theme
+prompt gbpPrompt
+
 # -----------------------------------------------
 # for dynamic named directories
 setopt prompt_subst
@@ -28,8 +31,8 @@ preexec () {
 }
 
 # Prompt symbol
-export PURE_PROMPT_PRESYMBOL="╰"
-export PURE_PROMPT_SYMBOL=""
+export GBPPROMPT_PROMPT_PRESYMBOL="╰"
+export GBPPROMPT_PROMPT_SYMBOL=""
 
 # or use pre_cmd, see man zshcontrib
 autoload -Uz vcs_info
@@ -53,19 +56,17 @@ zle -N zle-keymap-select
 
 # Set colours
 # Defaults are as follows:
-# zstyle :gbp-zsh-prompt:prompt:error         red
-# zstyle :gbp-zsh-prompt:prompt:success       green
-# zstyle :gbp-zsh-prompt:execution_time       red
-# zstyle :gbp-zsh-prompt:git:status           226
-# zstyle :gbp-zsh-prompt:git:branch           208
-# zstyle :gbp-zsh-prompt:git:branch:cached    172
-# zstyle :gbp-zsh-prompt:user                 81
-# zstyle :gbp-zsh-prompt:user:root            198
-# zstyle :gbp-zsh-prompt:host                 75
-# zstyle :gbp-zsh-prompt:conda                35
-# zstyle :gbp-zsh-prompt:pyenv                47
-# zstyle :gbp-zsh-prompt:pyenv_global         red
-# zstyle :gbp-zsh-prompt:prompt:preprompt     218
-# zstyle :gbp-zsh-prompt:path                 218
-
-
+# zstyle :gbpPrompt:prompt:error         red
+# zstyle :gbpPrompt:prompt:success       green
+# zstyle :gbpPrompt:execution_time       red
+# zstyle :gbpPrompt:git:status           226
+# zstyle :gbpPrompt:git:branch           208
+# zstyle :gbpPrompt:git:branch:cached    172
+# zstyle :gbpPrompt:user                 81
+# zstyle :gbpPrompt:user:root            198
+# zstyle :gbpPrompt:host                 75
+# zstyle :gbpPrompt:conda                35
+# zstyle :gbpPrompt:pyenv                47
+# zstyle :gbpPrompt:pyenv_global         red
+# zstyle :gbpPrompt:prompt:preprompt     218
+# zstyle :gbpPrompt:path                 218
