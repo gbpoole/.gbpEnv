@@ -20,7 +20,7 @@ N_CORES=4
 VERSION-luarocks=3.2.1
 VERSION-node=${GBP_NODE_VERSION}
 VERSION-gcc=7.3.0
-VERSION-cmake=3.11.2
+VERSION-cmake=3.24.0
 VERSION-mpich=3.2
 VERSION-gsl=2.4
 VERSION-gd=2.2.5
@@ -28,6 +28,7 @@ VERSION-openssl=1.1.1k
 VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
 VERSION-fftw3=3.3.8
+PLATFORM-node=${GBP_NODE_PLATFORM}
 
 # Set install directory
 MAKEFILE_PATH = $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -170,7 +171,6 @@ rust-clean:
 ####################
 ## node from HEAD ##
 ####################
-PLATFORM-node=linux-x64
 node-download:
 	@rm -rf node.js
 	@wget http://nodejs.org/download/release/v${VERSION-node}/node-v${VERSION-node}-${PLATFORM-node}.tar.gz

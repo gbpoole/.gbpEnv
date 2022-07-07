@@ -208,6 +208,7 @@ if type pyenv > /dev/null 2>&1; then
       pyenv global default
    fi
 fi
+unset PYENV_VERSION
 unset rval
 
 # pip should only run if there is a virtualenv currently activated
@@ -251,10 +252,15 @@ fi
 
 # Set the verion of Node.js that we will use and add it to the path
 # n.b.: If you change this, then node needs to be updated - not just here - but
-#       on any other extand install of .gbpEnv that will pull this change.
+#       on any other extant install of .gbpEnv that will pull this change.
 # TODO: Find a better way to manage this
 export GBP_NODE_VERSION=14.17.0
-export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-linux-x64
+if [ $GBP_OS = 'Mac' ]; then
+    export GBP_NODE_PLATFORM=darwin-x64
+else
+    export GBP_NODE_PLATFORM=linux-x64
+fi
+export NODEJS_HOME=${GBP_HOME}/3rd_Party/node-v${GBP_NODE_VERSION}-${GBP_NODE_PLATFORM}
 add2path -q $NODEJS_HOME/bin
 
 # Configure Luarocks (Lua package installer)
