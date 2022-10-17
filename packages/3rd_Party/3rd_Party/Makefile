@@ -17,6 +17,7 @@ N_CORES=4
 ##################
 ## set versions ##
 ##################
+VERSION-lua=5.4.4
 VERSION-luarocks=3.2.1
 VERSION-node=${GBP_NODE_VERSION}
 VERSION-gcc=7.3.0
@@ -44,7 +45,7 @@ lsps: ${lsp_list}
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = pyenv poetry rust openssl libsixel imgcat node libgit2 antibody zsh fzy ag ripgrep fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
+generic_libs = lua pyenv poetry rust openssl libsixel imgcat node libgit2 antibody zsh fzy ag ripgrep fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -107,12 +108,26 @@ bashls-install:
 	@npm install -g bash-language-server
 bashls-clean:
 
+###################
+## Lua           ##
+###################
+lua-download:
+	@curl -R -O http://www.lua.org/ftp/lua-${VERSION-lua}.tar.gz
+lua-config:
+	@tar zxf lua-${VERSION-lua}.tar.gz
+lua-build:
+	@cd lua-${VERSION-lua}; make all test
+lua-install:
+	@cd lua-${VERSION-lua}; make install INSTALL_TOP=${INSTALL_DIR}
+lua-clean:
+	@rm -rf lua
+
 ##################################
 ## luarocks from HEAD           ##
 ## (likely needed for digestif) ##
 ## https://luarocks.org/        ##
 ##################################
-luarocks-download: antibody
+luarocks-download:
 	@wget https://luarocks.github.io/luarocks/releases/luarocks-${VERSION-luarocks}.tar.gz
 	@$(ECHO) Uncompressing ...;tar xzf luarocks-${VERSION-luarocks}.tar.gz ;$(ECHO) Done.
 luarocks-config:
