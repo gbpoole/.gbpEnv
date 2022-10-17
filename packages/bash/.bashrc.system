@@ -65,6 +65,10 @@ if [ -n $GBP_HOSTNAME ]; then
     # Set installation dir of Ananaconda
     export GBP_CONDA_PATH="${GBP_HOME}/miniconda3/"
 
+    # Set Docker to use AMD64 architecture by default (M1 Macs create
+    # problems when you try to deploy ARM64 images on AMD64 systems)
+    export DOCKER_DEFAULT_PLATFORM=linux/amd64
+
   elif [[ $GBP_HOSTNAME = farnarkle* ]] || [[ $GBP_HOSTNAME = data-mover* ]] || [[ $GBP_HOSTNAME = john* ]] || [[ $GBP_HOSTNAME = bryan* ]] ; then
     export GBP_QUEUE_TYPE='SLURM'
     export GBP_CUDA_ENABLED='YES'
