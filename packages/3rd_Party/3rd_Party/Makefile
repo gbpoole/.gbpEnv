@@ -161,6 +161,7 @@ pyenv-build:
 pyenv-install:
 	@git clone https://github.com/pyenv/pyenv.git ${GBP_HOME}/.pyenv
 	@git clone https://github.com/pyenv/pyenv-virtualenv.git ${GBP_HOME}/.pyenv/plugins/pyenv-virtualenv
+	@git clone https://github.com/pyenv/pyenv-update.git $(pyenv root)/plugins/pyenv-update
 pyenv-clean:
 
 ############
