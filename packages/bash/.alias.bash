@@ -168,7 +168,10 @@ alias ls.recursive='ls -R'
 alias ls.id='ls -nFh'			# show numeric FID and GID (-n)
 
 # diff
-alias diff='colordiff'
+if hash colordiff 2>/dev/null; then
+    alias diff='colordiff'
+else
+fi
 
 # change dir
 alias ..='cd ..'
