@@ -8,7 +8,7 @@ local ensure_packer = function()
   end
   return false
 end
- 
+
 local packer_bootstrap = ensure_packer()
   
 -- Automatically run ':PackerCompile' whenever this file is edited
@@ -25,7 +25,7 @@ return require('packer').startup({function(use)
     use { 'wbthomason/packer.nvim', opt = true}
 
   -- My plugins here
-    use { 'tomasr/molokai', config = [[require('plugin_configs.molokai')]] }
+    use { 'tomasr/molokai', config = [[require('gbp.plugin_configs.molokai')]] }
 
   -- use { 'tpope/vim-sensible', config = [[require('config.XXX']] }
   -- use { 'vim-airline/vim-airline', config = [[require('config.XXX']] }
@@ -69,6 +69,9 @@ return require('packer').startup({function(use)
   end
 end,
 config = {
+  -- I'd like to put these here, but packer_compiled then needs to be sourced, and I'm not sure of the best way to do that
+  -- package_root = vim.fn.stdpath('config').."lua/gbp/packer/",
+  -- compile_path = vim.fn.stdpath('config').."lua/gbp/packer/packer_compiled.lua",
   display = {
     open_fn = function()
       return require('packer.util').float({ border = 'single' })
