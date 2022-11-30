@@ -27,6 +27,12 @@ return require('packer').startup({function(use)
   -- My plugins here
     use { 'tomasr/molokai', config = [[require('gbp.plugin_configs.molokai')]] }
 
+    use { 'nvim-telescope/telescope.nvim',
+       tag = '0.1.0',
+       requires = {{'nvim-lua/plenary.nvim'}},
+       config = [[require('gbp.plugin_configs.telescope')]]
+    }
+
   -- use { 'tpope/vim-sensible', config = [[require('config.XXX']] }
   -- use { 'vim-airline/vim-airline', config = [[require('config.XXX']] }
   -- use { 'vim-airline/vim-airline-themes', config = [[require('config.XXX']] }
