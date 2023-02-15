@@ -1,3 +1,4 @@
+-- Ensure that Packer is installed
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -8,9 +9,8 @@ local ensure_packer = function()
   end
   return false
 end
-
 local packer_bootstrap = ensure_packer()
-  
+
 -- Automatically run ':PackerCompile' whenever this file is edited
 vim.cmd([[
   augroup packer_user_config
@@ -19,18 +19,48 @@ vim.cmd([[
   augroup end
 ]])
 
+-- Source plugins
 return require('packer').startup({function(use)
 
     -- Packer can manage itself as an optional plugin
     use { 'wbthomason/packer.nvim', opt = true}
 
-  -- My plugins here
-    use { 'tomasr/molokai', config = [[require('gbp.plugin_configs.molokai')]] }
+    -- My plugins here
 
+    -- Colour scheme
+    use { 'tomasr/molokai', config = [[require('gbp.configs.molokai')]] }
+
+    -- Telescope
     use { 'nvim-telescope/telescope.nvim',
        tag = '0.1.0',
        requires = {{'nvim-lua/plenary.nvim'}},
-       config = [[require('gbp.plugin_configs.telescope')]]
+       config = [[require('gbp.configs.telescope')]]
+    }
+
+    -- LSP
+    use {
+      'VonHeikemen/lsp-zero.nvim',
+      branch = 'v1.x',
+      requires = {
+
+        -- LSP Support
+        {'neovim/nvim-lspconfig'},             -- Required
+        {'williamboman/mason.nvim'},           -- Optional
+        {'williamboman/mason-lspconfig.nvim'}, -- Optional
+
+        -- Autocompletion
+        {'hrsh7th/nvim-cmp'},         -- Required
+        {'hrsh7th/cmp-nvim-lsp'},     -- Required
+        {'hrsh7th/cmp-buffer'},       -- Optional
+        {'hrsh7th/cmp-path'},         -- Optional
+        {'saadparwaiz1/cmp_luasnip'}, -- Optional
+        {'hrsh7th/cmp-nvim-lua'},     -- Optional
+
+        -- Snippets
+        {'L3MON4D3/LuaSnip'},             -- Required
+        {'rafamadriz/friendly-snippets'}, -- Optional
+      },
+      config = [[require('gbp.configs.lsp')]]
     }
 
   -- use { 'tpope/vim-sensible', config = [[require('config.XXX']] }
@@ -40,7 +70,7 @@ return require('packer').startup({function(use)
   -- use { 'tmux-plugins/vim-tmux-focus-events', config = [[require('config.XXX']] }
   -- use { 'tpope/vim-rsi', config = [[require('config.XXX']] }
   -- use { 'tpope/vim-surround', config = [[require('config.XXX']] }
----- use { 'justinmk/vim-sneak', config = [[require('config.XXX']] }
+  -- -- use { 'justinmk/vim-sneak', config = [[require('config.XXX']] }
   -- use { 'jiangmiao/auto-pairs', config = [[require('config.XXX']] }
   -- use { 'scrooloose/nerdcommenter', config = [[require('config.XXX']] }
   -- use { 'SirVer/ultisnips' | Plug 'honza/vim-snippets', config = [[require('config.XXX']] }
@@ -55,8 +85,8 @@ return require('packer').startup({function(use)
   -- use { 'PhilRunninger/nerdtree-buffer-ops', config = [[require('config.XXX']] }
   -- use { 'mileszs/ack.vim', config = [[require('config.XXX']] }
   -- use { 'w0rp/ale', config = [[require('config.XXX']] }
----- use { 'reedes/vim-wordy', { 'for': ['markdown', 'tex', 'latex'] }, config = [[require('config.XXX']] }
----- use { 'davidbeckingsale/writegood.vim', { 'for': ['tex', 'markdown', 'latex'] }, config = [[require('config.XXX']] }
+  -- -- use { 'reedes/vim-wordy', { 'for': ['markdown', 'tex', 'latex'] }, config = [[require('config.XXX']] }
+  -- -- use { 'davidbeckingsale/writegood.vim', { 'for': ['tex', 'markdown', 'latex'] }, config = [[require('config.XXX']] }
   -- use { 'junegunn/goyo.vim', { 'on': 'Goyo' }, config = [[require('config.XXX']] }
   -- use { 'sheerun/vim-polyglot', config = [[require('config.XXX']] }
   -- use { 'Glench/Vim-Jinja2-Syntax', { 'for': 'html' }, config = [[require('config.XXX']] }
@@ -75,9 +105,6 @@ return require('packer').startup({function(use)
   end
 end,
 config = {
-  -- I'd like to put these here, but packer_compiled then needs to be sourced, and I'm not sure of the best way to do that
-  -- package_root = vim.fn.stdpath('config').."lua/gbp/packer/",
-  -- compile_path = vim.fn.stdpath('config').."lua/gbp/packer/packer_compiled.lua",
   display = {
     open_fn = function()
       return require('packer.util').float({ border = 'single' })

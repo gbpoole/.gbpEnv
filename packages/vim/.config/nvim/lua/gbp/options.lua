@@ -19,6 +19,7 @@ oo.secure_modelines_modelines = 15
 
 -- Change leader mapping: {{{
 go.mapleader = ' '
+go.maplocalleader = '\\'
 -- }}}
 
 -- OPTIONS {{{
