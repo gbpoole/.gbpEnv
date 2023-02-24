@@ -6,6 +6,7 @@ local debug = false -- set to 'true' if you want debuggin information turned on
 
 local servers = {
   "ruff_lsp", --> python
+  "pylsp",    --> python
   "lua_ls",   --> lua
   "clangd",   --> C, C++, Objective-C
   "tsserver", --> typescript, javascript
@@ -54,6 +55,46 @@ local lsp = require('lsp-zero').preset({
 })
 
 lsp.set_preferences({sign_icons=sign_icons})
+lsp.configure('sumneko_lua', {
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim', 'use' }
+      }
+    }
+  }
+})
+
+lsp.configure("pylsp", {
+    settings = {
+        pylsp = {
+            plugins = {
+                -- Disable these
+                pylsp_mypy = { enabled = false },
+                mccabe = { enabled = false },
+                pycodestyle = { enabled = false },
+                pyflakes = { enabled = false },
+                -- Enable these
+                rope = { enabled = true },
+                rope_autoimport = {
+                    enabled = true,
+                },
+                ruff = { enabled = true },
+            },
+        },
+        ruff_lsp = {
+            diagnostics = {
+                -- Get the language server to recognize the `vim` global
+                globals = { "vim" },
+            },
+            workspace = {
+                -- Make the server aware of Neovim runtime files
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+        },
+    },
+})
+
 lsp.nvim_workspace()
 lsp.on_attach(on_attach)
 lsp.ensure_installed(servers)
