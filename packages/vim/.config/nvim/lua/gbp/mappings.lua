@@ -17,6 +17,9 @@ set_mappings_lsp = function(client)
     vim.keymap.set("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 
+    vim.keymap.set({ "i", "s" }, "<C-n>", function() require'luasnip'.jump(1) end, { desc = "LuaSnip forward jump" })
+    vim.keymap.set({ "i", "s" }, "<C-p>", function() require'luasnip'.jump(-1) end, { desc = "LuaSnip backward jump" })
+
 end
 
 set_mappings_telescope = function()
@@ -27,5 +30,12 @@ set_mappings_telescope = function()
     vim.keymap.set('n', 'gb', builtin.buffers, opts)
     vim.keymap.set('n', 'gG', builtin.live_grep, opts)
     vim.keymap.set('n', 'gh', builtin.help_tags, opts)
+
+end
+
+set_mappings_neogen = function()
+
+    local opts = { noremap=true, silent=true }
+    vim.api.nvim_set_keymap("n", "<Leader>f", ":lua require('neogen').generate()<CR>", opts)
 
 end

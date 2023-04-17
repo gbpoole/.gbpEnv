@@ -18,7 +18,8 @@ N_CORES=4
 ## set versions ##
 ##################
 VERSION-lua=5.4.4
-VERSION-luarocks=3.2.1
+VERSION-luarocks=3.9.2
+VERSION-bitop=1.0.2
 VERSION-node=${GBP_NODE_VERSION}
 VERSION-gcc=7.3.0
 VERSION-cmake=3.24.0
@@ -45,7 +46,7 @@ lsps: ${lsp_list}
 ###############################################
 ## List of supported generic library targets ##
 ###############################################
-generic_libs = lua pyenv poetry rust openssl libsixel imgcat node libgit2 antibody zsh fzy ag ripgrep fzf neovim gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
+generic_libs = lua bitop pyenv poetry rust openssl libsixel imgcat node libgit2 antibody zsh fzy ag ripgrep fzf neovim tree-sitter gcc cmake mpich gsl cfitsio gd fftw2 fftw3 $(lsp_list)
 
 ############################
 ## Generic library target ##
@@ -96,6 +97,19 @@ openssl-install:
 	@cd  openssl-${VERSION-openssl}; make install
 openssl-clean:
 	@cd  openssl-${VERSION-openssl}; make clean
+
+###########
+## BitOP ##
+###########
+bitop-download:
+	@wget http://bitop.luajit.org/download/LuaBitOp-${VERSION-bitop}.tar.gz
+bitop-config:
+bitop-build:
+	@cd bitop-${VERSION-bitop}; make macosx
+bitop-install:
+	@cd bitop-${VERSION-bitop}; make install
+bitop-clean:
+	@cd bitop-${VERSION-bitop}; make clean
 
 ###########################################################
 ## bashls from HEAD                                      ##
@@ -208,6 +222,16 @@ fzf-build:
 fzf-install:
 	@cd ${GBP_HOME}/.fzf;./install
 fzf-clean:
+
+###########################
+## Tree-sitter from HEAD ##
+###########################
+tree-sitter-download:
+tree-sitter-config:
+tree-sitter-build:
+tree-sitter-install:
+	@cargo install tree-sitter-cli
+tree-sitter-clean:
 
 #######################
 ## Ripgrep from HEAD ##

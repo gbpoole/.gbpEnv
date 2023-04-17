@@ -28,7 +28,8 @@ return require('packer').startup({function(use)
     -- My plugins here
 
     -- Colour scheme
-    use { 'tomasr/molokai', config = [[require('gbp.configs.molokai')]] }
+    -- use { 'tomasr/molokai', config = [[require('gbp.configs.molokai')]] }
+    use { 'rebelot/kanagawa.nvim', config = [[require('gbp.configs.kanagawa')]] }
 
     -- Telescope
     use { 'nvim-telescope/telescope.nvim',
@@ -38,6 +39,26 @@ return require('packer').startup({function(use)
            {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
        },
        config = [[require('gbp.configs.telescope')]]
+    }
+
+    -- Treesitter
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate',
+        config = [[require('gbp.configs.treesitter')]]
+    }
+
+    -- Annotations
+    -- use {
+    --     'kkoomen/vim-doge',
+    --     run = ':call doge#install()',
+    --     config = [[require('gbp.configs.vim-doge')]]
+    -- }
+    use {
+        "danymat/neogen",
+        requires = "nvim-treesitter/nvim-treesitter",
+        tag = "*",
+        config = [[require('gbp.configs.neogen')]],
     }
 
     -- LSP
