@@ -87,6 +87,20 @@ return require('packer').startup({function(use)
       config = [[require('gbp.configs.lsp')]]
     }
 
+    -- Lualine
+    use {
+      'nvim-lualine/lualine.nvim',
+      requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+      config = [[require('gbp.configs.lualine')]]
+    }
+
+    -- Treesitter-Context
+    use {
+      'nvim-treesitter/nvim-treesitter-context',
+      config = [[require('gbp.configs.treesitter-context')]]
+    }
+
+
   -- use { 'tpope/vim-sensible', config = [[require('config.XXX']] }
   -- use { 'vim-airline/vim-airline', config = [[require('config.XXX']] }
   -- use { 'vim-airline/vim-airline-themes', config = [[require('config.XXX']] }
