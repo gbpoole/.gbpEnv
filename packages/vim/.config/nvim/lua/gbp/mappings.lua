@@ -39,3 +39,10 @@ set_mappings_neogen = function()
     vim.api.nvim_set_keymap("n", "<Leader>f", ":lua require('neogen').generate()<CR>", opts)
 
 end
+
+set_mappings_nerdcommenter = function()
+
+    local opts = { noremap=true, silent=true }
+    vim.api.nvim_set_keymap("n", "<Leader><Leader>", "<plug>NERDCommenterToggle", opts)
+
+end

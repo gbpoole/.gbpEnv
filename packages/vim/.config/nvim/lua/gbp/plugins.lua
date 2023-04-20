@@ -100,37 +100,44 @@ return require('packer').startup({function(use)
       config = [[require('gbp.configs.treesitter-context')]]
     }
 
+    -- Set some sensible defaults
+    use { 'tpope/vim-sensible'}
 
-  -- use { 'tpope/vim-sensible', config = [[require('config.XXX']] }
-  -- use { 'vim-airline/vim-airline', config = [[require('config.XXX']] }
-  -- use { 'vim-airline/vim-airline-themes', config = [[require('config.XXX']] }
+    -- Highlight git diff lines
+    use {
+      'airblade/vim-gitgutter',
+      config = [[require('gbp.configs.gitgutter')]]
+    }
+
+    -- Tricks with comments
+    --use {
+    --  'scrooloose/nerdcommenter',
+    --  config = [[require('gbp.configs.nerdcommenter')]]
+    --}
+    use {
+      'numToStr/Comment.nvim',
+      config = [[require('gbp.configs.comment')]]
+    }
+
+
   -- use { 'editorconfig/editorconfig-vim', config = [[require('config.XXX']] }
   -- use { 'tmux-plugins/vim-tmux-focus-events', config = [[require('config.XXX']] }
   -- use { 'tpope/vim-rsi', config = [[require('config.XXX']] }
   -- use { 'tpope/vim-surround', config = [[require('config.XXX']] }
   -- -- use { 'justinmk/vim-sneak', config = [[require('config.XXX']] }
   -- use { 'jiangmiao/auto-pairs', config = [[require('config.XXX']] }
-  -- use { 'scrooloose/nerdcommenter', config = [[require('config.XXX']] }
-  -- use { 'SirVer/ultisnips' | Plug 'honza/vim-snippets', config = [[require('config.XXX']] }
   -- use { 'chrisbra/vim-diff-enhanced', config = [[require('config.XXX']] }
   -- use { 'tpope/vim-vinegar', config = [[require('config.XXX']] }
   -- use { 'majutsushi/tagbar', config = [[require('config.XXX']] }
-  -- use { 'airblade/vim-gitgutter', config = [[require('config.XXX']] }
   -- use { 'rhysd/git-messenger.vim', config = [[require('config.XXX']] }
   -- use { 'preservim/nerdtree', config = [[require('config.XXX']] }
   -- use { 'Xuyuanp/nerdtree-git-plugin', config = [[require('config.XXX']] }
   -- use { 'ryanoasis/vim-devicons', config = [[require('config.XXX']] }
   -- use { 'PhilRunninger/nerdtree-buffer-ops', config = [[require('config.XXX']] }
-  -- use { 'mileszs/ack.vim', config = [[require('config.XXX']] }
-  -- use { 'w0rp/ale', config = [[require('config.XXX']] }
   -- -- use { 'reedes/vim-wordy', { 'for': ['markdown', 'tex', 'latex'] }, config = [[require('config.XXX']] }
   -- -- use { 'davidbeckingsale/writegood.vim', { 'for': ['tex', 'markdown', 'latex'] }, config = [[require('config.XXX']] }
   -- use { 'junegunn/goyo.vim', { 'on': 'Goyo' }, config = [[require('config.XXX']] }
   -- use { 'sheerun/vim-polyglot', config = [[require('config.XXX']] }
-  -- use { 'Glench/Vim-Jinja2-Syntax', { 'for': 'html' }, config = [[require('config.XXX']] }
-  -- use { 'vim-python/python-syntax', { 'for': 'python' }, config = [[require('config.XXX']] }
-  -- use { 'Vimjas/vim-python-pep8-indent', { 'for': 'python'}, config = [[require('config.XXX']] }
-  -- use { 'davidhalter/jedi-vim', { 'for': 'python' }, config = [[require('config.XXX']] }
   -- use { 'tmhedberg/SimpylFold', { 'for': 'python' }, config = [[require('config.XXX']] }
   -- use { 'yuttie/comfortable-motion.vim', config = [[require('config.XXX']] }
   -- use { 'tpope/vim-obsession', config = [[require('config.XXX']] }
