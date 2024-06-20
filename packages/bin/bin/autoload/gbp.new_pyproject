@@ -1,0 +1,49 @@
+# vim:syntax=sh
+# vim:filetype=sh
+
+gbp.new_pyproject () {
+    # Parse arguments
+    local project_name="$1"
+
+    # Create directory and change to it
+    mkdir $project_name
+    #if [ -e $project_name ] ; then
+    if [[ $? -ne 0 ]]; then
+        echo "Could not create directory with nane: {"$project_name"}"
+        return 1
+    fi
+    cd $project_name
+
+    # Create pyenv environment
+    pyenv virtualenv $project_name
+    if [[ $? -ne 0 ]]; then
+        echo "Could not create pyenv environment with name: {"$project_name"}"
+        return 2
+    fi
+    pyenv local $project_name
+    if [[ $? -ne 0 ]]; then
+        echo "Could not set local pyenv environment to: {"$project_name"}"
+        return 3
+    fi
+
+    # Create git repo
+    git init
+    if [[ $? -ne 0 ]]; then
+        echo "Could not initialise git repo."
+        return 4
+    fi
+    git add .
+    if [[ $? -ne 0 ]]; then
+        echo "Could not add content to repo index."
+        return 5
+    fi
+    git commit -m "First empty commit."
+    if [[ $? -ne 0 ]]; then
+        echo "Could not create first empty commit."
+        return 6
+    fi
+
+    # Return to the execution directory
+    cd -
+    return 0
+}

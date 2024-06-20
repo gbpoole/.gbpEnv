@@ -24,6 +24,13 @@ if [ ! -f "${GBP_HOME}/.bashrc.system" ]; then
     fi
 fi
 
+# Source .env file
+if [ -f "${GBP_HOME}/.env" ]; then
+    set -o allexport
+    source ${GBP_HOME}/.env set
+    set +o allexport
+fi
+
 # Set autoloaded functions
 my_autoload_path=${GBP_HOME}/bin/autoload
 fpath=($my_autoload_path $fpath)

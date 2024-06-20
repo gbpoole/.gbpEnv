@@ -10,13 +10,13 @@ gbp_cat() {
         }
     else 
         # Set system dependant behavior
-        if [ ! command -v pygmentize &> /dev/null ]; then
+        if [ ! command -v bat &> /dev/null ]; then
            gbp_cat_cmd(){
                cat "$@"
            }
         else
            gbp_cat_cmd(){
-               pygmentize -g -O style=molokai "$@"
+               bat -p --pager=never "$@"
            }
         fi
     fi

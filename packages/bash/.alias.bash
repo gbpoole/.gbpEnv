@@ -79,7 +79,9 @@ if hash htop 2>/dev/null; then
 fi
 
 # 'r'->'ranger'
-alias r='ranger'
+if hash ranger 2>/dev/null; then
+   alias r='ranger'
+fi
 
 # 'vi'->nvim' or 'vim'
 if hash nvim 2>/dev/null; then
@@ -170,7 +172,6 @@ alias ls.id='ls -nFh'			# show numeric FID and GID (-n)
 # diff
 if hash colordiff 2>/dev/null; then
     alias diff='colordiff'
-else
 fi
 
 # change dir
@@ -192,6 +193,8 @@ alias H=' | head '
 alias W=' | wc -l '
 alias S=' | sort '
 
+# Use pop-up window to open these commands if not passed an argument
+alias FP="fd --type f --hidden --follow --exclude .git | fzf-tmux -p | xargs "
 
 # scutil
 alias sys.get.computername='scutil --get ComputerName'

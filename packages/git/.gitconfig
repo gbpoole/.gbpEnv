@@ -12,7 +12,7 @@
 [color]
 	ui = auto
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = /Users/gpoole/.config/git/gitignore_global
 [init]
 	defaultBranch = master
@@ -22,3 +22,5 @@
 	keepBackup = false
 [mergetool "nvim"]
 	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[pull]
+	rebase = true

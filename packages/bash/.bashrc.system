@@ -59,6 +59,7 @@ if [ -n $GBP_HOSTNAME ]; then
     add2path -q /usr/local/bin
     add2path -q /usr/local/sbin
     add2path -q /opt/homebrew/bin
+    add2path -f /opt/homebrew/opt/llvm/bin
 
     export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
 

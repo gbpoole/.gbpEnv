@@ -37,6 +37,8 @@ set_mappings_neogen = function()
 
     local opts = { noremap=true, silent=true }
     vim.api.nvim_set_keymap("n", "<Leader>f", ":lua require('neogen').generate()<CR>", opts)
+    vim.keymap.set("i", "<C-h>", function() require'neogen'.jump_next() end, { desc = "neogen forward jump" })
+    vim.keymap.set("i", "<C-l>", function() require'neogen'.jump_prev() end, { desc = "neogen backward jump" })
 
 end
 
