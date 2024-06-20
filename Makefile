@@ -150,6 +150,6 @@ help:
 	@$(ECHO) "    stow               - Build and install Gnu Stow"
 	@$(ECHO) "    3rd_Party_required - Build all the 3rd Party codes required by this install"
 	@$(ECHO) "    packages-install   - Install everython in 'packages' with Stow"
-	@$(ECHO) "    packages-uninstall - Uninstall everython in 'packages' with Stow"
-	@$(ECHO) "    packages-reinstall - Reinstall everython in 'packages' with Stow"
+	@$(ECHO) "    packages-uninstall - Uninstall everything in 'packages' with Stow"
+	@$(ECHO) "    packages-reinstall - Reinstall everything in 'packages' with Stow"
 	@$(ECHO) 
