@@ -1,6 +1,6 @@
 set_mappings_lsp = function(client)
 
-    local opts = { noremap=true, silent=true }
+    local opts = { silent=true }
     vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<CR>", opts)
     vim.keymap.set("n", "gD", "<cmd>Telescope lsp_implementations<CR>", opts)
     vim.keymap.set("n", "gk", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
@@ -17,15 +17,12 @@ set_mappings_lsp = function(client)
     vim.keymap.set("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 
-    vim.keymap.set({ "i", "s" }, "<C-n>", function() require'luasnip'.jump(1) end, { desc = "LuaSnip forward jump" })
-    vim.keymap.set({ "i", "s" }, "<C-p>", function() require'luasnip'.jump(-1) end, { desc = "LuaSnip backward jump" })
-
 end
 
 set_mappings_telescope = function()
 
-    local opts = { noremap=true, silent=true }
     local builtin = require('telescope.builtin')
+    local opts = { silent=true }
     vim.keymap.set('n', 'gf', builtin.find_files, opts)
     vim.keymap.set('n', 'gb', builtin.buffers, opts)
     vim.keymap.set('n', 'gG', builtin.live_grep, opts)
@@ -33,18 +30,29 @@ set_mappings_telescope = function()
 
 end
 
+set_mappings_completion = function(client)
+
+    local cmp = require("cmp")
+    return {['<C-l>'] = cmp.mapping(function() require('luasnip').jump(1) end, {'i','s'}),
+            ['<C-h>'] = cmp.mapping(function() require('luasnip').jump(-1) end, {'i','s'}),
+            ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+            ["<C-f>"] = cmp.mapping.scroll_docs(4),
+            ["<C-Space>"] = cmp.mapping.complete(),
+            ["<C-e>"] = cmp.mapping.abort(),
+            ["<CR>"] = cmp.mapping.confirm({ select = true }),
+           }
+end
+
 set_mappings_neogen = function()
 
-    local opts = { noremap=true, silent=true }
+    local opts = { silent=true }
     vim.api.nvim_set_keymap("n", "<Leader>f", ":lua require('neogen').generate()<CR>", opts)
-    vim.keymap.set("i", "<C-h>", function() require'neogen'.jump_next() end, { desc = "neogen forward jump" })
-    vim.keymap.set("i", "<C-l>", function() require'neogen'.jump_prev() end, { desc = "neogen backward jump" })
 
 end
 
-set_mappings_nerdcommenter = function()
-
-    local opts = { noremap=true, silent=true }
-    vim.api.nvim_set_keymap("n", "<Leader><Leader>", "<plug>NERDCommenterToggle", opts)
-
-end
+-- set_mappings_nerdcommenter = function()
+--
+--     local opts = { noremap=true, silent=true }
+--     vim.api.nvim_set_keymap("n", "<Leader><Leader>", "<plug>NERDCommenterToggle", opts)
+--
+-- end

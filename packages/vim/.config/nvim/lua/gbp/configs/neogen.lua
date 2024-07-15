@@ -1,5 +1,4 @@
 require("gbp.mappings")
-set_mappings_neogen()
 
 require('neogen').setup {
     enabled = true,
@@ -17,3 +16,5 @@ require('neogen').setup {
         },
     },
 }
+
+set_mappings_neogen()

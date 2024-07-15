@@ -1,12 +1,10 @@
 local debug = false -- set to 'true' if you want debuggin information turned on
 
-----------------------------------
--- Set personal set preferences --
-----------------------------------
-
+------------------------------
+-- Set personal preferences --
+------------------------------
+-- Python will be handled by Ruff, configured below
 local servers = {
-  "ruff_lsp", --> python
-  "pylsp",    --> python
   "lua_ls",   --> lua
   "clangd",   --> C, C++, Objective-C
   "tsserver", --> typescript, javascript
@@ -53,54 +51,25 @@ local lsp = require('lsp-zero').preset({
   suggest_lsp_servers = false,
   setup_servers_on_start = true,
 })
-
-lsp.set_preferences({sign_icons=sign_icons})
-lsp.configure('sumneko_lua', {
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { 'vim', 'use' }
-      }
-    }
-  }
-})
-
-lsp.configure("pylsp", {
-    settings = {
-        pylsp = {
-            plugins = {
-                -- Disable these
-                pylsp_mypy = { enabled = false },
-                mccabe = { enabled = false },
-                pycodestyle = { enabled = false },
-                pyflakes = { enabled = false },
-                -- Enable these
-                rope = { enabled = true },
-                rope_autoimport = {
-                    enabled = true,
-                },
-                ruff = { enabled = true },
-            },
-        },
-        ruff_lsp = {
-            diagnostics = {
-                -- Get the language server to recognize the `vim` global
-                globals = { "vim" },
-            },
-            workspace = {
-                -- Make the server aware of Neovim runtime files
-                library = vim.api.nvim_get_runtime_file("", true),
-            },
-        },
-    },
-})
-
-lsp.nvim_workspace()
+lsp.set_sign_icons(sign_icons)
 lsp.on_attach(on_attach)
-lsp.ensure_installed(servers)
 
-local mason = require("mason")
-mason.setup({ui = { icons = mason_icons } })
+-- Configure Ruff's LSP
+require('lspconfig').ruff.setup{}
+
+-- Configure Mason
+require("mason").setup({ui = { icons = mason_icons } })
+
+require('mason-lspconfig').setup({
+  ensure_installed = servers,
+  handlers = {
+    lsp.default_setup,
+    lua_ls = function()
+      local lua_opts = lsp.nvim_lua_ls()
+      require('lspconfig').lua_ls.setup(lua_opts)
+    end,
+  },
+})
 
 if debug then
    vim.lsp.set_log_level("debug")
