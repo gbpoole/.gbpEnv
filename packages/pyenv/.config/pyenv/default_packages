@@ -2,6 +2,3 @@ pip
 setuptools
 wheel
 pynvim
-python-language-server
-pygments
-pygments-molokai
