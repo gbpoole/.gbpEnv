@@ -1,3 +1,6 @@
 [submodule "packages/test/.test/assert"]
 	path = packages/test/.test/assert
 	url = https://github.com/lehmannro/assert.sh.git
+[submodule "packages/vim/.config/nvim"]
+	path = packages/vim/.config/nvim
+	url = git@github.com:gbpoole/kickstart.nvim.git
