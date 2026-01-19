@@ -218,9 +218,6 @@ fi
 unset PYENV_VERSION
 unset rval
 
-# pip should only run if there is a virtualenv currently activated
-export PIP_REQUIRE_VIRTUALENV=true
-
 # cache pip-installed packages to avoid re-downloading
 export PIP_DOWNLOAD_CACHE=$GBP_HOME/.pip/cache
 
@@ -261,7 +258,7 @@ fi
 # n.b.: If you change this, then node needs to be updated - not just here - but
 #       on any other extant install of .gbpEnv that will pull this change.
 # TODO: Find a better way to manage this
-export GBP_NODE_VERSION=14.17.0
+export GBP_NODE_VERSION=25.4.0
 if [ $GBP_OS = 'Mac' ]; then
     export GBP_NODE_PLATFORM=darwin-x64
 else

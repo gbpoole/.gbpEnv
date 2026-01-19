@@ -29,7 +29,7 @@ VERSION-gd=2.2.5
 VERSION-openssl=1.1.1k
 VERSION-cfitsio=3450
 VERSION-fftw2=2.1.5
-VERSION-fftw3=3.3.8
+VERSION-fftw3=3.3.10
 PLATFORM-node=${GBP_NODE_PLATFORM}
 
 # Set install directory
@@ -513,10 +513,10 @@ fftw3-config:
 	@mkdir build-fftw3-dp
 	@mkdir build-fftw3-sp-mpi
 	@mkdir build-fftw3-dp-mpi
-	@cd build-fftw3-sp;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-float
-	@cd build-fftw3-dp;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ 
-	@cd build-fftw3-sp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-mpi --enable-float
-	@cd build-fftw3-dp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-mpi
+	@cd build-fftw3-sp;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-float --enable-threads
+	@cd build-fftw3-dp;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-threads
+	@cd build-fftw3-sp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-mpi --enable-float --enable-threads
+	@cd build-fftw3-dp-mpi;../fftw-${VERSION-fftw3}/configure --prefix=${INSTALL_DIR}/ --enable-mpi --enable-threads
 fftw3-build:
 	@cd build-fftw3-sp;make -j 4
 	@cd build-fftw3-dp;make -j 4

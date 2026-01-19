@@ -61,10 +61,13 @@ if [ -n $GBP_HOSTNAME ]; then
     add2path -q /opt/homebrew/bin
     add2path -f /opt/homebrew/opt/llvm/bin
 
-    export LIBRARY_PATH="${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:$LIBRARY_PATH"
+    export LIBRARY_PATH=${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:/opt/homebrew/lib/:/opt/homebrew/opt/:$LIBRARY_PATH
+    export LD_LIBRARY_PATH=${GBP_HOME}/my_code/lib:${GBP_HOME}/3rd_Party/lib:/opt/homebrew/lib/:/opt/homebrew/opt/:$LD_LIBRARY_PATH
+    export CPATH=${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:/opt/homebrew/include/:$CPATH
+    export INCLUDE=${GBP_HOME}/my_code/include:${GBP_HOME}/3rd_Party/include:/opt/homebrew/include/:$INCLUDE
 
     # Set installation dir of Ananaconda
-    export GBP_CONDA_PATH="${GBP_HOME}/miniconda3/"
+    export GBP_CONDA_PATH=${GBP_HOME}/miniconda3/
 
     # Set Docker to use AMD64 architecture by default (M1 Macs create
     # problems when you try to deploy ARM64 images on AMD64 systems)
