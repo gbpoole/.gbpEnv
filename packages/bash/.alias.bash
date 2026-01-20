@@ -157,9 +157,7 @@ fi
 alias conda.list='conda info --envs'
 alias conda.unload='conda deactivate'
 
-#
 # Define common system-wide configurations
-
 alias ll='ls -lFh'     			# long (-l), types classify (-F),human readable (-h)
 alias l='ll'
 alias ls.all='ls -lAFh' 		# long list, show almost all
@@ -181,9 +179,7 @@ alias ....='cd ../../../..'
 
 alias df='df -h'
 
-#
 # Pipe Aliases
-#
 alias grep='egrep --color=auto '
 alias egrep='egrep --color=auto '
 alias L=' | less '
@@ -208,9 +204,8 @@ alias sys.get.network.interface='scutil --nwi'
 alias sys.uti.file='mdls -name kMDItemContentTypeTree '
 
 alias lsregister='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister'
-#
+
 # OS X's launchctl
-#
 alias launch.list='launchctl list '
 alias launch.load='launchctl load '
 alias launch.unload='launchctl unload '
@@ -218,12 +213,9 @@ alias launch.getenv='launchctl getenv '
 alias launch.start='launchctl start '
 alias launch.stop='launchctl stop '
 
-#
 # Spotlight / Meta-data indexing (MDS)
-#
 # https://apple.stackexchange.com/q/87090/7647
 # https://apple.stackexchange.com/q/63178/7647
-#
 alias spotlight.exclusion.show='sudo defaults read /.Spotlight-V100/VolumeConfiguration.plist Exclusions'
 alias spotlight.exclusion.add='sudo defaults write /.Spotlight-V100/VolumeConfiguration.plist Exclusions -array-add '
 
@@ -235,6 +227,9 @@ alias sys.pkg.list='pkgutil --pkgs'
 
 # show CPU info
 alias sys.cpu='sysctl -n machdep.cpu.brand_string'
+
+# call tmux-sessionizer
+alias t='tmux-sessionizer.sh'
 
 # Make sure that the aliases created here are available immediately to any scripts that source this file
 if [ ! -n "$ZSH_VERSION" ]; then
