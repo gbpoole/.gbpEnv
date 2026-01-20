@@ -54,10 +54,15 @@ fi
 log() {
     if [[ -z $TS_LOG ]]; then
         return
-    elif [[ $TS_LOG == "echo" ]]; then
-        echo "$*"
+    fi
+
+    local timestamp
+    timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+
+    if [[ $TS_LOG == "echo" ]]; then
+        echo "[$timestamp] $*"
     elif [[ $TS_LOG == "file" ]]; then
-        echo "$*" >> "$TS_LOG_FILE"
+        echo "[$timestamp] $*" >> "$TS_LOG_FILE"
     fi
 }
 
@@ -136,6 +141,22 @@ sanity_check() {
     fi
 }
 
+ensure_valid_term() {
+    if [[ -z "$TERM" ]]; then
+        log "TERM is unset"
+        echo "tmux-sessionizer: TERM is unset" >> /tmp/tmux-sessionizer/tmux-sessionizer.err
+        tmux display-message "tmux-sessionizer: TERM is unset"
+        exit 1
+    fi
+
+    if ! infocmp "$TERM" >/dev/null 2>&1; then
+        log "TERM $TERM is missing"
+        echo "tmux-sessionizer: missing terminfo for $TERM" >> /tmp/tmux-sessionizer/tmux-sessionizer.err
+        tmux display-message "tmux-sessionizer: missing terminfo for $TERM"
+        exit 1
+    fi
+}
+
 switch_to() {
     if [[ -z $TMUX ]]; then
         log "attaching to session $1"
@@ -147,7 +168,64 @@ switch_to() {
 }
 
 has_session() {
-    tmux list-sessions | grep -q "^$1:"
+    tmux has-session -t "$1" 2>/dev/null
+}
+
+sanitize_session_name() {
+    local raw="$1"
+    local sanitized
+
+    sanitized=$(printf '%s' "$raw" | sed -E 's/[^[:alnum:]_-]+/_/g; s/^_+//; s/_+$//')
+
+    if [[ -z "$sanitized" ]]; then
+        sanitized="session"
+    fi
+
+    printf '%s' "$sanitized"
+}
+
+ensure_session() {
+    local name="$1"
+    local path="$2"
+
+    if ! is_tmux_running; then
+        log "creating session $name (tmux not running)"
+        tmux new-session -ds "$name" -c "$path" 2>/tmp/tmux-sessionizer/tmux-sessionizer.err
+        local status=$?
+        if [[ $status -ne 0 ]]; then
+            local err_msg
+            err_msg=$(cat /tmp/tmux-sessionizer/tmux-sessionizer.err 2>/dev/null)
+            log "failed to create session $name status=$status err=$err_msg"
+            tmux display-message "tmux-sessionizer: failed to create session '$name'"
+            return 1
+        fi
+        hydrate "$name" "$path"
+        return 0
+    fi
+
+    if has_session "$name"; then
+        return 0
+    fi
+
+    log "creating session $name in $path"
+    tmux new-session -ds "$name" -c "$path" 2>/tmp/tmux-sessionizer/tmux-sessionizer.err
+    local status=$?
+    if [[ $status -ne 0 ]]; then
+        local err_msg
+        err_msg=$(cat /tmp/tmux-sessionizer/tmux-sessionizer.err 2>/dev/null)
+        log "failed to create session $name status=$status err=$err_msg"
+        tmux display-message "tmux-sessionizer: failed to create session '$name'"
+        return 1
+    fi
+
+    if ! has_session "$name"; then
+        log "session $name not found after creation"
+        tmux display-message "tmux-sessionizer: session '$name' was not created"
+        return 1
+    fi
+
+    hydrate "$name" "$path"
+    return 0
 }
 
 hydrate() {
@@ -156,10 +234,10 @@ hydrate() {
         return
     elif [ -f "$2/.tmux-sessionizer" ]; then
         log "sourcing(local) $2/.tmux-sessionizer"
-        tmux send-keys -t "$1" "source $2/.tmux-sessionizer" c-M
+        tmux send-keys -t "$1" "source \"$2/.tmux-sessionizer\"" c-M
     elif [ -f "$HOME/.tmux-sessionizer" ]; then
         log "sourcing(global) $HOME/.tmux-sessionizer"
-        tmux send-keys -t "$1" "source $HOME/.tmux-sessionizer" c-M
+        tmux send-keys -t "$1" "source \"$HOME/.tmux-sessionizer\"" c-M
     fi
 }
 
@@ -212,6 +290,7 @@ cleanup_dead_panes() {
 }
 
 sanity_check
+ensure_valid_term
 
 # if TS_SEARCH_PATHS is not set use default
 [[ -n "$TS_SEARCH_PATHS" ]] || TS_SEARCH_PATHS=(~/ ~/personal ~/personal/dev/env/.config)
@@ -390,16 +469,13 @@ if [[ "$selected" =~ ^\[TMUX\]\ (.+)$ ]]; then
     selected="${BASH_REMATCH[1]}"
 fi
 
-selected_name=$(basename "$selected" | tr . _)
+selected_name_raw=$(basename "$selected")
+selected_name=$(sanitize_session_name "$selected_name_raw")
 
-if ! is_tmux_running; then
-    tmux new-session -ds "$selected_name" -c "$selected"
-    hydrate "$selected_name" "$selected"
-fi
+log "selected=$selected selected_name_raw=$selected_name_raw selected_name=$selected_name"
 
-if ! has_session "$selected_name"; then
-    tmux new-session -ds "$selected_name" -c "$selected"
-    hydrate "$selected_name" "$selected"
+if ! ensure_session "$selected_name" "$selected"; then
+    exit 1
 fi
 
 switch_to "$selected_name"

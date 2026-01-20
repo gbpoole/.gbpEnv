@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if [[ -z "$TMUX" ]]; then
+    exit 0
+fi
+
+current_pane="$TMUX_PANE"
+new_pane=$(tmux split-window -h -c "$PWD" -P -F "#{pane_id}")
+
+if [[ -n "$new_pane" ]]; then
+    tmux send-keys -t "$new_pane" "opencode" C-m
+    tmux select-pane -t "$current_pane"
+fi
