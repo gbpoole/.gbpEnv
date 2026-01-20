@@ -228,26 +228,83 @@ fi
 find_dirs() {
     # list TMUX sessions
     if [[ -n "${TMUX}" ]]; then
+        local current_session
         current_session=$(tmux display-message -p '#S')
         tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | grep -vFx "[TMUX] $current_session"
     else
         tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null
     fi
 
+    # Collect results, then sort + de-dupe once at the end
+    local -a results=()
+
     # note: TS_SEARCH_PATHS is an array of paths to search for directories
-    # if the path ends with :number, it will search for directories with a max depth of number ;)
-    # if there is no number, it will search for directories with a max depth defined by TS_MAX_DEPTH or 1 if not set
+    # if the path ends with :number, it will search with that depth.
+    # default depth is TS_MAX_DEPTH or 1 if not set
+    #
+    # Behavior:
+    #   depth >= 0: include ONLY git repo roots (dirs that contain a .git dir)
+    #   depth <  0: include git repo roots AND non-git directories; use abs(depth)
+    #   depth == 0: just return the path itself (still included in non-git mode too)
     for entry in "${TS_SEARCH_PATHS[@]}"; do
-        # Check if entry as :number as suffix then adapt the maxdepth parameter
-        if [[ "$entry" =~ ^([^:]+):([0-9]+)$ ]]; then
+        local path depth max_depth include_nongit abs_depth
+        include_nongit=0
+
+        # Parse "path:depth" suffix (depth may be negative)
+        if [[ "$entry" =~ ^([^:]+):(-?[0-9]+)$ ]]; then
             path="${BASH_REMATCH[1]}"
             depth="${BASH_REMATCH[2]}"
         else
             path="$entry"
+            depth=""
         fi
 
-        [[ -d "$path" ]] && find "$path" -mindepth 1 -maxdepth "${depth:-${TS_MAX_DEPTH:-1}}" -path '*/.git' -prune -o -type d -print
+        max_depth="${depth:-${TS_MAX_DEPTH:-1}}"
+
+        [[ -d "$path" ]] || continue
+
+        # Negative depth => include non-git dirs too; search depth is abs(depth)
+        if [[ "$max_depth" -lt 0 ]]; then
+            include_nongit=1
+            abs_depth=$(( -max_depth ))
+        else
+            abs_depth=$max_depth
+        fi
+
+        # If depth is 0, just return the path itself
+        if [[ "$abs_depth" -eq 0 ]]; then
+            results+=("$path")
+            continue
+        fi
+
+        # Always include git repo roots up to abs_depth
+        # repo root at depth d has .git at depth d+1, so search .git up to abs_depth+1
+        while IFS= read -r repo_root; do
+            [[ -n "$repo_root" ]] && results+=("$repo_root")
+        done < <(
+            find "$path" \
+                -maxdepth "$((abs_depth + 1))" \
+                -type d -name .git \
+                -exec dirname {} \; 2>/dev/null
+        )
+
+        # If include_nongit, include all directories up to abs_depth as well
+        if [[ "$include_nongit" -eq 1 ]]; then
+            while IFS= read -r d; do
+                [[ -n "$d" ]] && results+=("$d")
+            done < <(
+                find "$path" \
+                    -maxdepth "$abs_depth" \
+                    -type d \
+                    -print 2>/dev/null
+            )
+        fi
     done
+
+    # Sort and de-duplicate
+    if ((${#results[@]})); then
+        printf '%s\n' "${results[@]}" | LC_ALL=C sort -u
+    fi
 }
 
 handle_session_cmd() {
