@@ -232,12 +232,12 @@ hydrate() {
     if [[ ! -z $session_cmd ]]; then
         log "skipping hydrate for $1 -- using \"$session_cmd\" instead"
         return
-    elif [ -f "$2/.tmux-sessionizer" ]; then
-        log "sourcing(local) $2/.tmux-sessionizer"
-        tmux send-keys -t "$1" "source \"$2/.tmux-sessionizer\"" c-M
-    elif [ -f "$HOME/.tmux-sessionizer" ]; then
-        log "sourcing(global) $HOME/.tmux-sessionizer"
-        tmux send-keys -t "$1" "source \"$HOME/.tmux-sessionizer\"" c-M
+    elif [ -f "$2/.tmux-sessionizer.sh" ]; then
+        log "sourcing(local) $2/.tmux-sessionizer.sh"
+        tmux send-keys -t "$1" "source \"$2/.tmux-sessionizer.sh\"" c-M
+    elif [ -f "$HOME/.tmux-sessionizer.sh" ]; then
+        log "sourcing(global) $HOME/.tmux-sessionizer.sh"
+        tmux send-keys -t "$1" "source \"$HOME/.tmux-sessionizer.sh\"" c-M
     fi
 }
 

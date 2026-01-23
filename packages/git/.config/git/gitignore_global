@@ -8,3 +8,5 @@
 # ctags stuff
 .tags
 
+# gbpEnv stuff
+.tmux-sessionizer.sh
