@@ -184,6 +184,46 @@ sanitize_session_name() {
     printf '%s' "$sanitized"
 }
 
+build_display_path() {
+    local path="$1"
+    local best_idx=-1
+    local best_len=-1
+
+    for i in "${!TS_SEARCH_BASES_EXPANDED[@]}"; do
+        local base="${TS_SEARCH_BASES_EXPANDED[$i]}"
+        local base_len=${#base}
+
+        if [[ "$path" == "$base" || "$path" == "$base"/* ]]; then
+            if (( base_len > best_len )); then
+                best_len=$base_len
+                best_idx=$i
+            fi
+        fi
+    done
+
+    if (( best_idx == -1 )); then
+        printf '%s' "$path"
+        return
+    fi
+
+    local prefix="${TS_SEARCH_BASES_DISPLAY[$best_idx]}"
+    local base="${TS_SEARCH_BASES_EXPANDED[$best_idx]}"
+    local relative="${path#"$base"}"
+
+    if [[ -z "$relative" || "$relative" == "$path" ]]; then
+        printf '%s' "$prefix"
+        return
+    fi
+
+    relative="${relative#/}"
+    if [[ -z "$relative" ]]; then
+        printf '%s' "$prefix"
+        return
+    fi
+
+    printf '%s/%s' "$prefix" "$relative"
+}
+
 ensure_session() {
     local name="$1"
     local path="$2"
@@ -303,15 +343,44 @@ if [[ ${#TS_EXTRA_SEARCH_PATHS[@]} -gt 0 ]]; then
     TS_SEARCH_PATHS+=("${TS_EXTRA_SEARCH_PATHS[@]}")
 fi
 
+TS_SEARCH_BASES_EXPANDED=()
+TS_SEARCH_BASES_DISPLAY=()
+
+for entry in "${TS_SEARCH_PATHS[@]}"; do
+    if [[ "$entry" =~ ^([^:]+):(-?[0-9]+)$ ]]; then
+        raw_base="${BASH_REMATCH[1]}"
+    else
+        raw_base="$entry"
+    fi
+
+    expanded_base="$raw_base"
+    display_base=""
+
+    if [[ "$raw_base" == "~" ]]; then
+        display_base="~"
+        expanded_base="$HOME"
+    else
+        expanded_base="${expanded_base%/}"
+        display_base="$(basename "$expanded_base")"
+    fi
+
+    TS_SEARCH_BASES_EXPANDED+=("${expanded_base%/}")
+    TS_SEARCH_BASES_DISPLAY+=("$display_base")
+done
+
 # utility function to find directories
 find_dirs() {
     # list TMUX sessions
     if [[ -n "${TMUX}" ]]; then
         local current_session
         current_session=$(tmux display-message -p '#S')
-        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | grep -vFx "[TMUX] $current_session"
+        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | grep -vFx "[TMUX] $current_session" | while IFS= read -r session; do
+            printf '%s\t%s\n' "$session" "$session"
+        done
     else
-        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null
+        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | while IFS= read -r session; do
+            printf '%s\t%s\n' "$session" "$session"
+        done
     fi
 
     # Collect results, then sort + de-dupe once at the end
@@ -382,7 +451,12 @@ find_dirs() {
 
     # Sort and de-duplicate
     if ((${#results[@]})); then
-        printf '%s\n' "${results[@]}" | LC_ALL=C sort -u
+        printf '%s\n' "${results[@]}" | LC_ALL=C sort -u | while IFS= read -r path; do
+            [[ -n "$path" ]] || continue
+            local display
+            display=$(build_display_path "$path")
+            printf '%s\t%s\n' "$display" "$path"
+        done
     fi
 }
 
@@ -458,18 +532,28 @@ if [[ ! -z $session_cmd ]]; then
 elif [[ ! -z $user_selected ]]; then
     selected="$user_selected"
 else
-    selected=$(find_dirs | fzf)
+    selected=$(find_dirs | fzf --with-nth=1 --delimiter=$'\t')
 fi
 
 if [[ -z $selected ]]; then
     exit 0
 fi
 
+if [[ "$selected" == *$'\t'* ]]; then
+    selected="${selected#*$'\t'}"
+fi
+
+tmux_entry=0
 if [[ "$selected" =~ ^\[TMUX\]\ (.+)$ ]]; then
+    tmux_entry=1
     selected="${BASH_REMATCH[1]}"
 fi
 
-selected_name_raw=$(basename "$selected")
+if [[ "$tmux_entry" -eq 1 ]]; then
+    selected_name_raw="$selected"
+else
+    selected_name_raw=$(build_display_path "$selected")
+fi
 selected_name=$(sanitize_session_name "$selected_name_raw")
 
 log "selected=$selected selected_name_raw=$selected_name_raw selected_name=$selected_name"
