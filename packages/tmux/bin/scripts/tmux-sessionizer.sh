@@ -230,6 +230,86 @@ build_display_path() {
     printf '%s/%s' "$prefix" "$relative"
 }
 
+expand_search_base() {
+    local raw_base="$1"
+
+    SEARCH_BASE_EXPANDED="$raw_base"
+    SEARCH_BASE_DISPLAY=""
+
+    if [[ "$raw_base" == "~" ]]; then
+        SEARCH_BASE_DISPLAY="~"
+        SEARCH_BASE_EXPANDED="$HOME"
+    elif [[ "$raw_base" == "~/"* ]]; then
+        SEARCH_BASE_EXPANDED="$HOME/${raw_base#\~\/}"
+        SEARCH_BASE_EXPANDED="${SEARCH_BASE_EXPANDED%/}"
+        SEARCH_BASE_DISPLAY="$(basename "$SEARCH_BASE_EXPANDED")"
+    else
+        SEARCH_BASE_EXPANDED="${SEARCH_BASE_EXPANDED%/}"
+        SEARCH_BASE_DISPLAY="$(basename "$SEARCH_BASE_EXPANDED")"
+    fi
+}
+
+relative_depth() {
+    local base="$1"
+    local path="$2"
+    local rel="${path#"$base"}"
+
+    rel="${rel#/}"
+    if [[ -z "$rel" ]]; then
+        printf '0'
+        return
+    fi
+
+    local -a parts
+    IFS='/' read -r -a parts <<< "$rel"
+    printf '%s' "${#parts[@]}"
+}
+
+should_exclude_path() {
+    local path="$1"
+    local normalized_path="$path"
+
+    if [[ "$normalized_path" != "/" ]]; then
+        normalized_path="${normalized_path%/.}"
+        normalized_path="${normalized_path%/}"
+    fi
+
+    for i in "${!TS_EXCLUDE_BASES_EXPANDED[@]}"; do
+        local base="${TS_EXCLUDE_BASES_EXPANDED[$i]}"
+        local depth="${TS_EXCLUDE_DEPTHS[$i]}"
+
+        if [[ "$normalized_path" != "$base" && "$normalized_path" != "$base"/* ]]; then
+            continue
+        fi
+
+        if [[ "$depth" -eq 0 ]]; then
+            if [[ "$normalized_path" == "$base" ]]; then
+                return 0
+            fi
+            continue
+        fi
+
+        if [[ "$depth" -gt 0 ]]; then
+            [[ -d "$normalized_path/.git" ]] || continue
+            local rel_depth
+            rel_depth=$(relative_depth "$base" "$normalized_path")
+            if (( rel_depth <= depth )); then
+                return 0
+            fi
+            continue
+        fi
+
+        local abs_depth=$(( -depth ))
+        local rel_depth
+        rel_depth=$(relative_depth "$base" "$normalized_path")
+        if (( rel_depth <= abs_depth )); then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
 ensure_session() {
     local name="$1"
     local path="$2"
@@ -352,8 +432,27 @@ fi
 TS_SEARCH_BASES_EXPANDED=()
 TS_SEARCH_BASES_DISPLAY=()
 TS_SEARCH_BASES_NAME_OVERRIDE=()
+TS_EXCLUDE_BASES_EXPANDED=()
+TS_EXCLUDE_DEPTHS=()
 
 for entry in "${TS_SEARCH_PATHS[@]}"; do
+    if [[ "$entry" == "!"* ]]; then
+        exclude_entry="${entry#!}"
+        exclude_depth=""
+        if [[ "$exclude_entry" =~ ^([^:]+):(-?[0-9]+)(:.+)?$ ]]; then
+            raw_base="${BASH_REMATCH[1]}"
+            exclude_depth="${BASH_REMATCH[2]}"
+        else
+            raw_base="$exclude_entry"
+        fi
+
+        exclude_depth="${exclude_depth:-${TS_MAX_DEPTH:-1}}"
+        expand_search_base "$raw_base"
+        TS_EXCLUDE_BASES_EXPANDED+=("${SEARCH_BASE_EXPANDED%/}")
+        TS_EXCLUDE_DEPTHS+=("$exclude_depth")
+        continue
+    fi
+
     name_override=""
     if [[ "$entry" =~ ^([^:]+):(-?[0-9]+)(:.+)?$ ]]; then
         raw_base="${BASH_REMATCH[1]}"
@@ -365,23 +464,9 @@ for entry in "${TS_SEARCH_PATHS[@]}"; do
         raw_base="$entry"
     fi
 
-    expanded_base="$raw_base"
-    display_base=""
-
-    if [[ "$raw_base" == "~" ]]; then
-        display_base="~"
-        expanded_base="$HOME"
-    elif [[ "$raw_base" == "~/"* ]]; then
-        expanded_base="$HOME/${raw_base#~/}"
-        expanded_base="${expanded_base%/}"
-        display_base="$(basename "$expanded_base")"
-    else
-        expanded_base="${expanded_base%/}"
-        display_base="$(basename "$expanded_base")"
-    fi
-
-    TS_SEARCH_BASES_EXPANDED+=("${expanded_base%/}")
-    TS_SEARCH_BASES_DISPLAY+=("$display_base")
+    expand_search_base "$raw_base"
+    TS_SEARCH_BASES_EXPANDED+=("${SEARCH_BASE_EXPANDED%/}")
+    TS_SEARCH_BASES_DISPLAY+=("$SEARCH_BASE_DISPLAY")
     TS_SEARCH_BASES_NAME_OVERRIDE+=("$name_override")
 done
 
@@ -391,12 +476,16 @@ find_dirs() {
     if [[ -n "${TMUX}" ]]; then
         local current_session
         current_session=$(tmux display-message -p '#S')
-        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | grep -vFx "[TMUX] $current_session" | while IFS= read -r session; do
-            printf '%s\t%s\n' "$session" "$session"
+        tmux list-sessions -F "#{session_name}" 2>/dev/null | while IFS= read -r session_name; do
+            local display_name="[TMUX] $session_name"
+            if [[ "$session_name" == "$current_session" ]]; then
+                display_name="[TMUX] $session_name (current)"
+            fi
+            printf '%s\t%s\n' "$display_name" "[TMUX] $session_name"
         done
     else
-        tmux list-sessions -F "[TMUX] #{session_name}" 2>/dev/null | while IFS= read -r session; do
-            printf '%s\t%s\n' "$session" "$session"
+        tmux list-sessions -F "#{session_name}" 2>/dev/null | while IFS= read -r session_name; do
+            printf '%s\t%s\n' "[TMUX] $session_name" "[TMUX] $session_name"
         done
     fi
 
@@ -412,6 +501,10 @@ find_dirs() {
     #   depth <  0: include git repo roots AND non-git directories; use abs(depth)
     #   depth == 0: just return the path itself (still included in non-git mode too)
     for entry in "${TS_SEARCH_PATHS[@]}"; do
+        if [[ "$entry" == "!"* ]]; then
+            continue
+        fi
+
         local path depth max_depth include_nongit abs_depth
         include_nongit=0
 
@@ -468,8 +561,13 @@ find_dirs() {
 
     # Sort and de-duplicate
     if ((${#results[@]})); then
-        printf '%s\n' "${results[@]}" | LC_ALL=C sort -u | while IFS= read -r path; do
+        local -a sorted_results
+        mapfile -t sorted_results < <(printf '%s\n' "${results[@]}" | LC_ALL=C sort -u)
+        for path in "${sorted_results[@]}"; do
             [[ -n "$path" ]] || continue
+            if should_exclude_path "$path"; then
+                continue
+            fi
             local display
             display=$(build_display_path "$path")
             printf '%s\t%s\n' "$display" "$path"
