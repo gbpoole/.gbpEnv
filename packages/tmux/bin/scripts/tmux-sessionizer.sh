@@ -206,6 +206,12 @@ build_display_path() {
         return
     fi
 
+    local name_override="${TS_SEARCH_BASES_NAME_OVERRIDE[$best_idx]}"
+    if [[ -n "$name_override" ]]; then
+        printf '%s' "$name_override"
+        return
+    fi
+
     local prefix="${TS_SEARCH_BASES_DISPLAY[$best_idx]}"
     local base="${TS_SEARCH_BASES_EXPANDED[$best_idx]}"
     local relative="${path#"$base"}"
@@ -345,10 +351,16 @@ fi
 
 TS_SEARCH_BASES_EXPANDED=()
 TS_SEARCH_BASES_DISPLAY=()
+TS_SEARCH_BASES_NAME_OVERRIDE=()
 
 for entry in "${TS_SEARCH_PATHS[@]}"; do
-    if [[ "$entry" =~ ^([^:]+):(-?[0-9]+)$ ]]; then
+    name_override=""
+    if [[ "$entry" =~ ^([^:]+):(-?[0-9]+)(:.+)?$ ]]; then
         raw_base="${BASH_REMATCH[1]}"
+        depth="${BASH_REMATCH[2]}"
+        if [[ -n "${BASH_REMATCH[3]}" && "$depth" -eq 0 ]]; then
+            name_override="${BASH_REMATCH[3]#:}"
+        fi
     else
         raw_base="$entry"
     fi
@@ -359,6 +371,10 @@ for entry in "${TS_SEARCH_PATHS[@]}"; do
     if [[ "$raw_base" == "~" ]]; then
         display_base="~"
         expanded_base="$HOME"
+    elif [[ "$raw_base" == "~/"* ]]; then
+        expanded_base="$HOME/${raw_base#~/}"
+        expanded_base="${expanded_base%/}"
+        display_base="$(basename "$expanded_base")"
     else
         expanded_base="${expanded_base%/}"
         display_base="$(basename "$expanded_base")"
@@ -366,6 +382,7 @@ for entry in "${TS_SEARCH_PATHS[@]}"; do
 
     TS_SEARCH_BASES_EXPANDED+=("${expanded_base%/}")
     TS_SEARCH_BASES_DISPLAY+=("$display_base")
+    TS_SEARCH_BASES_NAME_OVERRIDE+=("$name_override")
 done
 
 # utility function to find directories
@@ -399,7 +416,7 @@ find_dirs() {
         include_nongit=0
 
         # Parse "path:depth" suffix (depth may be negative)
-        if [[ "$entry" =~ ^([^:]+):(-?[0-9]+)$ ]]; then
+        if [[ "$entry" =~ ^([^:]+):(-?[0-9]+)(:.+)?$ ]]; then
             path="${BASH_REMATCH[1]}"
             depth="${BASH_REMATCH[2]}"
         else
