@@ -13,7 +13,7 @@
 	ui = auto
 [core]
 	editor = nvim
-	excludesfile = /Users/gpoole/.config/git/gitignore_global
+	excludesfile = /Users/gbpoole/.config/git/gitignore_global
 [init]
 	defaultBranch = master
 [merge]

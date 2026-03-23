@@ -1,7 +1,4 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "plan",
-  "keybinds": {
-    "input_newline": "shift+return"
-  }
+  "default_agent": "plan"
 }

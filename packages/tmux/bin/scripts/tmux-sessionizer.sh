@@ -184,6 +184,33 @@ sanitize_session_name() {
     printf '%s' "$sanitized"
 }
 
+session_name_from_path() {
+    local path="$1"
+    local trimmed_path="${path%/}"
+    local base_name
+
+    if [[ -z "$trimmed_path" ]]; then
+        base_name="$path"
+    else
+        base_name="$(basename "$trimmed_path")"
+    fi
+
+    sanitize_session_name "$base_name"
+}
+
+unique_session_name() {
+    local base_name="$1"
+    local candidate="$base_name"
+    local idx=1
+
+    while has_session "$candidate"; do
+        candidate="${base_name}_${idx}"
+        idx=$((idx + 1))
+    done
+
+    printf '%s' "$candidate"
+}
+
 build_display_path() {
     local path="$1"
     local best_idx=-1
@@ -666,10 +693,11 @@ fi
 
 if [[ "$tmux_entry" -eq 1 ]]; then
     selected_name_raw="$selected"
+    selected_name="$selected"
 else
-    selected_name_raw=$(build_display_path "$selected")
+    selected_name_raw=$(session_name_from_path "$selected")
+    selected_name=$(unique_session_name "$selected_name_raw")
 fi
-selected_name=$(sanitize_session_name "$selected_name_raw")
 
 log "selected=$selected selected_name_raw=$selected_name_raw selected_name=$selected_name"
 
