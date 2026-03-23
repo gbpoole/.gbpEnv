@@ -2,11 +2,8 @@
 # vim:syntax=sh
 # vim:filetype=sh
 
-# system executables
-export PATH=$PATH:/usr/bin:/bin:/usr/sbin:/sbin:/usr/libexec
-
-# local system binaries
-export PATH=/usr/local/sbin:/usr/local/bin:$PATH
+# PATH ordering is managed in shell rc files via add2path.
+# Avoid mutating PATH here to prevent duplicate entries and unstable ordering.
 
 # Make sure ZSH is calling this:
 # https://stackoverflow.com/a/9911082/339302

@@ -27,9 +27,6 @@ if [ ! -f "${GBP_HOME}/.zshrc" ]; then
     fi
 fi
 
-# Add 3rd_Party/bin to path because it may be needed by antibody packages
-export PATH=${GBP_HOME}/3rd_Party/bin:$PATH
-
 # Source the bash config
 #
 # If we are starting-up an iterm session, then the config
@@ -70,5 +67,15 @@ fi
 
 [ -f ${GBP_HOME}/.fzf.zsh ] && source ${GBP_HOME}/.fzf.zsh
 
-export PATH="$HOME/.poetry/bin:$PATH"
+# Keep Homebrew ahead of system directories on macOS
+if [[ "$GBP_OS" = 'Mac' ]]; then
+    add2path -q -f /usr/local/sbin
+    add2path -q -f /usr/local/bin
+    add2path -q -f /opt/homebrew/sbin
+    add2path -q -f /opt/homebrew/bin
+fi
 
+add2path -q -f ${HOME}/.poetry/bin
+
+# Final zsh dedupe pass after all init scripts mutate PATH
+typeset -gU path
