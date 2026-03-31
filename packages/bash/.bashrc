@@ -199,24 +199,27 @@ add2path -q -f ${PYENV_ROOT}/shims
 if type pyenv > /dev/null 2>&1; then
    export GBP_PYENV_DEFAULT_VERSION=3.14.3
    export GBP_PYENV_DEFAULT_ENV=default
+   default_pyenv_env_link="${PYENV_ROOT}/versions/${GBP_PYENV_DEFAULT_ENV}"
    export PYENV_HOOK_PATH=${GBP_HOME}/.config/pyenv/pyenv.d/
    export PYENV_VIRTUALENV_DISABLE_PROMPT=1
    eval "$(pyenv init -)"
    eval "$(pyenv virtualenv-init -)"
-   # Note that the following check is broken if the ${GBP_PYENV_DEFAULT_ENV} environment is missing
-   # but 'pyenv global' is set to ${GBP_PYENV_DEFAULT_ENV}.  The 'pyenv activate' call returns
-   # '0' in that case, for some reason.
-   pyenv activate ${GBP_PYENV_DEFAULT_ENV} 2>/dev/null
-   rval=$?
-   if [[ $rval -ne 0 ]]; then
+   if ! pyenv prefix ${GBP_PYENV_DEFAULT_ENV} >/dev/null 2>&1; then
       echo "Default Python environment ("${GBP_PYENV_DEFAULT_ENV}") not found ... initializing ..."
-      pyenv install ${GBP_PYENV_DEFAULT_VERSION}
+      pyenv install -s ${GBP_PYENV_DEFAULT_VERSION}
       pyenv virtualenv ${GBP_PYENV_DEFAULT_VERSION} ${GBP_PYENV_DEFAULT_ENV}
-      pyenv global default
+      if ! pyenv prefix ${GBP_PYENV_DEFAULT_ENV} >/dev/null 2>&1; then
+         if [[ -L "${default_pyenv_env_link}" && ! -e "${default_pyenv_env_link}" ]]; then
+            rm "${default_pyenv_env_link}"
+            pyenv virtualenv ${GBP_PYENV_DEFAULT_VERSION} ${GBP_PYENV_DEFAULT_ENV}
+         fi
+      fi
+      pyenv global ${GBP_PYENV_DEFAULT_ENV}
    fi
+   pyenv activate ${GBP_PYENV_DEFAULT_ENV} 2>/dev/null
 fi
 unset PYENV_VERSION
-unset rval
+unset default_pyenv_env_link
 
 # cache pip-installed packages to avoid re-downloading
 export PIP_DOWNLOAD_CACHE=$GBP_HOME/.pip/cache
