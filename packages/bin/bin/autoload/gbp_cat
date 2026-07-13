@@ -6,13 +6,13 @@ gbp_cat() {
     # If this is running through a pipe, then just pass it through to cat
     if [ ! -t 1 ]; then
         gbp_cat_cmd(){
-            cat "$@"
+            command cat "$@"
         }
     else 
         # Set system dependant behavior
         if [ ! command -v bat &> /dev/null ]; then
            gbp_cat_cmd(){
-               cat "$@"
+               command cat "$@"
            }
         else
            gbp_cat_cmd(){

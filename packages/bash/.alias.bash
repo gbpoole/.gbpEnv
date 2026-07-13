@@ -47,7 +47,9 @@ alias grep='grep --color=auto'
 export GBP_CAT="gbp_cat"     # Autoloaded function
 export GBP_PAGER="gbp_pager" # Autoloaded function
 alias more=$GBP_PAGER
-alias cat=$GBP_CAT
+if [ -z "${CLAUDE_CODE_EXECPATH:-}" ]; then
+    alias cat=$GBP_CAT
+fi
 
 # ls
 if [ "$GBP_OS" = 'Mac' ]; then
